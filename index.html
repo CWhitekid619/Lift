@@ -10,15 +10,15 @@
 <title>LIFT</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#06060a;--s1:#0e0e14;--s2:#16161f;--s3:#1e1e2a;--bd:#22222e;--ac:#00f5ff;--ac2:#bf00ff;--tx:#eeeef5;--t2:#6b7280;--t3:#374151;--gr:#00ff9f;--r:12px;--th:70px}
+:root{--bg:#07080f;--s1:rgba(255,255,255,.05);--s2:rgba(255,255,255,.07);--s3:rgba(255,255,255,.03);--bd:rgba(255,255,255,.1);--ac:#00f5ff;--ac2:#bf00ff;--tx:#f0f0ff;--t2:#8899bb;--t3:#445566;--gr:#00ff9f;--r:16px;--th:72px}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;height:100%;overflow:hidden}
+html,body{background:linear-gradient(145deg,#07080f 0%,#0d0a1a 50%,#080d1a 100%);background-attachment:fixed;color:var(--tx);font-family:'DM Sans',sans-serif;height:100%;overflow:hidden}
 #app{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
 .screen{display:none;flex:1;overflow-y:auto;padding-bottom:calc(var(--th)+16px);-webkit-overflow-scrolling:touch}
 .screen.active{display:block}
 .screen::-webkit-scrollbar{display:none}
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
-#tabs{display:flex;background:rgba(14,14,20,.97);border-top:1px solid var(--bd);height:var(--th);position:fixed;bottom:0;left:0;right:0;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+#tabs{display:flex;background:rgba(8,8,20,.7);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-top:1px solid rgba(255,255,255,.08);height:var(--th);position:fixed;bottom:0;left:0;right:0;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
 .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding-top:6px;position:relative}
 .tab .ti{font-size:20px;transition:transform .2s}
 .tab .tl{font-size:9px;color:var(--t3);font-weight:700;letter-spacing:1px;text-transform:uppercase}
@@ -30,16 +30,16 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .ph p{color:var(--t2);font-size:12px;margin-top:3px}
 .btn{display:flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:10px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;transition:all .15s;-webkit-appearance:none;text-decoration:none}
 .btn:active{transform:scale(.96)}
-.bp{background:linear-gradient(135deg,var(--ac),#00b8ff);color:#000}
-.bs{background:var(--s2);color:var(--tx);border:1px solid var(--bd)}
+.bp{background:linear-gradient(135deg,#00f5ff,#0088ff);color:#000;box-shadow:0 4px 20px rgba(0,200,255,.3)}
+.bs{background:rgba(255,255,255,.07);color:var(--tx);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .bg{background:transparent;color:var(--t2);font-size:13px}
 .bf{width:100%}
-input,select{background:var(--s2);border:1px solid var(--bd);border-radius:9px;color:var(--tx);font-family:'DM Sans',sans-serif;font-size:15px;padding:11px 13px;width:100%;outline:none;-webkit-appearance:none}
-input:focus,select:focus{border-color:var(--ac)}
+input,select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--tx);font-family:'DM Sans',sans-serif;font-size:15px;padding:11px 13px;width:100%;outline:none;-webkit-appearance:none}
+input:focus,select:focus{border-color:rgba(0,245,255,.6);box-shadow:0 0 0 3px rgba(0,245,255,.08)}
 input::placeholder{color:var(--t3)}
 .lbl{font-size:10px;color:var(--t2);font-weight:700;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:5px}
 .fg{margin-bottom:14px}
-.card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin:0 14px 10px}
+.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:14px;margin:0 14px 10px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
 .mo{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:300;display:flex;align-items:flex-end;padding:16px}
 .mo.hidden{display:none}
 .md{background:var(--s1);border:1px solid var(--ac);border-radius:16px;padding:22px;width:100%;max-height:88vh;overflow-y:auto}
@@ -52,7 +52,7 @@ input::placeholder{color:var(--t3)}
 .es p{font-size:13px;line-height:1.6}
 .toast{position:fixed;top:56px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--s1);color:var(--ac);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:700;z-index:600;border:1px solid var(--ac);transition:transform .3s cubic-bezier(.34,1.56,.64,.8);white-space:nowrap;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0)}
-.ib{width:34px;height:34px;border-radius:8px;border:1px solid var(--bd);background:var(--s2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;flex-shrink:0}
+.ib{width:34px;height:34px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;flex-shrink:0;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .ib:active{transform:scale(.85)}
 /* ONBOARDING */
 .ob{position:fixed;inset:0;background:var(--bg);z-index:1000;overflow-y:auto;padding:60px 20px 40px}
@@ -73,22 +73,22 @@ input::placeholder{color:var(--t3)}
 .ob-ot h3{font-size:14px;font-weight:600}
 .ob-ot p{font-size:11px;color:var(--t2);margin-top:2px}
 /* TODAY */
-.wh{margin:0 14px 14px;background:linear-gradient(135deg,rgba(0,245,255,.1),rgba(191,0,255,.08));border:1px solid rgba(0,245,255,.3);border-radius:12px;padding:18px;position:relative;overflow:hidden}
+.wh{margin:0 14px 14px;background:linear-gradient(135deg,rgba(0,245,255,.08),rgba(191,0,255,.06));border:1px solid rgba(0,245,255,.2);border-radius:20px;padding:20px;position:relative;overflow:hidden;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,245,255,.05),inset 0 1px 0 rgba(255,255,255,.1)}
 .wh::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ac),var(--ac2))}
 .day-strip{display:flex;gap:6px;padding:0 14px 14px;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .day-strip::-webkit-scrollbar{display:none}
-.day-chip{flex-shrink:0;min-width:54px;padding:9px 5px;border-radius:10px;text-align:center;cursor:pointer;background:var(--s1);border:1px solid var(--bd);transition:all .2s}
-.day-chip.sel{background:rgba(0,245,255,.1);border-color:var(--ac)}
+.day-chip{flex-shrink:0;min-width:54px;padding:9px 5px;border-radius:12px;text-align:center;cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:all .2s;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.day-chip.sel{background:rgba(0,245,255,.12);border-color:rgba(0,245,255,.5);box-shadow:0 0 12px rgba(0,245,255,.15)}
 .day-chip-l{font-size:8px;color:var(--t2);font-weight:700;letter-spacing:.8px;text-transform:uppercase;font-family:'Orbitron',monospace;margin-bottom:3px}
 .day-chip.sel .day-chip-l{color:var(--ac)}
 .day-chip-n{font-size:11px;font-weight:600}
-.psi{margin:0 14px 9px;background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:15px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all .2s}
+.psi{margin:0 14px 9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:15px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all .2s;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .psi:active{transform:scale(.98)}
 .psi h3{font-weight:700;font-size:15px}
 .psi p{font-size:11px;color:var(--t2);margin-top:2px}
 /* ACTIVE WORKOUT */
 .ec{margin:0 14px 8px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
-.ec.open{border-color:rgba(0,245,255,.25)}
+.ec.open{border-color:rgba(0,245,255,.4);box-shadow:0 0 20px rgba(0,245,255,.08)}
 .ec.done{opacity:.4}
 .ec-hdr{padding:13px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 .ec-name{font-weight:600;font-size:15px}
@@ -99,19 +99,19 @@ input::placeholder{color:var(--t3)}
 .ec.open .ec-body{display:block}
 .lt-box{background:rgba(255,255,255,.03);border-left:2px solid var(--ac2);border-radius:6px;padding:7px 10px;margin-bottom:10px;font-size:11px;color:var(--t2)}
 .sw-box{background:rgba(0,245,255,.05);border:1px solid rgba(0,245,255,.2);border-radius:6px;padding:7px 10px;margin-bottom:10px;font-size:11px;color:var(--ac)}
-.sr{display:flex;align-items:center;gap:7px;padding:8px 10px;background:var(--s2);border-radius:8px;margin-bottom:6px;border:1px solid var(--bd)}
-.sr.done{border-color:rgba(0,255,159,.25);background:rgba(0,255,159,.04)}
+.sr{display:flex;align-items:center;gap:7px;padding:8px 10px;background:rgba(255,255,255,.04);border-radius:10px;margin-bottom:6px;border:1px solid rgba(255,255,255,.08)}
+.sr.done{border-color:rgba(0,255,159,.3);background:rgba(0,255,159,.06);box-shadow:0 0 10px rgba(0,255,159,.05)}
 .sr-n{font-size:10px;font-weight:700;color:var(--t3);width:16px;flex-shrink:0;font-family:'Orbitron',monospace}
-.sr-f{flex:1;min-width:0}
-.sr-f .lbl{font-size:9px;text-align:center;margin-bottom:2px}
-.sr-f input{padding:7px 8px;font-size:14px;font-weight:700;text-align:center;border-radius:6px}
-.sr-sel select{padding:5px 4px;font-size:11px;border-radius:6px;width:78px;height:30px;color:var(--t2)}
-.sr-btn{width:30px;height:30px;border-radius:6px;border:1px solid var(--bd);background:var(--s3);color:var(--t2);font-size:14px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;-webkit-appearance:none}
+.sr-f{flex:1;min-width:0;max-width:70px}
+.sr-f .lbl{font-size:8px;text-align:center;margin-bottom:1px}
+.sr-f input{padding:6px 4px;font-size:13px;font-weight:700;text-align:center;border-radius:6px}
+.sr-sel select{padding:4px 2px;font-size:10px;border-radius:6px;width:72px;height:28px;color:var(--t2)}
+.sr-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--bd);background:var(--s3);color:var(--t2);font-size:13px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;-webkit-appearance:none}
 .sr-btn:active{transform:scale(.85)}
 .sr.done .sr-btn{background:rgba(0,255,159,.15);color:var(--gr);border-color:rgba(0,255,159,.3)}
 .sr-undo{background:rgba(0,245,255,.07);color:var(--ac);border-color:rgba(0,245,255,.2)}
 /* PAUSE */
-.pt{position:fixed;inset:0;background:rgba(6,6,10,.95);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px}
+.pt{position:fixed;inset:0;background:rgba(4,5,15,.92);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px}
 .pt.hidden{display:none}
 .pt-lbl{font-family:'Orbitron',monospace;font-size:10px;color:var(--ac);letter-spacing:4px;text-transform:uppercase;font-weight:700}
 .pt-ring{position:relative;width:200px;height:200px}
@@ -140,19 +140,19 @@ input::placeholder{color:var(--t3)}
 .lib-info p{font-size:11px;color:var(--t2);margin-top:2px}
 .lib-add{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,var(--ac),#00b8ff);border:none;font-size:16px;font-weight:700;color:#000;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 /* PLANS */
-.pc{margin:0 14px 10px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.pc{margin:0 14px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:var(--r);overflow:hidden;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 .pc-hdr{padding:14px;display:flex;align-items:center;justify-content:space-between}
 .pc-name{font-weight:700;font-size:15px}
 .pc-cnt{font-size:11px;color:var(--t2);margin-top:2px}
 .pc-exs{padding:0 14px 14px}
-.pc-ex{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;background:var(--s2);border-radius:8px;margin-bottom:5px}
+.pc-ex{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;background:rgba(255,255,255,.04);border-radius:10px;margin-bottom:5px;border:1px solid rgba(255,255,255,.06)}
 .pc-ei h4{font-size:13px;font-weight:500}
 .pc-ei p{font-size:11px;color:var(--t2);margin-top:1px}
 .pc-ea{display:flex;gap:5px}
 /* HISTORY */
 .hd{margin:0 14px 10px}
 .hd-lbl{font-size:9px;color:var(--ac);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-family:'Orbitron',monospace;padding:8px 0 5px}
-.hc{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:13px 14px;cursor:pointer}
+.hc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:13px 14px;cursor:pointer;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:border-color .2s}
 .hc:active{border-color:rgba(0,245,255,.3)}
 .hc-hdr{display:flex;justify-content:space-between;align-items:flex-start}
 .hc h3{font-weight:700;font-size:15px}
@@ -164,31 +164,31 @@ input::placeholder{color:var(--t3)}
 .hdet.hidden{display:none}
 .hdet-back{color:var(--ac);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px}
 /* PROGRESS */
-.prc{margin:0 14px 10px;background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:13px 14px}
+.prc{margin:0 14px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:13px 14px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 .prc h3{font-size:9px;color:var(--ac);letter-spacing:2px;font-weight:700;text-transform:uppercase;font-family:'Orbitron',monospace;margin-bottom:9px}
 .pri{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bd)}
 .pri:last-child{border-bottom:none}
 .prv{font-family:'Orbitron',monospace;font-size:16px;color:var(--ac);font-weight:700}
-.chcard{margin:0 14px 14px;background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:14px}
+.chcard{margin:0 14px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:14px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 .cht{font-size:12px;font-weight:600;color:var(--t2);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
 /* SUMMARY */
 .sum{position:fixed;inset:0;background:var(--bg);z-index:400;overflow-y:auto;padding:56px 18px 40px}
 .sum.hidden{display:none}
 .sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
-.sum-sc{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:14px}
+.sum-sc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 .sum-sc .v{font-family:'Orbitron',monospace;font-size:24px;color:var(--ac);font-weight:700}
 .sum-sc .l{font-size:9px;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
 .sum-er{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd)}
 .sum-er:last-child{border-bottom:none}
 /* MOTIVATION */
-.mot{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:800;display:flex;align-items:center;justify-content:center;padding:24px}
-.mot.hidden{display:none}
+.mot-REMOVED{display:none;inset:0;bottom:80px;right:14px;z-index:800;max-width:230px;transform:translateY(20px);opacity:0;transition:all .4s ease;pointer-events:none}
+.mot.show{transform:translateY(0);opacity:1;pointer-events:auto}
 .mot-card{background:var(--s1);border:1px solid rgba(0,245,255,.3);border-radius:16px;padding:28px 24px;max-width:340px;width:100%;text-align:center;position:relative;overflow:hidden}
-.mot-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ac),var(--ac2))}
-.mot-cross{font-size:32px;margin-bottom:12px;opacity:.7}
-.mot-verse{font-size:14px;color:var(--tx);line-height:1.7;margin-bottom:6px;font-style:italic}
-.mot-ref{font-size:10px;color:var(--ac);font-weight:700;letter-spacing:1px;margin-bottom:14px;font-family:'Orbitron',monospace}
-.mot-quote{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:20px}
+
+.mot-cross{font-size:12px;opacity:.5;margin-bottom:2px}
+.mot-verse{font-size:11px;color:var(--tx);line-height:1.5;font-style:italic;margin-bottom:2px}
+.mot-ref{font-size:10px;color:var(--ac);font-weight:700;letter-spacing:1px;font-family:'Orbitron',monospace}
+.mot-quote{display:none}
 /* ORDER */
 .orde{position:fixed;inset:0;background:rgba(6,6,10,.96);z-index:400;overflow-y:auto;padding:20px;padding-top:56px}
 .orde.hidden{display:none}
@@ -203,20 +203,34 @@ input::placeholder{color:var(--t3)}
 .oi-arr{width:26px;height:20px;border-radius:4px;border:1px solid var(--bd);background:var(--s2);color:var(--t2);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .rt{font-size:11px;color:var(--t3);cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid var(--bd);background:var(--s2);white-space:nowrap}
 .rt.on{color:#ff4560;border-color:rgba(255,69,96,.3);background:rgba(255,69,96,.08)}
-.cross{position:fixed;pointer-events:none;z-index:0;opacity:.025;font-size:160px;user-select:none}
+
+.swo{position:fixed;inset:0;background:rgba(6,6,10,.96);z-index:200;display:flex;flex-direction:column;padding:56px 16px 16px;overflow:hidden}
+.swo.hidden{display:none}
+.swo h2{font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:var(--ac);margin-bottom:4px}
+.swo-sub{color:var(--t2);font-size:12px;margin-bottom:10px}
+.swo-filters{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px;padding-bottom:2px}
+.swo-filters::-webkit-scrollbar{display:none}
+.ff{flex-shrink:0;padding:5px 12px;border-radius:6px;border:1px solid var(--bd);background:var(--s2);color:var(--t2);font-size:11px;font-weight:600;cursor:pointer}
+.ff.active{background:rgba(0,245,255,.1);color:var(--ac);border-color:var(--ac)}
+.swo-list{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.swo-list::-webkit-scrollbar{display:none}
+.sw-item{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer}
+.sw-item:active{border-color:var(--ac)}
+.sw-item h3{font-size:14px;font-weight:600;margin-bottom:2px}
+.sw-item p{font-size:11px;color:var(--t2)}
 </style>
 </head>
 <body>
-<div class="cross" style="top:8%;left:2%;transform:rotate(-12deg)">✝</div>
-<div class="cross" style="bottom:18%;right:3%;transform:rotate(8deg)">✝</div>
+
+
 <div id="app">
   <div id="s-heute" class="screen active"></div>
-  <div id="s-plaene" class="screen"></div>
+  <div id="s-pläne" class="screen"></div>
   <div id="s-verlauf" class="screen"></div>
   <div id="s-fortschritt" class="screen"></div>
   <div id="tabs">
     <div class="tab active" data-s="heute"><div class="ti">🏋️</div><div class="tl">Heute</div></div>
-    <div class="tab" data-s="plaene"><div class="ti">📋</div><div class="tl">Plaene</div></div>
+    <div class="tab" data-s="pläne"><div class="ti">📋</div><div class="tl">Pläne</div></div>
     <div class="tab" data-s="verlauf"><div class="ti">📅</div><div class="tl">Verlauf</div></div>
     <div class="tab" data-s="fortschritt"><div class="ti">📈</div><div class="tl">Fortschritt</div></div>
   </div>
@@ -231,9 +245,9 @@ input::placeholder{color:var(--t3)}
   <div id="ob1" class="ob-step">
     <div class="ob-dots" id="dots1"></div>
     <div class="ob-q">Deine Daten</div>
-    <div class="ob-hint">Fuer Gewichtsempfehlungen</div>
+    <div class="ob-hint">Für Gewichtsempfehlungen</div>
     <div class="fg"><label class="lbl">Gewicht (kg)</label><input type="number" id="ob-bw" placeholder="75" inputmode="numeric"></div>
-    <div class="fg"><label class="lbl">Groesse (cm)</label><input type="number" id="ob-ht" placeholder="175" inputmode="numeric"></div>
+    <div class="fg"><label class="lbl">Größe (cm)</label><input type="number" id="ob-ht" placeholder="175" inputmode="numeric"></div>
     <div class="fg"><label class="lbl">Alter</label><input type="number" id="ob-age" placeholder="28" inputmode="numeric"></div>
     <button class="btn bp bf" onclick="obGo(2)">Weiter</button>
   </div>
@@ -252,11 +266,11 @@ input::placeholder{color:var(--t3)}
   <div id="ob3" class="ob-step">
     <div class="ob-dots" id="dots3"></div>
     <div class="ob-q">Level?</div>
-    <div class="ob-hint">Fuer die Startgewichte</div>
+    <div class="ob-hint">Für die Startgewichte</div>
     <div class="ob-opts">
-      <div class="ob-opt" data-val="beginner" onclick="obSel('level',this)"><div class="ob-oi">🌱</div><div class="ob-ot"><h3>Anfaenger</h3><p>Unter 1 Jahr</p></div></div>
+      <div class="ob-opt" data-val="beginner" onclick="obSel('level',this)"><div class="ob-oi">🌱</div><div class="ob-ot"><h3>Anfänger</h3><p>Unter 1 Jahr</p></div></div>
       <div class="ob-opt" data-val="intermediate" onclick="obSel('level',this)"><div class="ob-oi">🌿</div><div class="ob-ot"><h3>Fortgeschritten</h3><p>1-3 Jahre</p></div></div>
-      <div class="ob-opt" data-val="advanced" onclick="obSel('level',this)"><div class="ob-oi">🌳</div><div class="ob-ot"><h3>Experte</h3><p>Ueber 3 Jahre</p></div></div>
+      <div class="ob-opt" data-val="advanced" onclick="obSel('level',this)"><div class="ob-oi">🌳</div><div class="ob-ot"><h3>Experte</h3><p>Über 3 Jahre</p></div></div>
     </div>
     <button class="btn bp bf" onclick="obGo(4)">Weiter</button>
   </div>
@@ -279,10 +293,15 @@ input::placeholder{color:var(--t3)}
   <div class="ma"><button class="btn bs" onclick="closeM('m-plan')">Abbrechen</button><button class="btn bp" onclick="savePlan()">Speichern</button></div>
 </div></div>
 <div id="m-ex" class="mo hidden"><div class="md">
-  <h2 id="me-t">Uebung</h2>
-  <div class="fg"><label class="lbl">Name</label><input type="text" id="me-n" placeholder="Uebungsname"></div>
+  <h2 id="me-t">Übung</h2>
+  <div class="fg"><label class="lbl">Name</label>
+  <input type="text" id="me-n" placeholder="Übungsname oder unten auswählen">
+  <select id="me-dd" onchange="document.getElementById('me-n').value=this.value;document.getElementById('me-m').value=getExMuscle(this.value)" style="margin-top:8px">
+    <option value="">-- Aus Bibliothek wählen --</option>
+  </select>
+</div>
   <div class="fg"><label class="lbl">Muskelgruppe</label>
-    <select id="me-m"><option>Ruecken</option><option>Brust</option><option>Schultern</option><option>Bizeps</option><option>Trizeps</option><option>Beine</option><option>Po</option><option>Bauch</option></select>
+    <select id="me-m"><option>Rücken</option><option>Brust</option><option>Schultern</option><option>Bizeps</option><option>Trizeps</option><option>Beine</option><option>Po</option><option>Bauch</option></select>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
     <div class="fg"><label class="lbl">Sets</label><input type="number" id="me-s" placeholder="4"></div>
@@ -304,22 +323,22 @@ input::placeholder{color:var(--t3)}
   </div>
   <div class="pt-acts">
     <button class="pt-adj" onclick="adjP(-15)">-15s</button>
-    <button class="pt-skip" onclick="skipP()">Ueberspringen</button>
+    <button class="pt-skip" onclick="skipP()">Überspringen</button>
     <button class="pt-adj" onclick="adjP(15)">+15s</button>
   </div>
 </div>
 <!-- LIBRARY -->
 <div id="lib" class="lib hidden">
   <div class="lib-top">
-    <div class="lib-back" onclick="closeLib()">Zurueck</div>
-    <input type="text" id="lib-q" placeholder="Uebung suchen..." oninput="renderLib()">
+    <div class="lib-back" onclick="closeLib()">Zurück</div>
+    <input type="text" id="lib-q" placeholder="Übung suchen..." oninput="renderLib()">
     <div class="lib-filt" id="lib-filt"></div>
   </div>
   <div class="lib-body" id="lib-body"></div>
 </div>
 <!-- ORDER EDITOR -->
 <div id="orde" class="orde hidden">
-  <div style="color:var(--ac);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px" onclick="closeOrde()">Zurueck</div>
+  <div style="color:var(--ac);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px" onclick="closeOrde()">Zurück</div>
   <h2>Trainingsreihenfolge</h2>
   <p>Reihenfolge festlegen. Ruhetage markieren.</p>
   <div id="orde-list"></div>
@@ -330,15 +349,17 @@ input::placeholder{color:var(--t3)}
 <!-- HISTORY DETAIL -->
 <div id="hdet" class="hdet hidden"></div>
 <!-- MOTIVATION -->
-<div id="mot" class="mot hidden" onclick="closeMot()">
-  <div class="mot-card" onclick="event.stopPropagation()">
-    <div class="mot-cross">✝</div>
-    <div class="mot-verse" id="mot-v"></div>
-    <div class="mot-ref" id="mot-r"></div>
-    <div class="mot-quote" id="mot-q"></div>
-    <button class="btn bp bf" onclick="closeMot()">Amen</button>
-  </div>
+
+<!-- SWAP OVERLAY -->
+<div id="swo" class="swo hidden">
+  <div style="color:var(--ac);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px" onclick="closeSwo()">Zurück</div>
+  <h2>Übung tauschen</h2>
+  <div class="swo-sub" id="swo-sub"></div>
+  <input type="text" id="swo-q" placeholder="Suchen..." oninput="renderSwoList()" style="margin-bottom:10px">
+  <div class="swo-filters" id="swo-filt"></div>
+  <div class="swo-list" id="swo-list"></div>
 </div>
+
 <!-- EXPORT FILE INPUT -->
 <input type="file" id="imp-file" accept=".json" style="display:none" onchange="importFile(event)">
 <div id="toast" class="toast"></div>
@@ -361,11 +382,11 @@ var plans=S.g('wt_plans',[]), hist=S.g('wt_hist',[]), aw=S.g('wt_aw',null), prof
 function sP(){S.s('wt_plans',plans);} function sH(){S.s('wt_hist',hist);} function sA(){S.s('wt_aw',aw);} function sSc(){S.s('wt_sched',sched);}
 
 var EX = [
-  {n:'Klimmzuege',m:'Ruecken',p:150}, {n:'LH-Rudern',m:'Ruecken',p:150}, {n:'KH-Rudern',m:'Ruecken',p:120},
-  {n:'Latziehen',m:'Ruecken',p:120}, {n:'Kabelrudern',m:'Ruecken',p:90}, {n:'Deadlift',m:'Ruecken',p:180},
-  {n:'Hyperextensions',m:'Ruecken',p:60}, {n:'Facepull',m:'Ruecken',p:60},
-  {n:'Bankdruecken',m:'Brust',p:180}, {n:'Schraegbank LH',m:'Brust',p:150}, {n:'KH Bankdruecken',m:'Brust',p:150},
-  {n:'Schraegbank KH',m:'Brust',p:120}, {n:'Fliegende KH',m:'Brust',p:60}, {n:'Liegestuetze',m:'Brust',p:90},
+  {n:'Klimmzüge',m:'Rücken',p:150}, {n:'LH-Rudern',m:'Rücken',p:150}, {n:'KH-Rudern',m:'Rücken',p:120},
+  {n:'Latziehen',m:'Rücken',p:120}, {n:'Kabelrudern',m:'Rücken',p:90}, {n:'Deadlift',m:'Rücken',p:180},
+  {n:'Hyperextensions',m:'Rücken',p:60}, {n:'Facepull',m:'Rücken',p:60},
+  {n:'Bankdrücken',m:'Brust',p:180}, {n:'Schrägbank LH',m:'Brust',p:150}, {n:'KH Bankdrücken',m:'Brust',p:150},
+  {n:'Schrägbank KH',m:'Brust',p:120}, {n:'Fliegende KH',m:'Brust',p:60}, {n:'Liegestütze',m:'Brust',p:90},
   {n:'Dips',m:'Brust',p:120}, {n:'Kabelfliegende',m:'Brust',p:60},
   {n:'Schulterdruck LH',m:'Schultern',p:150}, {n:'Schulterdruck KH',m:'Schultern',p:120},
   {n:'Seitheben',m:'Schultern',p:60}, {n:'Arnold Press',m:'Schultern',p:120},
@@ -374,45 +395,36 @@ var EX = [
   {n:'Konzentrationscurl',m:'Bizeps',p:60}, {n:'Kabelbizepscurl',m:'Bizeps',p:60},
   {n:'Trizeps Pushdown',m:'Trizeps',p:60}, {n:'Skull Crushers',m:'Trizeps',p:90},
   {n:'Overhead Trizeps',m:'Trizeps',p:75}, {n:'Close Grip Bench',m:'Trizeps',p:120}, {n:'Trizeps Dips',m:'Trizeps',p:90},
-  {n:'Kniebeugen',m:'Beine',p:180}, {n:'Deadlift Rumaenisch',m:'Beine',p:150}, {n:'Beinpresse',m:'Beine',p:150},
+  {n:'Kniebeugen',m:'Beine',p:180}, {n:'Deadlift Rumänisch',m:'Beine',p:150}, {n:'Beinpresse',m:'Beine',p:150},
   {n:'Ausfallschritte',m:'Beine',p:90}, {n:'Beinbeuger',m:'Beine',p:75}, {n:'Beinstrecker',m:'Beine',p:75},
   {n:'Wadenheben',m:'Beine',p:45}, {n:'Goblet Squat',m:'Beine',p:90}, {n:'Bulgarian Split Squat',m:'Beine',p:120},
   {n:'Hip Thrust',m:'Po',p:120}, {n:'Glute Bridge',m:'Po',p:60},
-  {n:'Crunches',m:'Bauch',p:45}, {n:'Plank',m:'Bauch',p:45}, {n:'Beinheben haengend',m:'Bauch',p:60},
+  {n:'Crunches',m:'Bauch',p:45}, {n:'Plank',m:'Bauch',p:45}, {n:'Beinheben hängend',m:'Bauch',p:60},
   {n:'Russian Twist',m:'Bauch',p:45}, {n:'Ab Wheel',m:'Bauch',p:60}
 ];
 
-var WF = {'Bankdruecken':[.4,.6,.9],'Kniebeugen':[.55,.9,1.3],'Deadlift':[.7,1.1,1.6],'Deadlift Rumaenisch':[.55,.85,1.2],'LH-Rudern':[.45,.7,1.0],'Schulterdruck LH':[.25,.4,.6],'Schulterdruck KH':[.12,.2,.3],'SZ-Curl':[.2,.32,.45],'Bizepscurl KH':[.08,.14,.2],'Hammer Curl':[.09,.15,.22],'Hip Thrust':[.6,1.0,1.4],'Skull Crushers':[.18,.28,.4],'KH Bankdruecken':[.18,.28,.4],'Bulgarian Split Squat':[.15,.25,.35]};
+var WF = {'Bankdrücken':[.4,.6,.9],'Kniebeugen':[.55,.9,1.3],'Deadlift':[.7,1.1,1.6],'Deadlift Rumänisch':[.55,.85,1.2],'LH-Rudern':[.45,.7,1.0],'Schulterdruck LH':[.25,.4,.6],'Schulterdruck KH':[.12,.2,.3],'SZ-Curl':[.2,.32,.45],'Bizepscurl KH':[.08,.14,.2],'Hammer Curl':[.09,.15,.22],'Hip Thrust':[.6,1.0,1.4],'Skull Crushers':[.18,.28,.4],'KH Bankdrücken':[.18,.28,.4],'Bulgarian Split Squat':[.15,.25,.35]};
 var GOALS = {fat:{sets:4,reps:15,pm:.7},muscle:{sets:4,reps:8,pm:1.3},recomp:{sets:4,reps:10,pm:1.0},fit:{sets:3,reps:12,pm:.9}};
-var MOTIV = [
-  {v:'Ich vermag alles durch den, der mich staerkt.',r:'Philipper 4:13',q:'Gott hat dir diesen Koerper gegeben. Ehre ihn.'},
-  {v:'Seid stark und mutig. Furchtet euch nicht.',r:'Josua 1:9',q:'Jeder Rep bringt dich naeher zu deiner besten Version.'},
-  {v:'Der Herr ist meine Kraft und mein Schild.',r:'Psalm 28:7',q:'Du bist staerker als du denkst.'},
-  {v:'Alles was deine Hand findet tue mit ganzer Kraft.',r:'Prediger 9:10',q:'Halbe Arbeit gibt es nicht.'},
-  {v:'Gott gab uns nicht Furcht sondern Kraft.',r:'2. Timotheus 1:7',q:'Schmerz ist voruebergehend. Staerke bleibt.'},
-  {v:'Lauf so dass du es gewinnst.',r:'1. Korinther 9:24',q:'Heute ist ein Geschenk. Nutze es.'},
-  {v:'Der Herr gibt Kraft seinem Volk.',r:'Psalm 29:11',q:'Dein Koerper ist der Tempel des Heiligen Geistes.'},
-  {v:'Harrt aus in der Truebsal.',r:'Roemer 12:12',q:'Jedes Workout ist ein Gebet in Bewegung.'}
-];
+
 var TPLS = {
-  3:[{name:'Full Body A',ex:['Kniebeugen','Bankdruecken','LH-Rudern','Schulterdruck KH','SZ-Curl','Skull Crushers','Plank']},
-     {name:'Full Body B',ex:['Deadlift','Schraegbank LH','Klimmzuege','Seitheben','Hammer Curl','Trizeps Pushdown','Beinheben haengend']},
-     {name:'Full Body C',ex:['Goblet Squat','KH Bankdruecken','Kabelrudern','Arnold Press','Bizepscurl KH','Trizeps Dips','Crunches']}],
-  4:[{name:'Upper A',ex:['Bankdruecken','Schraegbank LH','Klimmzuege','LH-Rudern','Seitheben','SZ-Curl','Skull Crushers']},
-     {name:'Lower A',ex:['Kniebeugen','Beinpresse','Beinbeuger','Wadenheben','Plank','Beinheben haengend']},
-     {name:'Upper B',ex:['Schraegbank KH','Dips','Latziehen','Kabelrudern','Frontheben','Bizepscurl KH','Overhead Trizeps']},
-     {name:'Lower B',ex:['Deadlift','Deadlift Rumaenisch','Bulgarian Split Squat','Beinstrecker','Wadenheben','Hip Thrust']}],
-  5:[{name:'Push',ex:['Bankdruecken','Schraegbank LH','Schulterdruck KH','Seitheben','Trizeps Pushdown','Skull Crushers']},
-     {name:'Pull',ex:['Klimmzuege','LH-Rudern','Latziehen','Kabelrudern','SZ-Curl','Hammer Curl','Facepull']},
-     {name:'Legs',ex:['Kniebeugen','Deadlift Rumaenisch','Beinpresse','Beinbeuger','Wadenheben','Hip Thrust']},
-     {name:'Push 2',ex:['KH Bankdruecken','Schraegbank KH','Arnold Press','Seitheben','Close Grip Bench','Overhead Trizeps']},
+  3:[{name:'Full Body A',ex:['Kniebeugen','Bankdrücken','LH-Rudern','Schulterdruck KH','SZ-Curl','Skull Crushers','Plank']},
+     {name:'Full Body B',ex:['Deadlift','Schrägbank LH','Klimmzüge','Seitheben','Hammer Curl','Trizeps Pushdown','Beinheben hängend']},
+     {name:'Full Body C',ex:['Goblet Squat','KH Bankdrücken','Kabelrudern','Arnold Press','Bizepscurl KH','Trizeps Dips','Crunches']}],
+  4:[{name:'Upper A',ex:['Bankdrücken','Schrägbank LH','Klimmzüge','LH-Rudern','Seitheben','SZ-Curl','Skull Crushers']},
+     {name:'Lower A',ex:['Kniebeugen','Beinpresse','Beinbeuger','Wadenheben','Plank','Beinheben hängend']},
+     {name:'Upper B',ex:['Schrägbank KH','Dips','Latziehen','Kabelrudern','Frontheben','Bizepscurl KH','Overhead Trizeps']},
+     {name:'Lower B',ex:['Deadlift','Deadlift Rumänisch','Bulgarian Split Squat','Beinstrecker','Wadenheben','Hip Thrust']}],
+  5:[{name:'Push',ex:['Bankdrücken','Schrägbank LH','Schulterdruck KH','Seitheben','Trizeps Pushdown','Skull Crushers']},
+     {name:'Pull',ex:['Klimmzüge','LH-Rudern','Latziehen','Kabelrudern','SZ-Curl','Hammer Curl','Facepull']},
+     {name:'Legs',ex:['Kniebeugen','Deadlift Rumänisch','Beinpresse','Beinbeuger','Wadenheben','Hip Thrust']},
+     {name:'Push 2',ex:['KH Bankdrücken','Schrägbank KH','Arnold Press','Seitheben','Close Grip Bench','Overhead Trizeps']},
      {name:'Pull 2',ex:['Deadlift','KH-Rudern','Facepull','Hyperextensions','Bizepscurl KH','Konzentrationscurl']}],
-  6:[{name:'Push A',ex:['Bankdruecken','Schraegbank LH','Schulterdruck KH','Seitheben','Trizeps Pushdown','Skull Crushers']},
-     {name:'Pull A',ex:['Klimmzuege','LH-Rudern','Kabelrudern','SZ-Curl','Hammer Curl','Facepull']},
+  6:[{name:'Push A',ex:['Bankdrücken','Schrägbank LH','Schulterdruck KH','Seitheben','Trizeps Pushdown','Skull Crushers']},
+     {name:'Pull A',ex:['Klimmzüge','LH-Rudern','Kabelrudern','SZ-Curl','Hammer Curl','Facepull']},
      {name:'Legs A',ex:['Kniebeugen','Beinpresse','Beinbeuger','Wadenheben','Plank']},
-     {name:'Push B',ex:['Schraegbank KH','KH Bankdruecken','Arnold Press','Frontheben','Close Grip Bench','Overhead Trizeps']},
+     {name:'Push B',ex:['Schrägbank KH','KH Bankdrücken','Arnold Press','Frontheben','Close Grip Bench','Overhead Trizeps']},
      {name:'Pull B',ex:['Deadlift','Latziehen','KH-Rudern','Facepull','Bizepscurl KH','Konzentrationscurl']},
-     {name:'Legs B',ex:['Deadlift Rumaenisch','Bulgarian Split Squat','Hip Thrust','Beinstrecker','Wadenheben','Beinheben haengend']}]
+     {name:'Legs B',ex:['Deadlift Rumänisch','Bulgarian Split Squat','Hip Thrust','Beinstrecker','Wadenheben','Beinheben hängend']}]
 };
 
 function sugW(name) {
@@ -488,7 +500,7 @@ document.querySelectorAll('.tab').forEach(function(t) {
 
 function render(s) {
   if(s==='heute') rHeute();
-  if(s==='plaene') rPlaene();
+  if(s==='pläne') rPläne();
   if(s==='verlauf') rVerlauf();
   if(s==='fortschritt') rFortschritt();
 }
@@ -502,7 +514,7 @@ function rHeute() {
 
 function rPS(el) {
   var d=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
-  if(!plans.length){el.innerHTML='<div class="ph"><h1>LIFT</h1><p>'+d+'</p></div><div class="es"><div class="ei">🏗️</div><p>Gehe zu Plaene um zu starten</p></div>';return;}
+  if(!plans.length){el.innerHTML='<div class="ph"><h1>LIFT</h1><p>'+d+'</p></div><div class="es"><div class="ei">🏗️</div><p>Gehe zu Pläne um zu starten</p></div>';return;}
   var s=getSched(),ni=getNextIdx();
   if(tdViewIdx===-1) tdViewIdx=ni;
   var tdT=trainedToday();
@@ -531,7 +543,7 @@ function rPS(el) {
     else if(isNow) h+='<div style="color:var(--ac);font-size:9px;font-weight:700;letter-spacing:2px;font-family:Orbitron,monospace;margin-bottom:6px">HEUTE</div>';
     else h+='<div style="color:var(--t2);font-size:9px;font-weight:700;letter-spacing:2px;font-family:Orbitron,monospace;margin-bottom:6px">GEPLANT</div>';
     h+='<div style="font-family:Orbitron,monospace;font-size:20px;font-weight:700;color:var(--tx);letter-spacing:1px;margin-bottom:3px">'+sp.name+'</div>';
-    h+='<div style="font-size:12px;color:var(--t2);margin-bottom:14px">'+sp.exercises.length+' Uebungen - '+muscles.join(', ')+'</div>';
+    h+='<div style="font-size:12px;color:var(--t2);margin-bottom:14px">'+sp.exercises.length+' Übungen - '+muscles.join(', ')+'</div>';
     h+='<div style="margin-bottom:14px">';
     for(var j=0;j<sp.exercises.length;j++){
       var ex=sp.exercises[j];
@@ -549,9 +561,9 @@ function rPS(el) {
     }
     h+='</div>';
   }
-  h+='<div class="sh" style="margin-top:4px">Alle Plaene</div>';
+  h+='<div class="sh" style="margin-top:4px">Alle Pläne</div>';
   for(var i=0;i<plans.length;i++){
-    h+='<div class="psi" onclick="startW(\''+plans[i].id+'\')"><div><h3>'+plans[i].name+'</h3><p>'+plans[i].exercises.length+' Uebungen</p></div><span style="color:var(--ac);font-size:18px">&#8250;</span></div>';
+    h+='<div class="psi" onclick="startW(\''+plans[i].id+'\')"><div><h3>'+plans[i].name+'</h3><p>'+plans[i].exercises.length+' Übungen</p></div><span style="color:var(--ac);font-size:18px">&#8250;</span></div>';
   }
   h+='<div style="padding:0 14px 8px"><button class="btn bs bf" style="font-size:12px" onclick="openOrde()">Reihenfolge bearbeiten</button></div>';
   el.innerHTML=h;
@@ -564,8 +576,7 @@ function markRest(si){var s=getSched();s[si].isRest=true;sSc();toast('Ruhetag ge
 function startW(planId) {
   var plan=null;for(var i=0;i<plans.length;i++){if(plans[i].id===planId){plan=plans[i];break;}}
   if(!plan) return;
-  if(Math.random()<.3) showMot();
-  var exs=[];
+    var exs=[];
   for(var i=0;i<plan.exercises.length;i++){
     var ex=JSON.parse(JSON.stringify(plan.exercises[i]));
     ex.sets=[];for(var j=0;j<ex.targetSets;j++) ex.sets.push({weight:'',reps:'',rpe:'',done:false});
@@ -599,9 +610,10 @@ function rAW(el) {
     var isOpen=aw.open===xi;
     h+='<div class="ec'+(allDone?' done':'')+(isOpen?' open':'')+'">';
     h+='<div class="ec-hdr" onclick="togEx('+xi+')">';
-    h+='<div><div class="ec-name">'+(allDone?'✅ ':'')+ex.name+'</div>';
+    h+='<div style="flex:1"><div class="ec-name">'+(allDone?'✅ ':'')+ex.name+'</div>';
     h+='<div class="ec-meta">'+ex.muscle+' &#183; '+ex.targetSets+'x'+ex.targetReps+' &#183; '+fmtP(ex.pause||90)+'</div></div>';
-    h+='<span class="ec-arr">&#8964;</span></div>';
+    h+='<div style="flex-shrink:0;display:flex;align-items:center;gap:6px"><span style="font-size:14px;color:var(--t3);cursor:pointer;padding:4px 6px" onclick="event.stopPropagation();openSwo('+xi+')">&#8644;</span><span class="ec-arr">&#8964;</span></div>';
+    h+='</div>';
     h+='<div class="ec-body">';
     var ltxt=getLastTxt(ex.name);
     if(ltxt) h+='<div class="lt-box">Letztes Mal: '+ltxt+'</div>';
@@ -609,14 +621,24 @@ function rAW(el) {
     for(var si=0;si<ex.sets.length;si++){
       var set=ex.sets[si];
       var prevW=getLastW(ex.name,si)||sugW(ex.name)||'';
-      var cw=set.weight||(si>0?ex.sets[si-1].weight||'':'');
-      var cr=set.reps||(si>0?ex.sets[si-1].reps||'':'');
+      // carry from most recent previous set that has a value
+      var cw=set.weight||'';
+      var cr=set.reps||'';
+      if(!cw||!cr){
+        for(var pi=si-1;pi>=0;pi--){
+          if(!cw&&(ex.sets[pi].weight||'')) cw=ex.sets[pi].weight||'';
+          if(!cr&&(ex.sets[pi].reps||'')) cr=ex.sets[pi].reps||'';
+          if(cw&&cr) break;
+        }
+      }
+      if(!cw) cw='';
+      if(!cr) cr='';
       h+='<div class="sr'+(set.done?' done':'')+'">';
       h+='<span class="sr-n">'+(si+1)+'</span>';
-      h+='<div class="sr-f"><div class="lbl">KG</div><input type="number" inputmode="decimal" placeholder="'+(prevW||0)+'" value="'+cw+'" onchange="updSet('+xi+','+si+',\'weight\',this.value)"></div>';
-      h+='<div class="sr-f"><div class="lbl">REPS</div><input type="number" inputmode="numeric" placeholder="'+ex.targetReps+'" value="'+cr+'" onchange="updSet('+xi+','+si+',\'reps\',this.value)"></div>';
+      h+='<div class="sr-f"><div class="lbl">KG</div><input type="number" inputmode="decimal" step="0.5" placeholder="'+(prevW||0)+'" value="'+(set.weight||cw)+'" onchange="updSet('+xi+','+si+',\'weight\',this.value)"></div>';
+      h+='<div class="sr-f"><div class="lbl">REPS</div><input type="number" inputmode="numeric" placeholder="'+ex.targetReps+'" value="'+(set.reps||cr)+'" onchange="updSet('+xi+','+si+',\'reps\',this.value)"></div>';
       h+='<div class="sr-sel"><select onchange="updSet('+xi+','+si+',\'rpe\',this.value)">';
-      h+='<option value=""'+(!set.rpe?' selected':'')+'>Gefuehl</option>';
+      h+='<option value=""'+(!set.rpe?' selected':'')+'>Gefühl</option>';
       h+='<option value="easy"'+(set.rpe==='easy'?' selected':'')+'>😌 Easy</option>';
       h+='<option value="ok"'+(set.rpe==='ok'?' selected':'')+'>💪 OK</option>';
       h+='<option value="hard"'+(set.rpe==='hard'?' selected':'')+'>🔥 Hard</option>';
@@ -630,7 +652,7 @@ function rAW(el) {
   var allWDone=true;
   for(var i=0;i<aw.exercises.length;i++) for(var j=0;j<aw.exercises[i].sets.length;j++) if(!aw.exercises[i].sets[j].done){allWDone=false;break;}
   h+='<div style="padding:0 14px 20px;margin-top:8px">';
-  h+='<button class="btn '+(allWDone?'bp':'bs')+' bf" onclick="finishW()">'+(allWDone?'Workout abschliessen':'Workout beenden')+'</button>';
+  h+='<button class="btn '+(allWDone?'bp':'bs')+' bf" onclick="finishW()">'+(allWDone?'Workout abschließen':'Workout beenden')+'</button>';
   h+='<button class="btn bg bf" style="margin-top:5px" onclick="cancelW()">Abbrechen</button></div>';
   el.innerHTML=h;startWt();
 }
@@ -638,9 +660,27 @@ function rAW(el) {
 function togEx(i){aw.open=aw.open===i?-1:i;sA();rHeute();}
 function updSet(xi,si,f,v){aw.exercises[xi].sets[si][f]=v;sA();}
 function doneSet(xi,si){
-  aw.exercises[xi].sets[si].done=true;vib(50);
+  var set=aw.exercises[xi].sets[si];
   var ex=aw.exercises[xi];
-  if(si+1>=ex.sets.length&&xi+1<aw.exercises.length) aw.open=xi+1;
+  // Find the set row and read actual input values (typed or placeholder)
+  var srEls=document.querySelectorAll('.sr');
+  var srEl=null;
+  var cnt=0;
+  for(var i=0;i<aw.exercises.length;i++){
+    for(var j=0;j<aw.exercises[i].sets.length;j++){
+      if(i===xi&&j===si){srEl=srEls[cnt];break;}
+      cnt++;
+    }
+    if(srEl)break;
+  }
+  if(srEl){
+    var wEl=srEl.querySelector('input[inputmode="decimal"]');
+    var rEl=srEl.querySelector('input[inputmode="numeric"]');
+    if(wEl){var wv=wEl.value||wEl.placeholder;if(wv&&wv!=='0')set.weight=String(wv);}
+    if(rEl){var rv=rEl.value||rEl.placeholder;if(rv)set.reps=String(rv);}
+  }
+  set.done=true;vib(50);
+  if(si+1>=ex.sets.length&&xi+1<aw.exercises.length)aw.open=xi+1;
   sA();rHeute();startPause(ex.pause||90);
 }
 function undoSet(xi,si){aw.exercises[xi].sets[si].done=false;sA();rHeute();toast('Entsperrt');}
@@ -656,6 +696,59 @@ function getLastTxt(name){
   }
   return null;
 }
+// ── SWAP OVERLAY ──
+var swoXi=-1, swoFilter='';
+function openSwo(xi){
+  swoXi=xi;
+  var cur=aw.exercises[xi];
+  swoFilter=cur.muscle;
+  document.getElementById('swo-sub').textContent='Aktuell: '+cur.name;
+  document.getElementById('swo-q').value='';
+  renderSwoFilters();renderSwoList();
+  document.getElementById('swo').classList.remove('hidden');
+}
+function closeSwo(){document.getElementById('swo').classList.add('hidden');swoXi=-1;}
+function renderSwoFilters(){
+  var ms=['Alle','Rücken','Brust','Schultern','Bizeps','Trizeps','Beine','Po','Bauch'];
+  var h='';
+  for(var i=0;i<ms.length;i++){
+    var active=(swoFilter===ms[i])||(!swoFilter&&ms[i]==='Alle');
+    h+='<div class="ff'+(active?' active':'')+'" data-m="'+ms[i]+'" onclick="setSwoF(this.dataset.m)">'+ms[i]+'</div>';
+  }
+  document.getElementById('swo-filt').innerHTML=h;
+}
+function setSwoF(m){swoFilter=m==='Alle'?'':m;renderSwoFilters();renderSwoList();}
+function renderSwoList(){
+  var qEl=document.getElementById('swo-q');
+  var q=qEl?qEl.value.toLowerCase():'';
+  var curName=aw&&aw.exercises[swoXi]?aw.exercises[swoXi].name:'';
+  var list=[],h='';
+  for(var i=0;i<EX.length;i++){
+    var e=EX[i];
+    if(e.n===curName)continue;
+    if(swoFilter&&e.m!==swoFilter)continue;
+    if(q&&e.n.toLowerCase().indexOf(q)===-1&&e.m.toLowerCase().indexOf(q)===-1)continue;
+    list.push(e);
+  }
+  for(var i=0;i<list.length;i++){
+    var e=list[i];
+    h+='<div class="sw-item" data-n="'+e.n+'" data-m="'+e.m+'" data-p="'+e.p+'" onclick="doSwoSwap(this.dataset.n,this.dataset.m,parseInt(this.dataset.p))">';
+    h+='<h3>'+e.n+'</h3><p>'+e.m+' &middot; '+fmtP(e.p)+'</p></div>';
+  }
+  if(!h)h='<div class="es" style="padding:20px"><p>Nichts gefunden. Anderen Filter wählen.</p></div>';
+  document.getElementById('swo-list').innerHTML=h;
+}
+function doSwoSwap(name,muscle,basePause){
+  if(!aw||swoXi<0)return;
+  var ex=aw.exercises[swoXi];
+  var g=GOALS[prof&&prof.goal?prof.goal:'recomp'];
+  var pause=Math.round((basePause*g.pm)/5)*5;
+  var newSets=[];
+  for(var j=0;j<ex.targetSets;j++)newSets.push({weight:'',reps:'',rpe:'',done:false});
+  aw.exercises[swoXi]={id:uid(),name:name,muscle:muscle,targetSets:ex.targetSets,targetReps:ex.targetReps,pause:pause,sets:newSets};
+  sA();closeSwo();toast(name+' eingesetzt');rHeute();
+}
+
 function getLastW(name,si){
   for(var i=hist.length-1;i>=0;i--){
     for(var j=0;j<hist[i].exercises.length;j++){
@@ -667,52 +760,90 @@ function getLastW(name,si){
 function cancelW(){aw=null;clearInterval(wtInt);S.s('wt_aw',null);rHeute();toast('Abgebrochen');}
 function finishW(){
   clearInterval(wtInt);
+  // Fill in placeholder values for any set that was confirmed without typing
+  for(var i=0;i<aw.exercises.length;i++){
+    var ex=aw.exercises[i];
+    var lastW='', lastR='';
+    for(var j=0;j<ex.sets.length;j++){
+      var s=ex.sets[j];
+      if(s.weight) lastW=s.weight;
+      if(s.reps) lastR=s.reps;
+      if(s.done){
+        if(!s.weight && lastW) s.weight=lastW;
+        if(!s.reps && lastR) s.reps=lastR;
+        if(!s.weight) s.weight=String(sugW(ex.name)||0);
+        if(!s.reps) s.reps=String(ex.targetReps||0);
+      }
+    }
+  }
   var sess={id:uid(),planId:aw.planId,planName:aw.planName,date:Date.now(),duration:Math.floor((Date.now()-aw.startTime)/1000),exercises:aw.exercises};
   hist.push(sess);sH();vib([100,50,100,50,200]);
   showSum(sess);aw=null;S.s('wt_aw',null);
-  setTimeout(showMot,800);
 }
 function showSum(sess){
   var ts=0,tv=0;
   for(var i=0;i<sess.exercises.length;i++) for(var j=0;j<sess.exercises[i].sets.length;j++){var s=sess.exercises[i].sets[j];if(s.done){ts++;tv+=(parseFloat(s.weight)||0)*(parseInt(s.reps)||0);}}
   var h='<div style="font-family:Orbitron,monospace;font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--ac),var(--ac2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px">FERTIG!</div>';
-  h+='<div style="color:var(--t2);font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:24px">'+sess.planName+' - '+fmtD(sess.date)+'</div>';
+  h+='<div style="color:var(--t2);font-size:12px;margin-bottom:20px">'+sess.planName+' - '+fmtD(sess.date)+'</div>';
   h+='<div class="sum-grid">';
   h+='<div class="sum-sc"><div class="v">'+fmtT(sess.duration)+'</div><div class="l">Dauer</div></div>';
   h+='<div class="sum-sc"><div class="v">'+ts+'</div><div class="l">Sets</div></div>';
   h+='<div class="sum-sc"><div class="v">'+Math.round(tv)+'</div><div class="l">Volumen kg</div></div>';
-  h+='<div class="sum-sc"><div class="v">'+sess.exercises.length+'</div><div class="l">Uebungen</div></div>';
-  h+='</div><div class="card" style="margin:0 0 20px">';
+  h+='<div class="sum-sc"><div class="v">'+sess.exercises.length+'</div><div class="l">Übungen</div></div>';
+  h+='</div>';
   for(var i=0;i<sess.exercises.length;i++){
-    var ex=sess.exercises[i],done=ex.sets.filter(function(s){return s.done;});
+    var ex=sess.exercises[i];
+    var done=ex.sets.filter(function(s){return s.done;});
     if(!done.length) continue;
-    var maxW=0;for(var j=0;j<done.length;j++) if(parseFloat(done[j].weight)>maxW) maxW=parseFloat(done[j].weight);
-    h+='<div class="sum-er"><span style="font-size:14px;font-weight:500">'+ex.name+'</span><span style="font-size:12px;color:var(--t2)">'+done.length+' Sets - '+maxW+'kg</span></div>';
+    h+='<div class="card" style="margin:0 14px 10px">';
+    h+='<div style="font-weight:700;font-size:14px;margin-bottom:8px">'+ex.name+'</div>';
+    for(var j=0;j<done.length;j++){
+      var s=done[j];
+      var ri=s.rpe==='easy'?' 😌':s.rpe==='hard'?' 🔥':s.rpe==='ok'?' 💪':'';
+      h+='<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--bd);font-size:13px;color:var(--t2)"><span style="color:var(--t3);width:44px">Satz '+(j+1)+'</span><span>'+(s.reps||'-')+' Reps @ '+(s.weight||0)+'kg'+ri+'</span></div>';
+    }
+    h+='</div>';
   }
-  h+='</div><button class="btn bp bf" onclick="closeSum()">Weiter</button>';
+  h+='<div style="padding:0 14px 20px;margin-top:8px"><button class="btn bp bf" onclick="closeSum()">Weiter</button></div>';
   var el=document.getElementById('sum');el.innerHTML=h;el.classList.remove('hidden');
 }
-function closeSum(){document.getElementById('sum').classList.add('hidden');tdViewIdx=-1;render('heute');render('verlauf');render('fortschritt');}
+function closeSum(){
+  document.getElementById('sum').classList.add('hidden');
+  tdViewIdx=-1;
+  render('heute');
+  render('verlauf');
+  render('fortschritt');
+}
 
 // ── PAUSE ──
+var piEndTime=0;
 function startPause(s){
-  clearInterval(piInt);piTot=s;piRem=s;updPi();
+  clearInterval(piInt);
+  piTot=s;
+  piEndTime=Date.now()+(s*1000);
   document.getElementById('pt').classList.remove('hidden');
-  piInt=setInterval(function(){piRem--;updPi();if(piRem<=0){clearInterval(piInt);vib([200,80,200]);document.getElementById('pt').classList.add('hidden');toast('Pause vorbei!');}},1000);
+  updPi();
+  piInt=setInterval(function(){
+    piRem=Math.max(0,Math.round((piEndTime-Date.now())/1000));
+    updPi();
+    if(piRem<=0){clearInterval(piInt);vib([200,80,200]);document.getElementById('pt').classList.add('hidden');toast('Pause vorbei!');}
+  },500);
 }
 function updPi(){
-  document.getElementById('pt-n').textContent=Math.max(0,piRem);
+  piRem=Math.max(0,Math.round((piEndTime-Date.now())/1000));
+  document.getElementById('pt-n').textContent=piRem;
   var arc=document.getElementById('pt-arc'),tot=2*Math.PI*88;
-  arc.style.strokeDasharray=tot;arc.style.strokeDashoffset=tot*(1-Math.max(0,piRem)/piTot);
+  arc.style.strokeDasharray=tot;
+  arc.style.strokeDashoffset=tot*(1-Math.min(1,piRem/Math.max(1,piTot)));
 }
-function skipP(){clearInterval(piInt);document.getElementById('pt').classList.add('hidden');}
-function adjP(d){piRem=Math.max(5,piRem+d);piTot=Math.max(piTot,piRem);updPi();}
+function skipP(){clearInterval(piInt);piEndTime=0;document.getElementById('pt').classList.add('hidden');}
+function adjP(d){piEndTime+=d*1000;piTot=Math.max(piTot,Math.max(0,Math.round((piEndTime-Date.now())/1000)));updPi();}
 
 // ── LIBRARY ──
 function openLib(planId){libPlanId=planId;libFilter='Alle';document.getElementById('lib-q').value='';renderLibFilt();renderLib();document.getElementById('lib').classList.remove('hidden');}
 function closeLib(){document.getElementById('lib').classList.add('hidden');}
 function renderLibFilt(){
-  var ms=['Alle','Ruecken','Brust','Schultern','Bizeps','Trizeps','Beine','Po','Bauch'],h='';
+  var ms=['Alle','Rücken','Brust','Schultern','Bizeps','Trizeps','Beine','Po','Bauch'],h='';
   for(var i=0;i<ms.length;i++) h+='<div class="ff'+(libFilter===ms[i]?' active':'')+'" onclick="setLibF(\''+ms[i]+'\')">'+ms[i]+'</div>';
   document.getElementById('lib-filt').innerHTML=h;
 }
@@ -735,25 +866,25 @@ function renderLib(){
 function addLib(name){
   if(!libPlanId) return;
   for(var i=0;i<plans.length;i++){if(plans[i].id===libPlanId){plans[i].exercises.push(mkEx(name));break;}}
-  sP();toast(name+' hinzugefuegt');closeLib();rPlaene();
+  sP();toast(name+' hinzugefügt');closeLib();rPläne();
 }
 
-// ── PLAENE ──
-function rPlaene(){
-  var el=document.getElementById('s-plaene');
-  var h='<div class="ph"><h1>PLAENE</h1><p>'+plans.length+' Trainingspläne</p></div>';
+// ── PLÄNE ──
+function rPläne(){
+  var el=document.getElementById('s-pläne');
+  var h='<div class="ph"><h1>PLÄNE</h1><p>'+plans.length+' Trainingspläne</p></div>';
   h+='<div style="padding:0 14px 14px;display:flex;flex-direction:column;gap:8px">';
   h+='<button class="btn bp bf" onclick="openAddPlan()">+ Eigenen Plan erstellen</button>';
-  h+='<button class="btn bs bf" onclick="regenPlans()">Plane neu generieren</button>';
+  h+='<button class="btn bs bf" onclick="regenPlans()">Pläne neu generieren</button>';
   h+='<button class="btn bs bf" style="font-size:13px" onclick="reopenOb()">Profil neu erstellen</button>';
   h+='</div>';
-  if(!plans.length) h+='<div class="es"><div class="ei">📋</div><p>Noch keine Plaene.</p></div>';
+  if(!plans.length) h+='<div class="es"><div class="ei">📋</div><p>Noch keine Pläne.</p></div>';
   for(var i=0;i<plans.length;i++){
     var plan=plans[i];
-    h+='<div class="pc"><div class="pc-hdr"><div><div class="pc-name">'+plan.name+'</div><div class="pc-cnt">'+plan.exercises.length+' Uebungen</div></div>';
+    h+='<div class="pc"><div class="pc-hdr"><div><div class="pc-name">'+plan.name+'</div><div class="pc-cnt">'+plan.exercises.length+' Übungen</div></div>';
     h+='<div style="display:flex;gap:7px"><div class="ib" onclick="openLib(\''+plan.id+'\')">+</div><div class="ib" onclick="delPlan(\''+plan.id+'\')">🗑</div></div></div>';
     h+='<div class="pc-exs">';
-    if(!plan.exercises.length) h+='<div style="color:var(--t3);font-size:13px">Tippe + um Uebungen hinzuzufuegen</div>';
+    if(!plan.exercises.length) h+='<div style="color:var(--t3);font-size:13px">Tippe + um Übungen hinzuzufügen</div>';
     for(var j=0;j<plan.exercises.length;j++){
       var ex=plan.exercises[j];
       h+='<div class="pc-ex"><div class="pc-ei"><h4>'+ex.name+'</h4><p>'+ex.muscle+' - '+ex.targetSets+'x'+ex.targetReps+' - '+fmtP(ex.pause||90)+'</p></div>';
@@ -768,9 +899,20 @@ function savePlan(){
   var name=document.getElementById('mp-n').value.trim();if(!name){toast('Bitte Namen eingeben');return;}
   if(editPlanId){for(var i=0;i<plans.length;i++){if(plans[i].id===editPlanId){plans[i].name=name;break;}}}
   else plans.push({id:uid(),name:name,exercises:[]});
-  sP();closeM('m-plan');rPlaene();
+  sP();closeM('m-plan');rPläne();
 }
-function delPlan(id){plans=plans.filter(function(p){return p.id!==id;});sP();rPlaene();toast('Plan geloescht');}
+function delPlan(id){plans=plans.filter(function(p){return p.id!==id;});sP();rPläne();toast('Plan gelöscht');}
+function getExMuscle(name){for(var i=0;i<EX.length;i++){if(EX[i].n===name)return EX[i].m;}return '';}
+function populateExDropdown(){
+  var sel=document.getElementById('me-dd');
+  if(!sel||sel.options.length>1)return;
+  var muscles=['Rücken','Brust','Schultern','Bizeps','Trizeps','Beine','Po','Bauch'];
+  for(var mi=0;mi<muscles.length;mi++){
+    var og=document.createElement('optgroup');og.label=muscles[mi];
+    for(var i=0;i<EX.length;i++){if(EX[i].m===muscles[mi]){var o=document.createElement('option');o.value=EX[i].n;o.textContent=EX[i].n;og.appendChild(o);}}
+    sel.appendChild(og);
+  }
+}
 function openEditEx(planId,exId){
   var plan=null,ex=null;
   for(var i=0;i<plans.length;i++){if(plans[i].id===planId){plan=plans[i];break;}}
@@ -778,7 +920,8 @@ function openEditEx(planId,exId){
   for(var i=0;i<plan.exercises.length;i++){if(plan.exercises[i].id===exId){ex=plan.exercises[i];break;}}
   if(!ex)return;
   editExPlanId=planId;editExId=exId;
-  document.getElementById('me-t').textContent='Uebung bearbeiten';
+  document.getElementById('me-t').textContent='Übung bearbeiten';
+  populateExDropdown();
   document.getElementById('me-n').value=ex.name;
   document.getElementById('me-m').value=ex.muscle;
   document.getElementById('me-s').value=ex.targetSets;
@@ -791,13 +934,13 @@ function saveEx(){
   var ts=parseInt(document.getElementById('me-s').value)||3,tr=parseInt(document.getElementById('me-r').value)||10,tp=parseInt(document.getElementById('me-p').value)||90;
   if(!name){toast('Bitte Namen');return;}
   for(var i=0;i<plans.length;i++){if(plans[i].id===editExPlanId){for(var j=0;j<plans[i].exercises.length;j++){if(plans[i].exercises[j].id===editExId){plans[i].exercises[j].name=name;plans[i].exercises[j].muscle=muscle;plans[i].exercises[j].targetSets=ts;plans[i].exercises[j].targetReps=tr;plans[i].exercises[j].pause=tp;break;}}break;}}
-  sP();closeM('m-ex');rPlaene();
+  sP();closeM('m-ex');rPläne();
 }
 function delEx(planId,exId){
   for(var i=0;i<plans.length;i++){if(plans[i].id===planId){plans[i].exercises=plans[i].exercises.filter(function(e){return e.id!==exId;});break;}}
-  sP();rPlaene();
+  sP();rPläne();
 }
-function regenPlans(){genPlans();rPlaene();toast('Plane neu erstellt');}
+function regenPlans(){genPlans();rPläne();toast('Pläne neu erstellt');}
 
 // ── ORDER ──
 function openOrde(){tmpSched=JSON.parse(JSON.stringify(getSched()));renderOrde();document.getElementById('orde').classList.remove('hidden');}
@@ -831,7 +974,7 @@ function rVerlauf(){
     h+='<div class="hd"><div class="hd-lbl">'+fmtD(sess.date)+'</div>';
     h+='<div class="hc" onclick="showHDet(\''+sess.id+'\')">';
     h+='<div class="hc-hdr"><h3>'+sess.planName+'</h3><span class="ht">'+fmtT(sess.duration)+'</span></div>';
-    h+='<div class="hc-stats"><div><div class="hsv">'+ts+'</div><div class="hsl">Sets</div></div><div><div class="hsv">'+sess.exercises.length+'</div><div class="hsl">Uebungen</div></div><div><div class="hsv">'+Math.round(tv)+'</div><div class="hsl">kg Vol.</div></div></div>';
+    h+='<div class="hc-stats"><div><div class="hsv">'+ts+'</div><div class="hsl">Sets</div></div><div><div class="hsv">'+sess.exercises.length+'</div><div class="hsl">Übungen</div></div><div><div class="hsv">'+Math.round(tv)+'</div><div class="hsl">kg Vol.</div></div></div>';
     h+='</div></div>';
   }
   el.innerHTML=h;
@@ -840,7 +983,7 @@ function showHDet(id){
   var sess=null;for(var i=0;i<hist.length;i++){if(hist[i].id===id){sess=hist[i];break;}}
   if(!sess)return;
   var el=document.getElementById('hdet');
-  var h='<div class="hdet-back" onclick="document.getElementById(\'hdet\').classList.add(\'hidden\')">Zurueck</div>';
+  var h='<div class="hdet-back" onclick="document.getElementById(\'hdet\').classList.add(\'hidden\')">Zurück</div>';
   h+='<h1 style="font-family:Orbitron,monospace;font-size:22px;margin-bottom:4px">'+sess.planName+'</h1>';
   h+='<p style="color:var(--t2);font-size:12px;margin-bottom:18px">'+fmtD(sess.date)+' - '+fmtT(sess.duration)+'</p>';
   for(var i=0;i<sess.exercises.length;i++){
@@ -864,13 +1007,13 @@ function rFortschritt(){
   var names=[];
   for(var i=0;i<hist.length;i++) for(var j=0;j<hist[i].exercises.length;j++) if(names.indexOf(hist[i].exercises[j].name)===-1) names.push(hist[i].exercises[j].name);
   if(!names.length){h+='<div class="es"><div class="ei">📈</div><p>Noch keine Daten.</p></div>';el.innerHTML=h;return;}
-  h+='<div class="prc"><h3>Persoenliche Rekorde</h3>';
+  h+='<div class="prc"><h3>Persönliche Rekorde</h3>';
   for(var k=0;k<names.length;k++){
     var name=names[k],pr=0;
     for(var i=0;i<hist.length;i++) for(var j=0;j<hist[i].exercises.length;j++) if(hist[i].exercises[j].name===name) for(var l=0;l<hist[i].exercises[j].sets.length;l++){var w=parseFloat(hist[i].exercises[j].sets[l].weight)||0;if(w>pr)pr=w;}
     h+='<div class="pri"><span style="font-size:13px;font-weight:500">'+name+'</span><span class="prv">'+pr+'kg</span></div>';
   }
-  h+='</div><div class="sh">Gewicht ueber Zeit</div>';
+  h+='</div><div class="sh">Gewicht über Zeit</div>';
   for(var k=0;k<names.length;k++){
     var name=names[k],pts=[];
     for(var i=0;i<hist.length;i++) for(var j=0;j<hist[i].exercises.length;j++) if(hist[i].exercises[j].name===name){var maxW=0;for(var l=0;l<hist[i].exercises[j].sets.length;l++){var s=hist[i].exercises[j].sets[l];if(s.done&&s.weight&&parseFloat(s.weight)>maxW)maxW=parseFloat(s.weight);}if(maxW>0)pts.push({date:hist[i].date,w:maxW});}
@@ -914,7 +1057,7 @@ function exportData(){
     catch(e2){
       var d=document.createElement('div');
       d.style.cssText='position:fixed;inset:0;background:var(--bg);z-index:900;padding:20px;overflow-y:auto';
-      d.innerHTML='<div style="color:var(--ac);margin-bottom:10px;font-weight:700">Backup - alles kopieren:</div><textarea style="width:100%;height:60vh;background:var(--s2);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:12px;font-size:11px;font-family:monospace" readonly>'+json+'</textarea><button onclick="this.parentElement.remove()" style="margin-top:12px;width:100%;padding:14px;background:var(--ac);color:#000;border:none;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer">Schliessen</button>';
+      d.innerHTML='<div style="color:var(--ac);margin-bottom:10px;font-weight:700">Backup - alles kopieren:</div><textarea style="width:100%;height:60vh;background:var(--s2);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:12px;font-size:11px;font-family:monospace" readonly>'+json+'</textarea><button onclick="this.parentElement.remove()" style="margin-top:12px;width:100%;padding:14px;background:var(--ac);color:#000;border:none;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer">Schließen</button>';
       document.body.appendChild(d);d.querySelector('textarea').select();
     }
   }
@@ -925,25 +1068,18 @@ function importFile(e){
   reader.onload=function(ev){
     try{
       var data=JSON.parse(ev.target.result);
-      if(!data.version||!data.plans||!data.history){toast('Ungueltige Datei');return;}
+      if(!data.version||!data.plans||!data.history){toast('Ungültige Datei');return;}
       plans=data.plans||[];hist=data.history||[];
       if(data.profile){prof=data.profile;S.s('wt_prof',prof);}
       sP();sH();toast(hist.length+' Workouts importiert');
-      render('fortschritt');render('verlauf');render('plaene');
+      render('fortschritt');render('verlauf');render('pläne');
     }catch(err){toast('Datei nicht lesbar');}
   };
   reader.readAsText(file);e.target.value='';
 }
 
 // ── MOTIVATION ──
-function showMot(){
-  var m=MOTIV[Math.floor(Math.random()*MOTIV.length)];
-  document.getElementById('mot-v').textContent=m.v;
-  document.getElementById('mot-r').textContent=m.r;
-  document.getElementById('mot-q').textContent=m.q;
-  document.getElementById('mot').classList.remove('hidden');
-}
-function closeMot(){document.getElementById('mot').classList.add('hidden');}
+
 
 // ── ONBOARDING ──
 var obProf={bw:null,height:null,age:null,goal:null,level:null,days:null};
@@ -968,14 +1104,14 @@ function obGo(step){
     obProf.height=parseFloat(document.getElementById('ob-ht').value)||175;
     obProf.age=parseInt(document.getElementById('ob-age').value)||28;
   }
-  if(step===3&&!obProf.goal){toast('Bitte Ziel waehlen');return;}
-  if(step===4&&!obProf.level){toast('Bitte Level waehlen');return;}
+  if(step===3&&!obProf.goal){toast('Bitte Ziel wählen');return;}
+  if(step===4&&!obProf.level){toast('Bitte Level wählen');return;}
   document.querySelectorAll('.ob-step').forEach(function(s){s.classList.remove('active');});
   document.getElementById('ob'+step).classList.add('active');
   showDots(step);
 }
 function obFinish(){
-  if(!obProf.days){toast('Bitte Frequenz waehlen');return;}
+  if(!obProf.days){toast('Bitte Frequenz wählen');return;}
   obProf.days=parseInt(obProf.days);
   prof=JSON.parse(JSON.stringify(obProf));
   S.s('wt_prof',prof);
@@ -997,8 +1133,7 @@ function init(){
     document.getElementById('ob').classList.remove('hidden');
   } else {
     render('heute');
-    setTimeout(showMot,1500);
-  }
+    }
 }
 init();
 </script>
