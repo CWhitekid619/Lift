@@ -667,7 +667,7 @@ function rAW(el) {
       if(!cr) cr='';
       h+='<div class="sr'+(set.done?' done':'')+'">';
       h+='<span class="sr-n">'+(set.pb?'<span class="pb-badge">🏆PB</span>':(si+1))+'</span>';
-      h+='<div class="sr-f"><div class="lbl">KG</div><input type="number" inputmode="decimal" step="0.5" placeholder="'+(prevW||0)+'" value="'+(set.weight||cw)+'" onchange="updSet('+xi+','+si+',\'weight\',this.value)"></div>';
+      h+='<div class="sr-f"><div class="lbl">KG</div><input type="text" inputmode="decimal" placeholder="'+(prevW||0)+'" value="'+(set.weight||cw)+'" onchange="updSet('+xi+','+si+',\'weight\',this.value)"></div>';
       h+='<div class="sr-f"><div class="lbl">REPS</div><input type="number" inputmode="numeric" placeholder="'+ex.targetReps+'" value="'+(set.reps||cr)+'" onchange="updSet('+xi+','+si+',\'reps\',this.value)"></div>';
       h+='<div class="sr-sel"><select onchange="updSet('+xi+','+si+',\'rpe\',this.value)">';
       h+='<option value=""'+(!set.rpe?' selected':'')+'>Gefühl</option>';
@@ -691,7 +691,7 @@ function rAW(el) {
 }
 
 function togEx(i){aw.open=aw.open===i?-1:i;sA();rHeute();}
-function updSet(xi,si,f,v){aw.exercises[xi].sets[si][f]=v;sA();}
+function updSet(xi,si,f,v){if(f==='weight')v=String(v).replace(',','.');aw.exercises[xi].sets[si][f]=v;sA();}
 function doneSet(xi,si){
   var set=aw.exercises[xi].sets[si];
   var ex=aw.exercises[xi];
@@ -709,7 +709,7 @@ function doneSet(xi,si){
   if(srEl){
     var wEl=srEl.querySelector('input[inputmode="decimal"]');
     var rEl=srEl.querySelector('input[inputmode="numeric"]');
-    if(wEl){var wv=wEl.value||wEl.placeholder;if(wv&&wv!=='0')set.weight=String(wv);}
+    if(wEl){var wv=wEl.value||wEl.placeholder;if(wv&&wv!=='0')set.weight=String(wv).replace(',','.');}
     if(rEl){var rv=rEl.value||rEl.placeholder;if(rv)set.reps=String(rv);}
   }
   set.done=true;vib(50);
@@ -727,8 +727,19 @@ function doneSet(xi,si){
       }
     }
   }
-  if(vol>0&&vol>bestVol){set.pb=true;toast('🏆 Neuer PB!');}
-  else{set.pb=false;}
+  // Nur der beste aktuelle Satz dieser Übung bekommt das PB-Badge
+  var bestCurIdx=-1,bestCurVol=0;
+  for(var ci=0;ci<ex.sets.length;ci++){
+    if(!ex.sets[ci].done)continue;
+    var cvol=(parseFloat(ex.sets[ci].weight)||0)*(parseInt(ex.sets[ci].reps)||0);
+    if(cvol>bestCurVol){bestCurVol=cvol;bestCurIdx=ci;}
+  }
+  var wasPB=set.pb;
+  for(var ci=0;ci<ex.sets.length;ci++)ex.sets[ci].pb=false;
+  if(bestCurIdx>=0&&bestCurVol>bestVol){
+    ex.sets[bestCurIdx].pb=true;
+    if(bestCurIdx===si&&!wasPB)toast('🏆 Neuer PB!');
+  }
   if(si+1>=ex.sets.length&&xi+1<aw.exercises.length)aw.open=xi+1;
   sA();rHeute();startPause(ex.pause||90);
 }
