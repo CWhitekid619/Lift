@@ -427,6 +427,7 @@ var EX = [
   {n:'Bulgarische Kniebeuge mit Kurzhanteln',m:'Beine',p:90},
   {n:'Wadenheben stehend',m:'Beine',p:60}
 ];
+EX.sort(function(a,b){return a.n.localeCompare(b.n,'de');});
 
 var WF = {'Bankdrücken':[.4,.6,.9],'Kniebeugen':[.55,.9,1.3],'Deadlift':[.7,1.1,1.6],'Deadlift Rumänisch':[.55,.85,1.2],'LH-Rudern':[.45,.7,1.0],'Schulterdruck LH':[.25,.4,.6],'Schulterdruck KH':[.12,.2,.3],'SZ-Curl':[.2,.32,.45],'Bizepscurl KH':[.08,.14,.2],'Hammer Curl':[.09,.15,.22],'Hip Thrust':[.6,1.0,1.4],'Skull Crushers':[.18,.28,.4],'KH Bankdrücken':[.18,.28,.4],'Bulgarian Split Squat':[.15,.25,.35]};
 var GOALS = {fat:{sets:4,reps:15,pm:.7},muscle:{sets:4,reps:8,pm:1.3},recomp:{sets:4,reps:10,pm:1.0},fit:{sets:3,reps:12,pm:.9}};
