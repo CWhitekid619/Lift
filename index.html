@@ -756,11 +756,13 @@ function rAW(el) {
       else h+='<button class="sr-btn" onclick="doneSet('+xi+','+si+')">&#10003;</button><button style="background:none;border:none;color:var(--t3);font-size:16px;cursor:pointer;padding:0 4px;line-height:1" onclick="delSet('+xi+','+si+')">\u2715</button>';
       h+='</div>';
     }
+    h+='<button style="background:none;border:1px dashed #333348;color:var(--t2);border-radius:8px;padding:8px;width:100%;font-size:12px;cursor:pointer;font-family:DM Sans,sans-serif" onclick="addSet('+xi+')">＋ Satz</button>';
     h+='</div></div>';
   }
   var allWDone=true;
   for(var i=0;i<aw.exercises.length;i++) for(var j=0;j<aw.exercises[i].sets.length;j++) if(!aw.exercises[i].sets[j].done){allWDone=false;break;}
   h+='<div style="padding:0 14px 20px;margin-top:8px">';
+  h+='<button class="btn bs bf" style="margin-bottom:8px" onclick="openSwoAdd()">＋ Übung hinzufügen</button>';
   h+='<button class="btn '+(allWDone?'bp':'bs')+' bf" onclick="finishW()">'+(allWDone?'Workout abschließen':'Workout beenden')+'</button>';
   h+='<button class="btn bg bf" style="margin-top:5px" onclick="cancelW()">Abbrechen</button></div>';
   h+='<div style="height:80px"></div>';
@@ -822,6 +824,7 @@ function doneSet(xi,si){
 }
 function undoSet(xi,si){aw.exercises[xi].sets[si].done=false;sA();rHeute();toast('Entsperrt');}
 function delSet(xi,si){if(aw.exercises[xi].sets.length<=1){toast('Mindestens 1 Satz nötig');return;}aw.exercises[xi].sets.splice(si,1);aw.exercises[xi].targetSets=aw.exercises[xi].sets.length;sA();rHeute();}
+function addSet(xi){aw.exercises[xi].sets.push({weight:'',reps:'',rpe:'',done:false});aw.exercises[xi].targetSets=aw.exercises[xi].sets.length;sA();rHeute();}
 
 function getLastTxt(name){
   for(var i=hist.length-1;i>=0;i--){
@@ -845,6 +848,14 @@ function openSwo(xi){
   renderSwoFilters();renderSwoList();
   document.getElementById('swo').classList.remove('hidden');
 }
+function openSwoAdd(){
+  swoXi=-2;
+  swoFilter='';
+  document.getElementById('swo-sub').textContent='Übung zum Workout hinzufügen';
+  document.getElementById('swo-q').value='';
+  renderSwoFilters();renderSwoList();
+  document.getElementById('swo').classList.remove('hidden');
+}
 function closeSwo(){document.getElementById('swo').classList.add('hidden');swoXi=-1;document.getElementById('swo-new').classList.remove('open');}
 function toggleSwoNew(){var f=document.getElementById('swo-new');f.classList.toggle('open');}
 function saveNewSwoEx(){
@@ -860,12 +871,13 @@ function saveNewSwoEx(){
   EX.sort(function(a,b){return a.n.localeCompare(b.n,'de');});
   customEx.push(newEx);
   S.s('wt_custom',customEx);
-  // Direkt einsetzen
-  if(swoXi>=0&&aw){
-    var ex=aw.exercises[swoXi];
+  // Direkt einsetzen oder anhängen
+  if(aw){
     var newSets=[];
     for(var j=0;j<sets;j++)newSets.push({weight:'',reps:'',rpe:'',done:false});
-    aw.exercises[swoXi]={id:uid(),name:name,muscle:muscle,targetSets:sets,targetReps:reps,pause:pause,sets:newSets};
+    var newAwEx={id:uid(),name:name,muscle:muscle,targetSets:sets,targetReps:reps,pause:pause,sets:newSets};
+    if(swoXi===-2)aw.exercises.push(newAwEx);
+    else if(swoXi>=0)aw.exercises[swoXi]=newAwEx;
     sA();
   }
   closeSwo();
@@ -903,10 +915,18 @@ function renderSwoList(){
   document.getElementById('swo-list').innerHTML=h;
 }
 function doSwoSwap(name,muscle,basePause){
-  if(!aw||swoXi<0)return;
-  var ex=aw.exercises[swoXi];
+  if(!aw)return;
   var g=GOALS[prof&&prof.goal?prof.goal:'recomp'];
   var pause=Math.round((basePause*g.pm)/5)*5;
+  if(swoXi===-2){
+    var newSets=[];
+    for(var j=0;j<g.sets;j++)newSets.push({weight:'',reps:'',rpe:'',done:false});
+    aw.exercises.push({id:uid(),name:name,muscle:muscle,targetSets:g.sets,targetReps:g.reps,pause:pause,sets:newSets});
+    sA();closeSwo();toast(name+' hinzugefügt');rHeute();
+    return;
+  }
+  if(swoXi<0)return;
+  var ex=aw.exercises[swoXi];
   var newSets=[];
   for(var j=0;j<ex.targetSets;j++)newSets.push({weight:'',reps:'',rpe:'',done:false});
   aw.exercises[swoXi]={id:uid(),name:name,muscle:muscle,targetSets:ex.targetSets,targetReps:ex.targetReps,pause:pause,sets:newSets};
