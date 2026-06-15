@@ -757,7 +757,10 @@ function rAW(el) {
     h+='<div class="ec-hdr" onclick="togEx('+xi+')">';
     h+='<div style="flex:1"><div class="ec-name">'+(allDone?'✅ ':'')+ex.name+'</div>';
     h+='<div class="ec-meta">'+ex.muscle+' &#183; '+ex.targetSets+'x'+ex.targetReps+' &#183; '+fmtP(ex.pause||90)+'</div></div>';
-    h+='<div style="flex-shrink:0;display:flex;align-items:center;gap:6px"><span style="font-size:14px;color:var(--t3);cursor:pointer;padding:4px 6px" onclick="event.stopPropagation();openSwo('+xi+')">&#8644;</span><span class="ec-arr">&#8964;</span></div>';
+    h+='<div style="flex-shrink:0;display:flex;align-items:center;gap:4px">';
+    if(xi>0)h+='<span style="font-size:14px;color:var(--t3);cursor:pointer;padding:4px 5px" onclick="event.stopPropagation();moveEx('+xi+',-1)">↑</span>';
+    if(xi<aw.exercises.length-1)h+='<span style="font-size:14px;color:var(--t3);cursor:pointer;padding:4px 5px" onclick="event.stopPropagation();moveEx('+xi+',1)">↓</span>';
+    h+='<span style="font-size:14px;color:var(--t3);cursor:pointer;padding:4px 6px" onclick="event.stopPropagation();openSwo('+xi+')">&#8644;</span><span class="ec-arr">&#8964;</span></div>';
     h+='</div>';
     h+='<div class="ec-body">';
     var ltxt=getLastTxt(ex.name);
@@ -875,10 +878,17 @@ function getLastTxt(name){
 }
 // ── SWAP OVERLAY ──
 var swoXi=-1, swoFilter='';
+function moveEx(xi,dir){
+  var exs=aw.exercises;
+  var ni=xi+dir;
+  if(ni<0||ni>=exs.length)return;
+  var tmp=exs[xi];exs[xi]=exs[ni];exs[ni]=tmp;
+  sA();rHeute();
+}
 function openSwo(xi){
   swoXi=xi;
   var cur=aw.exercises[xi];
-  swoFilter=cur.muscle;
+  swoFilter='';
   document.getElementById('swo-sub').textContent='Aktuell: '+cur.name;
   document.getElementById('swo-q').value='';
   renderSwoFilters();renderSwoList();
@@ -1138,17 +1148,38 @@ function rPläne(){
   for(var i=0;i<plans.length;i++){
     var plan=plans[i];
     h+='<div class="pc"><div class="pc-hdr"><div><div class="pc-name">'+plan.name+'</div><div class="pc-cnt">'+plan.exercises.length+' Übungen</div></div>';
-    h+='<div style="display:flex;gap:7px"><div class="ib" onclick="openLib(\''+plan.id+'\')">+</div><div class="ib" onclick="delPlan(\''+plan.id+'\')">🗑</div></div></div>';
+    h+='<div style="display:flex;gap:7px"><div class="ib" onclick="openEditPlan(\''+plan.id+'\')">✏️</div><div class="ib" onclick="openLib(\''+plan.id+'\')">+</div><div class="ib" onclick="delPlan(\''+plan.id+'\')">🗑</div></div></div>';
     h+='<div class="pc-exs">';
     if(!plan.exercises.length) h+='<div style="color:var(--t3);font-size:13px">Tippe + um Übungen hinzuzufügen</div>';
     for(var j=0;j<plan.exercises.length;j++){
       var ex=plan.exercises[j];
       h+='<div class="pc-ex"><div class="pc-ei"><h4>'+ex.name+'</h4><p>'+ex.muscle+' - '+ex.targetSets+'x'+ex.targetReps+' - '+fmtP(ex.pause||90)+'</p></div>';
-      h+='<div class="pc-ea"><div class="ib" onclick="openEditEx(\''+plan.id+'\',\''+ex.id+'\')">✏️</div><div class="ib" onclick="delEx(\''+plan.id+'\',\''+ex.id+'\')">✕</div></div></div>';
+      h+='<div class="pc-ea">';
+      if(j>0)h+='<div class="ib" style="font-size:11px;padding:4px 7px;color:var(--t2)" onclick="movePlanEx(\''+plan.id+'\','+j+',-1)">↑</div>';
+      if(j<plan.exercises.length-1)h+='<div class="ib" style="font-size:11px;padding:4px 7px;color:var(--t2)" onclick="movePlanEx(\''+plan.id+'\','+j+',1)">↓</div>';
+      h+='<div class="ib" onclick="openEditEx(\''+plan.id+'\',\''+ex.id+'\')">✏️</div><div class="ib" onclick="delEx(\''+plan.id+'\',\''+ex.id+'\')">✕</div></div></div>';
     }
     h+='</div></div>';
   }
   el.innerHTML=h;
+}
+function movePlanEx(planId,j,dir){
+  for(var i=0;i<plans.length;i++){
+    if(plans[i].id===planId){
+      var exs=plans[i].exercises,ni=j+dir;
+      if(ni<0||ni>=exs.length)return;
+      var tmp=exs[j];exs[j]=exs[ni];exs[ni]=tmp;
+      sP();rPläne();return;
+    }
+  }
+}
+function openEditPlan(planId){
+  editPlanId=planId;
+  var plan=null;for(var i=0;i<plans.length;i++){if(plans[i].id===planId){plan=plans[i];break;}}
+  if(!plan)return;
+  document.getElementById('mp-t').textContent='Plan umbenennen';
+  document.getElementById('mp-n').value=plan.name;
+  document.getElementById('m-plan').classList.remove('hidden');
 }
 function openAddPlan(){editPlanId='';document.getElementById('mp-t').textContent='Neuer Plan';document.getElementById('mp-n').value='';document.getElementById('m-plan').classList.remove('hidden');}
 function savePlan(){
