@@ -666,12 +666,33 @@ function rPS(el) {
   }
   h+='<div class="sh" style="margin-top:4px">Alle Pläne</div>';
   for(var i=0;i<plans.length;i++){
-    h+='<div class="psi" onclick="startW(\''+plans[i].id+'\')"><div><h3>'+plans[i].name+'</h3><p>'+plans[i].exercises.length+' Übungen</p></div><span style="color:var(--ac);font-size:18px">&#8250;</span></div>';
+    var pl=plans[i];
+    var isOpen=heutePlanOpen===pl.id;
+    h+='<div class="card" style="margin:0 14px 10px;padding:0;overflow:hidden">';
+    h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer" onclick="togHeutePlan(\''+pl.id+'\')">';
+    h+='<div><h3 style="font-size:15px;font-weight:700;margin-bottom:2px">'+pl.name+'</h3><p style="font-size:12px;color:var(--t2)">'+pl.exercises.length+' Übungen</p></div>';
+    h+='<span style="color:var(--ac);font-size:18px;transition:transform .2s;display:inline-block;transform:rotate('+(isOpen?'90':'0')+'deg)">&#8250;</span>';
+    h+='</div>';
+    if(isOpen){
+      h+='<div style="padding:0 16px 10px;border-top:1px solid var(--s1)">';
+      for(var j=0;j<pl.exercises.length;j++){
+        var ex=pl.exercises[j];
+        h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--s1)">';
+        h+='<span style="font-size:13px">'+ex.name+'</span>';
+        h+='<span style="font-size:11px;color:var(--t2)">'+ex.targetSets+'×'+ex.targetReps+'</span>';
+        h+='</div>';
+      }
+      h+='<button class="btn bp" style="width:100%;margin-top:10px" onclick="startW(\''+pl.id+'\')">Starten</button>';
+      h+='</div>';
+    }
+    h+='</div>';
   }
   h+='<div style="padding:0 14px 8px"><button class="btn bs bf" style="font-size:12px" onclick="openOrde()">Reihenfolge bearbeiten</button></div><div style="height:100px"></div>';
   el.innerHTML=h;
 }
 
+var heutePlanOpen='';
+function togHeutePlan(id){heutePlanOpen=(heutePlanOpen===id?'':id);rHeute();}
 function selDay(si){tdViewIdx=si;rHeute();}
 function markRest(si){var s=getSched();s[si].isRest=true;sSc();toast('Ruhetag gesetzt');rHeute();}
 
@@ -699,20 +720,35 @@ function startWt() {
   clearInterval(wtInt);
   wtInt=setInterval(function(){
     var el=document.getElementById('wt-el');
-    if(el&&aw) el.textContent=fmtT(Math.floor((Date.now()-aw.startTime)/1000));
+    if(el&&aw&&!aw.pausedAt) el.textContent=fmtT(Math.floor((Date.now()-aw.startTime-(aw.pausedDur||0))/1000));
   },1000);
+}
+function toggleWtPause(){
+  if(!aw)return;
+  if(aw.pausedAt){
+    aw.pausedDur=(aw.pausedDur||0)+(Date.now()-aw.pausedAt);
+    aw.pausedAt=null;
+  } else {
+    aw.pausedAt=Date.now();
+  }
+  sA();rHeute();
 }
 
 function rAW(el) {
-  var elapsed=Math.floor((Date.now()-aw.startTime)/1000),tot=0,don=0;
+  var _pd=(aw.pausedDur||0)+(aw.pausedAt?(Date.now()-aw.pausedAt):0);
+  var elapsed=Math.floor((Date.now()-aw.startTime-_pd)/1000),tot=0,don=0;
   for(var i=0;i<aw.exercises.length;i++){
     tot+=aw.exercises[i].sets.length;
     for(var j=0;j<aw.exercises[i].sets.length;j++) if(aw.exercises[i].sets[j].done) don++;
   }
   var h='<div class="wh" style="margin:0 14px 14px">';
   h+='<div style="font-family:Orbitron,monospace;font-size:18px;font-weight:700;color:var(--ac)">'+aw.planName+'</div>';
-  h+='<div style="display:flex;gap:14px;margin-top:6px"><span style="font-size:12px;color:var(--t2);font-family:Orbitron,monospace" id="wt-el">'+fmtT(elapsed)+'</span>';
-  h+='<span style="font-size:12px;color:var(--t2)">&#183; '+don+'/'+tot+' Sets</span></div></div>';
+  h+='<div style="display:flex;align-items:center;gap:12px;margin-top:6px">';
+  h+='<span style="font-size:12px;color:var(--t2);font-family:Orbitron,monospace" id="wt-el">'+fmtT(elapsed)+'</span>';
+  h+='<button onclick="toggleWtPause()" style="background:none;border:none;font-size:16px;cursor:pointer;padding:0;line-height:1">'+(aw.pausedAt?'▶':'⏸')+'</button>';
+  h+='<span style="font-size:12px;color:var(--t2)">&#183; '+don+'/'+tot+' Sets</span>';
+  if(aw.pausedAt)h+='<span style="font-size:10px;color:#ffd700;font-weight:700;letter-spacing:1px">PAUSIERT</span>';
+  h+='</div></div>';
   for(var xi=0;xi<aw.exercises.length;xi++){
     var ex=aw.exercises[xi],allDone=true;
     for(var j=0;j<ex.sets.length;j++) if(!ex.sets[j].done){allDone=false;break;}
