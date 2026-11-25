@@ -1836,6 +1836,7 @@ var CH_P=[
  {n:'Bankdrücken',g:'brust',eq:'LH',f:.65,r:10,hv:1,rack:1,tip:'Schulterblätter zusammen, Füße fest. Nie bis zum Versagen – du trainierst allein.'},
  {n:'KH Bankdrücken',g:'brust',eq:'KH',f:.22,r:10,kh:1,tip:'Hanteln über der Brust, kontrolliert runter.'},
  {n:'Schrägbank KH',g:'brust',eq:'KH',f:.18,r:10,kh:1,tip:'Bank auf ca. 30°, Hanteln über der oberen Brust.'},
+ {n:'Überzüge KH',g:'brust',eq:'KH',f:.2,r:12,one:1,tip:'Quer auf der Bank, eine Hantel mit beiden Händen.'},
  {n:'Fliegende KH',g:'brust',eq:'KH',f:.09,r:12,kh:1,tip:'Arme leicht gebeugt, weiter Bogen.'},
  {n:'Liegestütze',g:'brust',eq:'BW',rr:[8,15,25],tip:'Körper wie ein Brett, Brust bis knapp über den Boden.'},
  {n:'Klimmzüge',g:'ruecken',eq:'ST',rr:[3,6,10],tip:'Ganz runter hängen, Brust zur Stange.'},
@@ -1843,7 +1844,7 @@ var CH_P=[
  {n:'Negativ-Klimmzüge',g:'ruecken',eq:'ST',rr:[3,4,6],tip:'Hochspringen, dann 4 Sekunden langsam runter.'},
  {n:'LH-Rudern',g:'ruecken',eq:'LH',f:.5,r:10,hv:1,tip:'Rücken gerade, Stange zum Bauchnabel ziehen.'},
  {n:'Einarmiges KH-Rudern',g:'ruecken',eq:'KH',f:.3,r:10,kh:1,ps:1,tip:'Auf der Bank abstützen, Ellbogen nach hinten.'},
- {n:'Überzüge KH',g:'ruecken',eq:'KH',f:.2,r:12,one:1,tip:'Quer auf der Bank, eine Hantel mit beiden Händen.'},
+ {n:'Brustgestütztes Rudern',g:'ruecken',eq:'KH',f:.22,r:10,kh:1,tip:'Bauch auf der Schrägbank, beide Hanteln hochziehen.'},
  {n:'Schulterdruck KH',g:'schultern',eq:'KH',f:.15,r:10,kh:1,tip:'Sitzend auf der Bank, Rücken an der Lehne.'},
  {n:'Schulterdruck LH',g:'schultern',eq:'LH',f:.38,r:8,hv:1,tip:'Stehend, Po und Bauch fest anspannen.'},
  {n:'Seitheben',g:'schultern',eq:'KH',f:.07,r:12,kh:1,tip:'Bis Schulterhöhe, nicht schwingen.'},
@@ -1941,6 +1942,7 @@ function chDef(){return{v:1,xp:0,log:[],loads:{},ok:{},streak:0,best:0,streakDay
  stats:{snacks:0,boxes:0,goldWeeks:0}};}
 var ch=S.g('wt_ch',null);
 ch=Object.assign(chDef(),ch||{});ch.set=Object.assign({hard:2,rack:true,snd:true},ch.set||{});ch.stats=Object.assign({snacks:0,boxes:0,goldWeeks:0},ch.stats||{});
+if(ch.q&&ch.q.items)ch.q.items.forEach(function(i){if(!i.done&&i.ex==='Überzüge KH'&&i.g==='ruecken')i.ex='Brustgestütztes Rudern';});
 if(ch.mod&&ch.mod.id==='combo')ch.mod.x='🔥 Hitze-Tag: Hitze-Bonus doppelt';
 function chSave(){S.s('wt_ch',ch);}
 var chQ=[];
