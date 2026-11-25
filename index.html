@@ -14,7 +14,7 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;height:100%;overflow:hidden}
 #app{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
-.screen{display:none;flex:1;overflow-y:auto;padding-bottom:calc(var(--th)+16px);-webkit-overflow-scrolling:touch}
+.screen{display:none;flex:1;overflow-y:auto;padding-bottom:calc(var(--th) + env(safe-area-inset-bottom) + 28px);-webkit-overflow-scrolling:touch}
 .screen.active{display:block}
 .screen::-webkit-scrollbar{display:none}
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
@@ -254,10 +254,9 @@ input::placeholder{color:var(--t3)}
   <div id="s-fortschritt" class="screen"></div>
   <div id="s-einstellungen" class="screen"></div>
   <div id="tabs">
-    <div class="tab active" data-s="challenge"><div class="ti">🔥</div><div class="tl">Challenge</div></div>
     <div class="tab" data-s="heute"><div class="ti">🏋️</div><div class="tl">Workout</div></div>
     <div class="tab" data-s="pläne"><div class="ti">📋</div><div class="tl">Pläne</div></div>
-    <div class="tab" data-s="verlauf"><div class="ti">📅</div><div class="tl">Verlauf</div></div>
+    <div class="tab tab-ch active" data-s="challenge"><div class="ti">🔥</div><div class="tl">Challenge</div></div>
     <div class="tab" data-s="fortschritt"><div class="ti">📈</div><div class="tl">Fortschritt</div></div>
     <div class="tab" data-s="einstellungen"><div class="ti">⚙️</div><div class="tl">Einst.</div></div>
   </div>
@@ -1266,22 +1265,24 @@ function saveOrde(){sched=tmpSched;sSc();closeOrde();toast('Gespeichert');rHeute
 
 // ── VERLAUF ──
 function rVerlauf(){
+  var HH=(typeof chHistAll==='function')?chHistAll():hist;
   var el=document.getElementById('s-verlauf');
-  var h='<div class="ph"><h1>VERLAUF</h1><p>'+hist.length+' Workouts</p></div>';
-  if(!hist.length){h+='<div class="es"><div class="ei">📅</div><p>Noch keine Workouts.</p></div>';el.innerHTML=h;return;}
-  var rev=hist.slice().reverse();
+  var h='<div class="ph"><h1>VERLAUF</h1><p>'+HH.length+' Einträge</p><div class="seg"><span onclick="chGo(\'fortschritt\')">📈 Fortschritt</span><span class="on">📅 Verlauf</span></div></div>';
+  if(!HH.length){h+='<div class="es"><div class="ei">📅</div><p>Noch keine Workouts.</p></div>';el.innerHTML=h;return;}
+  var rev=HH.slice().reverse();
   for(var i=0;i<rev.length;i++){
     var sess=rev[i],ts=0,tv=0;
     for(var j=0;j<sess.exercises.length;j++) for(var k=0;k<sess.exercises[j].sets.length;k++){var s=sess.exercises[j].sets[k];if(s.done){ts++;tv+=(parseFloat(s.weight)||0)*(parseInt(s.reps)||0);}}
     h+='<div class="hd"><div class="hd-lbl">'+fmtD(sess.date)+'</div>';
     h+='<div class="hc">';
-    h+='<div class="hc-hdr"><h3 onclick="showHDet(\''+sess.id+'\')" style="flex:1;cursor:pointer">'+sess.planName+'</h3><span class="ht">'+fmtT(sess.duration)+'</span><span onclick="confirmDelSess(\''+sess.id+'\')" style="margin-left:10px;color:#ff4560;font-size:18px;cursor:pointer;padding:0 4px">🗑</span></div>';
+    h+='<div class="hc-hdr"><h3 onclick="showHDet(\''+sess.id+'\')" style="flex:1;cursor:pointer">'+sess.planName+'</h3>'+(sess.ch?'<span class="ht">'+sess.n+' Häppchen</span>':'<span class="ht">'+fmtT(sess.duration)+'</span><span onclick="confirmDelSess(\''+sess.id+'\')" style="margin-left:10px;color:#ff4560;font-size:18px;cursor:pointer;padding:0 4px">🗑</span>')+'</div>';
     h+='<div class="hc-stats"><div><div class="hsv">'+ts+'</div><div class="hsl">Sets</div></div><div><div class="hsv">'+sess.exercises.length+'</div><div class="hsl">Übungen</div></div><div><div class="hsv">'+Math.round(tv)+'</div><div class="hsl">kg Vol.</div></div></div>';
     h+='</div></div></div></div>';
   }
   el.innerHTML=h;
 }
 function showHDet(id){
+  if(String(id).indexOf('ch-')===0){chShowDay(id);return;}
   var sess=null;for(var i=0;i<hist.length;i++){if(hist[i].id===id){sess=hist[i];break;}}
   if(!sess)return;
   var el=document.getElementById('hdet');
@@ -1367,21 +1368,22 @@ function updateHistSet(sessId,exIdx,setIdx,field,value){
 // ── FORTSCHRITT ──
 var fortEx='';
 function rFortschritt(){
+  var HH=(typeof chHistAll==='function')?chHistAll():hist;
   var el=document.getElementById('s-fortschritt');
-  var h='<div class="ph"><h1>FORTSCHRITT</h1><p>Deine Entwicklung</p></div>';
+  var h='<div class="ph"><h1>FORTSCHRITT</h1><p>Deine Entwicklung</p><div class="seg"><span class="on">📈 Fortschritt</span><span onclick="chGo(\'verlauf\')">📅 Verlauf</span></div></div>';
   h+='<div style="padding:0 14px 14px;display:flex;gap:8px">';
   h+='<button class="btn bp" style="flex:1;font-size:13px" onclick="exportData()">Export</button>';
   h+='<button class="btn bs" style="flex:1;font-size:13px" onclick="document.getElementById(\'imp-file\').click()">Import</button>';
   h+='</div>';
   var names=[];
-  for(var i=0;i<hist.length;i++) for(var j=0;j<hist[i].exercises.length;j++) if(names.indexOf(hist[i].exercises[j].name)===-1) names.push(hist[i].exercises[j].name);
+  for(var i=0;i<HH.length;i++) for(var j=0;j<HH[i].exercises.length;j++) if(names.indexOf(HH[i].exercises[j].name)===-1) names.push(HH[i].exercises[j].name);
   names.sort(function(a,b){return a.localeCompare(b,'de');});
   if(!names.length){h+='<div class="es"><div class="ei">📈</div><p>Noch keine Daten.</p></div>';el.innerHTML=h;return;}
   // PB Sektion
   h+='<div class="prc"><h3>Persönliche Rekorde</h3>';
   for(var k=0;k<names.length;k++){
     var name=names[k],pr=0,prDate='';
-    for(var i=0;i<hist.length;i++) for(var j=0;j<hist[i].exercises.length;j++) if(hist[i].exercises[j].name===name) for(var l=0;l<hist[i].exercises[j].sets.length;l++){var w=parseFloat(hist[i].exercises[j].sets[l].weight)||0;if(w>pr){pr=w;prDate=hist[i].date;}}
+    for(var i=0;i<HH.length;i++) for(var j=0;j<HH[i].exercises.length;j++) if(HH[i].exercises[j].name===name) for(var l=0;l<HH[i].exercises[j].sets.length;l++){var w=parseFloat(HH[i].exercises[j].sets[l].weight)||0;if(w>pr){pr=w;prDate=HH[i].date;}}
     if(!pr)continue;
     h+='<div class="pri"><div class="pri-info"><span style="font-size:13px;font-weight:500">'+name+'</span></div>';
     h+='<span class="prv">'+pr+'<span style="font-size:11px;font-weight:400"> kg</span></span>';
@@ -1402,7 +1404,7 @@ function rFortschritt(){
   h+='<div id="fort-chart" style="padding:0 14px 40px">';
   if(fortEx){
     var pts=[];
-    for(var i=0;i<hist.length;i++) for(var j=0;j<hist[i].exercises.length;j++) if(hist[i].exercises[j].name===fortEx){var maxW=0;for(var l=0;l<hist[i].exercises[j].sets.length;l++){var s=hist[i].exercises[j].sets[l];if(s.done&&s.weight&&parseFloat(s.weight)>maxW)maxW=parseFloat(s.weight);}if(maxW>0)pts.push({date:hist[i].date,w:maxW});}
+    for(var i=0;i<HH.length;i++) for(var j=0;j<HH[i].exercises.length;j++) if(HH[i].exercises[j].name===fortEx){var maxW=0;for(var l=0;l<HH[i].exercises[j].sets.length;l++){var s=HH[i].exercises[j].sets[l];if(s.done&&s.weight&&parseFloat(s.weight)>maxW)maxW=parseFloat(s.weight);}if(maxW>0)pts.push({date:HH[i].date,w:maxW});}
     if(pts.length) h+='<div class="chcard">'+miniChart(pts)+'</div>';
     else h+='<div style="color:var(--t2);font-size:13px;padding:16px 0">Keine Daten für diese Übung.</div>';
   }
@@ -1771,6 +1773,22 @@ init();
 .chx-rep div.frz{border-color:rgba(125,211,252,.5)}
 .chx-rep div.good{border-color:rgba(0,255,159,.45)}
 #ch-conf{position:fixed;inset:0;z-index:960;pointer-events:none}
+.ch-heat{margin-bottom:12px;padding:10px 12px;border-radius:14px;background:#121224;border:1px solid #2a2a44;transition:border-color .5s}
+.ch-heat .r{display:flex;justify-content:space-between;align-items:center;font-family:'Orbitron',monospace;font-size:11px;font-weight:900;letter-spacing:1.5px}
+.ch-heat .m{font-size:14px}
+.ch-hb{height:12px;border-radius:7px;background:#1a1a30;margin-top:8px;overflow:hidden;position:relative}
+.ch-hf{height:100%;border-radius:7px;transition:width .9s linear,background .9s;position:relative;overflow:hidden}
+.ch-hf::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);background-size:60% 100%;background-repeat:no-repeat;animation:chHeatShine 1.6s linear infinite}
+.ch-heat.hot{border-color:#ff7a00;box-shadow:0 0 18px rgba(255,90,0,.3)}
+.ch-heat.hot .ch-fl{animation:chFlick .5s infinite alternate;display:inline-block}
+.ch-heat.cold{opacity:.75}
+@keyframes chHeatShine{0%{background-position:-60% 0}100%{background-position:160% 0}}
+.seg{display:flex;gap:6px;margin-top:12px;background:#121222;border:1px solid #26263f;border-radius:12px;padding:4px}
+.seg span{flex:1;text-align:center;padding:8px 4px;border-radius:9px;font-size:12px;font-weight:700;color:var(--t2);cursor:pointer}
+.seg span.on{background:linear-gradient(135deg,rgba(0,245,255,.18),rgba(191,0,255,.18));color:var(--tx)}
+.tab-ch .ti{width:46px;height:46px;margin-top:-22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 30%,#2a1a40,#0c0c18);border:2px solid #ff7a00;box-shadow:0 0 16px rgba(255,122,0,.5);font-size:22px}
+.tab-ch.active .ti{transform:scale(1.08)}
+.tab-ch .tl{letter-spacing:.5px}
 @keyframes chSpin{to{transform:rotate(360deg)}}
 @keyframes chFlick{0%{transform:scale(1) rotate(-3deg)}100%{transform:scale(1.12) rotate(3deg)}}
 @keyframes chGlow{0%,100%{box-shadow:0 0 14px rgba(0,245,255,.4)}50%{box-shadow:0 0 26px rgba(191,0,255,.6)}}
@@ -1915,10 +1933,11 @@ var CH_TITLES=['Couch-Kartoffel','Hantel-Tourist','Rost-Lehrling','Satz-Sammler'
 
 // ══════════ CHALLENGE: Zustand ══════════
 function chDef(){return{v:1,xp:0,log:[],loads:{},ok:{},streak:0,best:0,streakDay:null,freezes:1,fwk:null,boxes:[],cards:{},pity:0,
- lastCheck:null,start:null,q:null,dailyBox:null,mod:null,set:{hard:2,rack:true,snd:true},boost:0,comeback:false,wkGold:{},lastEx:{},
+ lastCheck:null,start:null,q:null,lastT:0,hot:0,dailyBox:null,mod:null,set:{hard:2,rack:true,snd:true},boost:0,comeback:false,wkGold:{},lastEx:{},
  stats:{snacks:0,boxes:0,goldWeeks:0}};}
 var ch=S.g('wt_ch',null);
 ch=Object.assign(chDef(),ch||{});ch.set=Object.assign({hard:2,rack:true,snd:true},ch.set||{});ch.stats=Object.assign({snacks:0,boxes:0,goldWeeks:0},ch.stats||{});
+if(ch.mod&&ch.mod.id==='combo')ch.mod.x='🔥 Hitze-Tag: Hitze-Bonus doppelt';
 function chSave(){S.s('wt_ch',ch);}
 var chQ=[];
 function chBusy(){return !!chBX||!document.getElementById('chx').classList.contains('hidden');}
@@ -1959,6 +1978,43 @@ function chLvl(xp){var L=1,need=100,rest=Math.max(0,xp);while(rest>=need){rest-=
 function chTitle(L){return CH_TITLES[Math.min(L-1,CH_TITLES.length-1)];}
 function chModIs(id){return ch.mod&&ch.mod.day===chToday()&&ch.mod.id===id;}
 function chCardBonus(){var b=0;CH_C.forEach(function(c){if(ch.cards[c.id])b+=c.r==='l'?5:c.r==='e'?2:0;});return b;}
+
+// ══════════ Hitze (Pause zwischen Häppchen) ══════════
+// 1–3 Min. Satzpause ist üblich; der Aufwärm-Effekt ist nach ca. 15 Min. weitgehend weg.
+var CH_HOT_FULL=180,CH_HOT_END=900,CH_HOT_MAX=8;
+function chHeat(){if(!ch.lastT||chDK(ch.lastT)!==chToday())return 0;var t=(Date.now()-ch.lastT)/1000;if(t<=CH_HOT_FULL)return 1;if(t>=CH_HOT_END)return 0;return 1-(t-CH_HOT_FULL)/(CH_HOT_END-CH_HOT_FULL);}
+function chHotN(){return chHeat()>0?Math.min((ch.hot||0)+1,CH_HOT_MAX):0;}
+function chHotMul(){return 1+chHotN()*(chModIs('combo')?.2:.1);}
+function chHeatHtml(){
+ var h=chHeat(),n=chHotN(),m=chHotMul();
+ var st=h>.66?['GLÜHEND','#ff3d00']:h>.33?['HEISS','#ff7a00']:h>0?['WARM','#ffc400']:['KALT','#60a5fa'];
+ var bg=h>0?'linear-gradient(90deg,#ffc400,#ff7a00,#ff2d55)':'#3b5b8c';
+ return '<div class="ch-heat '+(h>0?'hot':'cold')+'" id="ch-heat"><div class="r"><span style="color:'+st[1]+'"><span class="ch-fl">'+(h>0?'🔥':'🧊')+'</span> '+st[0]+(n>1?' · '+(n-1)+'× AM STÜCK':'')+'</span><span class="m" style="color:'+(h>0?'#ffc400':'var(--t2)')+'">×'+m.toFixed(1).replace('.',',')+'</span></div><div class="ch-hb"><div class="ch-hf" style="width:'+Math.max(h>0?3:100,h*100)+'%;background:'+bg+'"></div></div></div>';
+}
+var chHeatInt=setInterval(function(){var e=document.getElementById('ch-heat');if(!e||document.hidden)return;var was=e.classList.contains('hot');var d=document.createElement('div');d.innerHTML=chHeatHtml();var n=d.firstChild;
+ if(was&&!n.classList.contains('hot')){chBanner('🧊 Abgekühlt – Bonus weg','#60a5fa');}
+ e.replaceWith(n);},1000);
+
+// ══════════ Verlauf: Challenge-Tage ══════════
+function chHistAll(){
+ var days={};
+ ch.log.forEach(function(l){if(!l.g)return;var d=days[l.d];if(!d){d=days[l.d]={id:'ch-'+l.d,ch:true,planName:'🔥 Challenge',date:l.t,duration:0,n:0,exercises:[],_m:{}};}
+  d.n++;d.duration=Math.round((l.t-d.date)/1000);
+  var e=d._m[l.ex];if(!e){e=d._m[l.ex]={id:'c'+l.ex,name:l.ex,muscle:CH_GM[l.g].n,sets:[]};d.exercises.push(e);}
+  e.sets.push({weight:l.w?String(l.w):'',reps:String(l.r),done:true,rpe:l.feel==='leicht'?'easy':l.feel==='schwer'?'hard':'ok'});});
+ var all=hist.concat(Object.keys(days).map(function(k){return days[k];}));
+ return all.sort(function(a,b){return a.date-b.date;});
+}
+function chShowDay(id){
+ var s=chHistAll().filter(function(x){return x.id===id;})[0];if(!s)return;
+ var h='<div class="hdet-back" onclick="document.getElementById(\'hdet\').classList.add(\'hidden\')">Zurück</div>';
+ h+='<h1 style="font-family:Orbitron,monospace;font-size:22px;margin-bottom:4px">🔥 Challenge</h1><p style="color:var(--t2);font-size:12px;margin-bottom:18px">'+fmtD(s.date)+' · '+s.n+' Häppchen</p>';
+ s.exercises.forEach(function(e){h+='<div class="card" style="margin-bottom:10px"><div style="font-weight:700;font-size:14px;margin-bottom:8px">'+e.name+' <span style="color:var(--t2);font-weight:500;font-size:11px">'+e.muscle+'</span></div>';
+  e.sets.forEach(function(st,i){h+='<div style="display:flex;gap:12px;font-size:13px;margin-bottom:5px"><span style="color:var(--t3);width:46px">Satz '+(i+1)+'</span><span>'+st.reps+(CH_PM[e.name]&&CH_PM[e.name].u==='s'?' Sek.':' Wdh.')+'</span>'+(st.weight?'<span>'+st.weight.replace('.',',')+' kg</span>':'')+'<span>'+(st.rpe==='easy'?'😎':st.rpe==='hard'?'😮‍💨':'✓')+'</span></div>';});
+  h+='</div>';});
+ var el=document.getElementById('hdet');el.innerHTML=h;el.classList.remove('hidden');
+}
+function chGo(s){document.querySelectorAll('.screen').forEach(function(x){x.classList.remove('active');});document.getElementById('s-'+s).classList.add('active');render(s);}
 
 // ══════════ Gewichte & Fortschritt ══════════
 function chRound(p,w){if(p.eq==='KH')return Math.max(1,Math.round(w));var m=p.eq==='LH'?20:10;return Math.max(m,r25(w));}
@@ -2065,8 +2121,7 @@ function chAddXp(n){
  for(var L=b+1;L<=a;L++){var tier=L%5===0?'gold':'silber';ch.boxes.push(tier);chEvs.push({t:'lvl',L:L,tier:tier});}
 }
 function chMult(g){
- var m=1,why=[];var done=ch.q?ch.q.items.filter(function(i){return i.done;}).length:0;
- var chain=Math.min(done,6)*.1*(chModIs('combo')?2:1);if(chain>0){m*=1+chain;why.push('Kette ×'+(1+chain).toFixed(1).replace('.',','));}
+ var m=1,why=[];var hm=chHotMul();if(hm>1){m*=hm;why.push('Hitze');}
  if(chModIs('xp15')){m*=1.5;why.push('Power-Tag ×1,5');}
  if(chModIs('grp')&&ch.mod.g===g){m*=3;why.push('Fieber ×3');}
  if(ch.boost>Date.now()){m*=2;why.push('Boost ×2');}
@@ -2082,11 +2137,13 @@ function chDone(feel,ev){
  chUndoSnap=JSON.stringify(ch);
  var p=CH_PM[it.ex],L=chLoad(it.ex),t=chToday();
  var before=chWeekCounts()[it.g];
- var M=chMult(it.g);
+ var M=chMult(it.g);var hn=chHotN();
  it.done=true;it.feel=feel;it.r=L.r;it.w=L.w;
  ch.log.push({t:Date.now(),d:t,ex:it.ex,g:it.g,r:L.r,w:L.w||0,feel:feel});
  ch.lastEx[it.g]=it.ex;ch.stats.snacks++;
  chProgress(it.ex,feel);
+ if(hn>=3&&hn>(ch.hot||0))chEvs.push({t:'ban',x:'🔥 '+hn+'× am Stück – du läufst heiß!',c:'#ff7a00'});
+ ch.hot=hn;ch.lastT=Date.now();
  var base=p.hv?20:12;var crit=null,cr=Math.random(),cc=chModIs('crit')?.3:.12;
  if(cr<.03)crit=5;else if(cr<cc)crit=2;
  var gain=Math.round(base*M.m*(crit||1));
@@ -2150,30 +2207,30 @@ function rChallenge(){
  var own=CH_C.filter(function(x){return ch.cards[x.id];}).length;
  h+='<div class="ch-row"><div class="ch-pill'+(ch.boxes.length?' hot':'')+'" onclick="chOpenBox()">🎁 Kisten'+(ch.boxes.length?'<span class="ch-badge">'+ch.boxes.length+'</span>':'')+'</div>';
  h+='<div class="ch-pill" onclick="chShowCards()">🃏 Sammlung '+own+'/'+CH_C.length+'</div></div>';
+ h+=chHeatHtml();
  if(ch.mod&&ch.mod.day===t)h+='<div class="ch-mod">'+ch.mod.x+'</div>';
- if(ch.comeback)h+='<div class="ch-mod" style="border-color:#00ff9f">🪽 Comeback-Modus: ×1,5 XP bis deine Flamme wieder brennt</div>';
+ if(ch.comeback)h+='<div class="ch-mod" style="border-color:#00ff9f">🪽 Comeback ×1,5 XP</div>';
  if(cur){
   var p=CH_PM[cur.ex],L=chLoad(cur.ex),G=CH_GM[cur.g],M=chMult(cur.g),idx=q.items.indexOf(cur);
   h+='<div class="ch-now'+(p.hv?' hv':'')+'"><div class="ch-now-top"><span class="ch-jetzt">JETZT</span><span class="ch-cnt">'+(cur.bonus?'⭐ BONUS':'HÄPPCHEN '+(idx+1)+'/'+q.n)+'</span></div>';
   h+='<span class="ch-chip">'+G.i+' '+G.n+' · '+c[cur.g]+'/'+CH_GOLD+'</span>';
   h+='<div class="ch-ex" style="margin-top:8px">'+p.n+'</div><div class="ch-big">'+chTargetHtml(p,L)+'</div>';
-  if(p.hv)h+='<div class="ch-warm">🔥 Erst aufwärmen: 1× 8 Wdh. mit '+String(chRound(p,L.w*.5)).replace('.',',')+' kg, dann los.</div>';
-  h+='<div class="ch-tip">💡 '+p.tip+'</div>';
-  h+='<div class="ch-xpp">≈ +'+Math.round((p.hv?20:12)*M.m)+' XP'+(M.why.length?' · '+M.why.join(' · '):'')+'</div>';
+  if(p.hv&&chHeat()===0)h+='<div class="ch-warm">🔥 Aufwärmen: 8× '+String(chRound(p,L.w*.5)).replace('.',',')+' kg</div>';
+  h+='<div class="ch-xpp">+'+Math.round((p.hv?20:12)*M.m)+' XP</div>';
   h+='<div class="ch-btns"><button class="ch-b ch-hard" onclick="chDone(\'schwer\',event)">😮‍💨<span>Schwer</span></button><button class="ch-b ch-go" onclick="chDone(\'passt\',event)">✓ GESCHAFFT</button><button class="ch-b ch-easy" onclick="chDone(\'leicht\',event)">😎<span>Leicht</span></button></div>';
   h+='<div class="ch-links"><span onclick="chSwap()">🔀 Andere Übung</span><span onclick="chLater()">⏭ Später</span></div></div>';
  } else {
-  h+='<div class="ch-now ch-donecard"><div class="e">🏆</div><h2>TAGESZIEL GESCHAFFT</h2><p>Mehr musst du heute nicht. Willst du trotzdem mehr XP?</p><button class="btn bp bf" onclick="chBonus()">⭐ Bonus-Häppchen holen</button></div>';
+  h+='<div class="ch-now ch-donecard"><div class="e">🏆</div><h2>TAGESZIEL GESCHAFFT</h2><button class="btn bp bf" onclick="chBonus()">⭐ Bonus-Häppchen holen</button></div>';
  }
  h+='<div class="ch-day">';
  q.items.forEach(function(i){h+='<div class="ch-dot'+(i.done?' d':i===cur?' c':'')+(i.bonus?' b':'')+'">'+(i.done?'✓':CH_GM[i.g].i)+'</div>';});
- h+='</div><div class="ch-dayinfo">Tagesziel '+Math.min(dn,q.n)+'/'+q.n+' · '+(ch.streakDay===t?'🔥 Flamme ist heute sicher':'<b>Noch '+Math.max(0,CH_MIN-dc)+' Häppchen, dann ist deine Flamme sicher</b>')+'</div>';
- h+='<div class="ch-mob'+(q.mobDone?' done':'')+'"><div style="font-size:22px">🌀</div><div class="t"><b>'+q.mob+'</b>Bonus-Mobility · '+(CH_MOB.filter(function(m){return m.n===q.mob;})[0]||{t:''}).t+'</div><button onclick="chMobDone(event)">'+(q.mobDone?'✓':'+XP')+'</button></div>';
+ h+='</div><div class="ch-dayinfo">'+(ch.streakDay===t?'🔥 Flamme sicher':'<b>🔥 Noch '+Math.max(0,CH_MIN-dc)+' bis die Flamme sicher ist</b>')+'</div>';
+ h+='<div class="ch-mob'+(q.mobDone?' done':'')+'"><div style="font-size:22px">🌀</div><div class="t"><b>'+q.mob+'</b>'+(CH_MOB.filter(function(m){return m.n===q.mob;})[0]||{t:''}).t+'</div><button onclick="chMobDone(event)">'+(q.mobDone?'✓':'+XP')+'</button></div>';
  var left=6-chDow(t);
  h+='<div class="ch-sec"><h4>DEINE WOCHE</h4><span>'+(left?'Abrechnung in '+left+(left===1?' Tag':' Tagen'):'Heute Nacht ist Abrechnung!')+'</span></div><div class="ch-grid">';
  CH_G.forEach(function(g){var v=c[g.k],cls=v>=CH_GOLD?' gd':v>=CH_GREEN?' ok':'';
   h+='<div class="ch-gt'+cls+(chPopG===g.k?' pop':'')+'"><div class="h">'+g.i+' '+g.n+'<span>'+v+'/'+CH_GOLD+'</span></div><div class="ch-gb"><div class="ch-gf" data-w="'+Math.min(100,v/CH_GOLD*100)+'"></div><div class="ch-gm"></div></div></div>';});
- h+='</div><div class="ch-dayinfo" style="margin-top:-6px">Strich = 4 Sätze (Muskel gehalten) · voll = 6 (Gold, Aufbau)</div>';
+ h+='</div>';
  h+='<div class="ch-stats"><div class="ch-st"><b>'+ch.stats.snacks+'</b><span>Häppchen</span></div><div class="ch-st"><b>'+ch.best+'</b><span>Beste Serie</span></div><div class="ch-st"><b>'+ch.stats.goldWeeks+'</b><span>Gold-Wochen</span></div></div>';
  h+='</div>';
  el.innerHTML=h;chPopG=null;
@@ -2224,7 +2281,7 @@ function chPickCard(rar){var l=CH_C.filter(function(c){return c.r===rar;});var c
 function chRollMod(){
  var c=chWeekCounts();var g=CH_G.slice().sort(function(a,b){return c[a.k]-c[b.k]+Math.random()*2-1;})[0];
  var m=chRnd([{id:'xp15',x:'⚡ Power-Tag: alle XP ×1,5'},{id:'crit',x:'🎯 Glückstag: 30 % Chance auf kritische Treffer'},{id:'box',x:'🎁 Kistenregen: doppelte Kisten-Chance'},
-  {id:'grp',x:'🔥 '+g.n+'-Fieber: ×3 XP für '+g.n,g:g.k},{id:'combo',x:'🔗 Ketten-Tag: Ketten-Bonus doppelt'}]);
+  {id:'grp',x:'🔥 '+g.n+'-Fieber: ×3 XP für '+g.n,g:g.k},{id:'combo',x:'🔥 Hitze-Tag: Hitze-Bonus doppelt'}]);
  m.day=chToday();return m;
 }
 function chOpenBox(){
