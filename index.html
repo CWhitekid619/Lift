@@ -1790,7 +1790,7 @@ body.lean .tab[data-s="fortschritt"]{order:1}body.lean .tab-ch{order:2}body.lean
 .ch-hb{height:12px;border-radius:7px;background:#1a1a30;margin-top:8px;overflow:hidden;position:relative}
 .ch-hf{height:100%;border-radius:7px;transition:width 1s linear,background 1.5s;position:relative;overflow:hidden;box-shadow:0 0 12px rgba(255,120,0,.6)}
 .ch-heat.cold .ch-hf{box-shadow:none}
-.ch-ht{font-size:10px;color:var(--t2);margin-top:6px;text-align:right;font-variant-numeric:tabular-nums}
+.ch-ht{font-size:10px;color:var(--t2);margin-top:6px;text-align:right;font-variant-numeric:tabular-nums}.ch-ht:empty{display:none}
 .ch-hf::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);background-size:60% 100%;background-repeat:no-repeat;animation:chHeatShine 1.6s linear infinite}
 .ch-heat.hot{border-color:#ff7a00;box-shadow:0 0 18px rgba(255,90,0,.3)}
 .ch-heat.hot .ch-fl{animation:chFlick .5s infinite alternate;display:inline-block}
@@ -2374,7 +2374,7 @@ function chHeatSt(){
  var bg=h>.66?'linear-gradient(90deg,#ffc400,#ff7a00,#ff2d55)':h>.33?'linear-gradient(90deg,#ffc400,#ff7a00)':'linear-gradient(90deg,#7dd3fc,#ffc400)';
  return{h:h,hot:h>0,lab:'<span class="ch-fl">'+(h>0?'🔥':'🧊')+'</span> '+st[0]+(n>1?' · '+(n-1)+'× AM STÜCK':''),col:st[1],
   m:chBossIs('warden')?'🧊 AUS':'+'+m+' Mult',w:h*100,bg:bg,
-  t:chBossIs('warden')?'Boss Iron Warden: Die Hitze bringt heute keinen Bonus':h>0?'🧊 kalt in '+Math.floor(l/60)+':'+String(l%60).padStart(2,'0'):'Mach ein Häppchen, um aufzuheizen'};
+  t:chBossIs('warden')?'Boss Iron Warden: Die Hitze bringt heute keinen Bonus':h>0?'':'Mach ein Häppchen, um aufzuheizen'};
 }
 function chHeatHtml(){
  var HS=chHeatSt();
@@ -3301,7 +3301,7 @@ var CH_INFO={
  packs:['⏳','SANDUHREN',['Jedes Häppchen füllt eine Sanduhr.',CH_HG+' Sanduhren = ein Booster Pack mit 3 Karten.','Eine Karte aus jedem Pack darfst du direkt ins Deck legen.','Jedes Pack und jede Kiste gibt 1 Pack-Punkt 🌠. Damit holst du dir im Album eine Wunschkarte.']],
  kisten:['🎁','KISTEN & PACKS',['Tippen → 3× auf die Kiste → Karten umdrehen.','Du bekommst sie: jeden Tag die Tagesbox, '+CH_HG+' Sanduhren (Booster Pack), jedes 5. Level (Gold), 7 Tage Serie (Gold), ganze Woche Gold (Legendär). Boss besiegt (Boss-Kiste), Set komplett (Gold). Packs gibt es auch im Shop.','Drin: Karten, manchmal Münzen 🪙, Joker ❄️, XP oder ein Boost. Doppelte Karten geben Münzen.']],
  flamme:['🔥','DEINE SERIE',['Mach 3 Häppchen am Tag → die Flamme wächst um 1.','Verpasst du einen Tag, rettet dich ein Joker ❄️ (Zahl darunter). Ohne Joker gibt es Minuspunkte.','Joker gibt es jede Woche gratis (je nach Härte), aus Kisten und im Shop.']],
- hitze:['🌡️','HITZE',['Nach jedem Häppchen ist die Leiste voll und läuft in 15 Min. langsam leer. Darunter siehst du, wann du kalt bist.','Machst du das nächste Häppchen, solange sie nicht leer ist, steigt dein Bonus: +1 Mult, +2 Mult … bis +8 Mult.','Warm trainieren ist auch besser für die Muskeln.']],
+ hitze:['🌡️','HITZE',['Nach jedem Häppchen ist die Leiste voll und läuft in 15 Min. langsam leer.','Machst du das nächste Häppchen, solange sie nicht leer ist, steigt dein Bonus: +1 Mult, +2 Mult … bis +8 Mult.','Warm trainieren ist auch besser für die Muskeln.']],
  bonus:['🎲','TAGESBONUS',['Kommt jeden Tag zufällig aus der Tagesbox und gilt nur heute.','Power-Tag = ×1,5 Mult · Glückstag = öfter KRITISCH · Sanduhr-Regen = doppelte Sanduhren · Fieber = ×3 Mult für eine Muskelgruppe · Hitze-Tag = doppelter Hitze-Bonus.']]};
 function chInfo(k){
  if(chBusy())return;var I=CH_INFO[k];var x=document.getElementById('chx');x.className='chx';
