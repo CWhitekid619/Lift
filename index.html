@@ -2005,6 +2005,51 @@ details.prc summary{cursor:pointer;list-style:none}details.prc summary::-webkit-
 @keyframes chDeal{0%{opacity:0;transform:translateY(60px) rotate(-12deg) scale(.6)}100%{opacity:1;transform:none}}
 @keyframes chWob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @keyframes chWobBig{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-6px) rotate(-3deg)}75%{transform:translateY(-6px) rotate(3deg)}}
+/* Real Life */
+#chx{overflow-x:hidden}
+.ci-q{z-index:1;font-size:18px;font-weight:800;text-align:center;margin:14px 0 6px;max-width:340px}
+.ci-tk{z-index:1;display:flex;gap:14px;font-size:12px;color:var(--t2);margin-bottom:8px}.ci-tk b{color:#ffc400}
+.ci-opts{z-index:1;width:100%;max-width:340px;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
+.ci-o{display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px 8px;border-radius:14px;background:#151526;border:1px solid #2e2e4a;color:#fff;font-weight:800;font-size:14px;cursor:pointer;animation:chDeal .4s both}
+.ci-o span{font-size:30px}.ci-o small{font-size:10px;color:var(--t2);font-weight:600;text-align:center}
+.ci-o.good{border-color:rgba(59,255,143,.6);background:linear-gradient(170deg,#0b2a1c,#121222)}.ci-o.bad{border-color:rgba(255,61,90,.5)}
+.ci-o:active{transform:scale(.95)}
+.ci-opts .ci-o:nth-child(3):last-child{grid-column:span 2}
+.ci-wt{z-index:1;display:flex;align-items:center;gap:8px;margin:16px 0}.ci-wt input{width:110px;font-size:28px;font-weight:800;text-align:center;background:#151526;border:1px solid #2e2e4a;color:#fff;border-radius:12px;padding:8px}
+.ci-wt>button{width:44px;height:44px;border-radius:12px;background:#22223a;border:1px solid #3a3a5c;color:#fff;font-size:22px;font-weight:800}.ci-wt span{color:var(--t2);font-weight:700}
+.ci-wt.sm{margin:10px 0 0}.ci-wt.sm input{flex:1;width:auto;font-size:16px;padding:9px}.ci-wt.sm .btn{white-space:nowrap;width:auto;flex:none;padding:10px 14px;margin:0}
+.wo-g{display:flex;flex-direction:column;gap:7px;margin-top:12px}
+.wo-r{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;background:#121222;border:1px solid #23233a}
+.wo-r.on{border-color:var(--ac);background:rgba(0,245,255,.07)}
+.wo-r .n{flex:1;font-weight:700;font-size:14px;cursor:pointer}
+.wo-r button{width:36px;height:34px;border-radius:9px;background:#22223a;border:1px solid #3a3a5c;color:#fff;font-size:18px;font-weight:800}
+.wo-r button.add{width:auto;padding:0 12px;font-size:12px;color:var(--t2)}
+.wo-r b{font-family:'Orbitron',monospace;width:26px;text-align:center}
+.lg-l{z-index:1;width:100%;max-width:360px;display:flex;flex-direction:column;gap:8px;margin:8px 0}
+.lg-o{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:#121222;border:1px solid #23233a;cursor:pointer}
+.lg-o .e{font-size:28px}.lg-o b{display:block;font-size:14px;color:var(--c)}.lg-o small{font-size:11px;color:var(--t2);line-height:1.35}
+.lg-o.sel{border-color:var(--c);box-shadow:0 0 14px color-mix(in srgb,var(--c) 40%,transparent)}.lg-o.lock{opacity:.45}
+.ch-liga{display:flex;justify-content:space-between;align-items:center;margin:-4px 0 12px;padding:7px 12px;border-radius:11px;background:#111120;border:1px solid color-mix(in srgb,var(--c) 45%,#23233a);font-size:11px;font-weight:800;cursor:pointer}
+.ch-liga span:first-child{color:var(--c)}.ch-liga span:last-child{color:var(--t2);font-weight:600}
+.rl{margin-bottom:14px;padding:10px;border-radius:14px;background:#0f1418;border:1px solid #1f3a2c;display:flex;flex-direction:column;gap:8px}
+.rl-row{display:flex;gap:8px}
+.rl-t{flex:1;padding:7px 9px;border-radius:10px;background:#121c1a;border:1px solid #1f3a2c;cursor:pointer}
+.rl-t .r{display:flex;justify-content:space-between;font-size:11px;font-weight:800}.rl-t .r b{color:#3bff8f;font-variant-numeric:tabular-nums}
+.rl-t .b{height:6px;border-radius:4px;background:#1a2a24;margin-top:5px;overflow:hidden}.rl-t .b div{height:100%;border-radius:4px;background:linear-gradient(90deg,#00c2ff,#3bff8f)}
+.rl-t.has{border-color:#ffc400;box-shadow:0 0 12px rgba(255,196,0,.25)}.rl-t.has .r b{color:#ffc400}
+.rl-info{display:flex;justify-content:space-around;font-size:11px;color:var(--t2)}.rl-info b{color:var(--tx)}
+.rl-info.sl{justify-content:center;color:var(--tx);font-weight:700}.rl-info.sl b{color:#3bff8f}
+.rl-b{flex:1;padding:10px 6px;border-radius:11px;background:#151526;border:1px solid #2e2e4a;color:#fff;font-weight:800;font-size:12px;cursor:pointer}
+.rl-b.wo{border-color:var(--ac)}.rl-b small{color:var(--t2);font-weight:700}.rl-b.off{opacity:.45}.rl-b:active{transform:scale(.96)}
+.ch-dk.off{filter:grayscale(1) brightness(.45)}
+.ch-dk.deb{border:2px solid #ff3d5a;background:repeating-linear-gradient(135deg,#2a0d14 0 6px,#1a0a10 6px 12px);box-shadow:0 0 10px rgba(255,61,90,.45);cursor:pointer}
+.ch-dk.lk{font-size:16px;opacity:.6}
+.dk-b{position:absolute;top:-6px;left:-4px;font-style:normal;font-size:8px;font-weight:900;background:#000;border:1px solid #444;border-radius:6px;padding:1px 3px;z-index:4}
+.dk-m{position:absolute;bottom:1px;right:3px;font-style:normal;font-size:10px;z-index:4}
+.chx-mc .ms{position:absolute;bottom:2px;left:4px;font-size:11px;text-shadow:0 0 4px #000}
+.pg-rl{display:grid;grid-template-columns:repeat(14,1fr);gap:3px}.pg-rl i{aspect-ratio:1;border-radius:4px;background:#2a2a40;font-style:normal;font-size:8px;display:flex;align-items:center;justify-content:center}
+.pg-rl i.c{background:#00b386}.pg-rl i.x{background:#5b2a3a}.pg-rl i.m{background:#1a1a2a;outline:1px dashed #3a3a5c}
+.pg-wt{width:100%;height:110px;display:block}
 </style>
 <div id="chx" class="chx hidden"></div>
 <div id="ch-bans"></div>
@@ -2260,12 +2305,25 @@ var CH_ITEMS={
 var CH_DECK=5,CH_HG=8,CH_GOALB=[100,130,160,200,250,300,360];
 // Ziel-Score passt sich an: typische Punkte pro Häppchen (Median der letzten 14 Tage) × Häppchen im Tagesplan × Tagesfaktor.
 // So bleibt das Ziel schwer, egal wie stark das Deck wird. CH_GOALB ist die Untergrenze (steigt leicht mit dem Level).
-var CH_GOALF=[1.05,1.1,1.15,1.2,1.25,1.3,1.2],CH_GOALD=7,CH_GOALMIN=8,CH_COINCAP=10;
+var CH_GOALH=2,CH_GOALK=1,CH_GOALF=[1.05,1.1,1.15,1.2,1.25,1.3,1.2],CH_GOALD=7,CH_GOALMIN=8,CH_COINCAP=10;
+// ══ Real Life: Check-in am Morgen, Tickets, Debuffs, Deck-Plätze, Workout, Gewicht ══
+var CH_SLOT0=3,CH_SLOTS=[{n:4,clean:7,stp:0},{n:5,clean:14,stp:14}]; // Platz 4: 7 saubere Tage · Platz 5: 14 saubere Tage + 14 Tage ≥ 7.000 Schritte
+var CH_TKN=7,CH_TKMAX=2; // 7 saubere Tage = 1 Ticket, höchstens 2 auf Vorrat
+var CH_DEB={crash:{e:'🍦',n:'Sugar Crash',d:'×0,75 Mult',k:'x',v:.75},bloat:{e:'🍿',n:'Salt Bloat',d:'Chips ×0,75',k:'c',v:.75},rust:{e:'🦴',n:'Rusty Frame',d:'×0,8 Mult',k:'x',v:.8}};
+var CH_STEPS={lo:{e:'🛋️',n:'Couch Legs',d:'Heute ×0,8 Mult',t:'unter 7.000'},ok:{e:'🚶',n:'Pflicht erfüllt',d:'Kein Bonus, kein Malus',t:'7.000 – 9.999'},hi:{e:'🏃',n:'Walker',d:'Heute +3 Mult und +1 Sanduhr beim ersten Häppchen',t:'10.000 oder mehr'}};
+var CH_FOOD={clean:{e:'🥗',n:'Sauber'},s:{e:'🍦',n:'Süßes'},a:{e:'🍿',n:'Salziges'},sa:{e:'🍦🍿',n:'Beides'}};
+// Ligen (Schwierigkeit). Nächste Liga: CH_LIGAW Bosse in der höchsten freigeschalteten Liga besiegen.
+var CH_LIGA=[{n:'Bronze League',e:'🥉',c:'#e08a3c',g:1,d:'Normale Regeln.'},
+ {n:'Silver League',e:'🥈',c:'#cfd8ea',g:1.3,d:'Ziel-Score ×1,3.'},
+ {n:'Gold League',e:'🥇',c:'#ffc400',g:1.6,per:.35,d:'Ziel-Score ×1,6. Neue Karten sind oft vergänglich: nach 6 Tagen sind sie weg.'},
+ {n:'Black League',e:'🖤',c:'#ff3df2',g:2,per:.35,rent:.3,d:'Ziel-Score ×2. Neue Karten sind oft vergänglich (6 Tage) oder kosten Miete (1 🪙 pro Tag).'}];
+var CH_LIGAW=2,CH_PERD=6,CH_ODF=3; // Overdrive-Stufen: 3×, 9×, 27× Ziel
 var CH_TITLES=['Couch Potato','Gym Tourist','Rusty Rookie','Set Collector','Pump Novice','Iron Squire','Sweat Knight','Pull-Up Warrior','Gains Hunter','Juggernaut in Training','Iron Juggernaut','Pump Champion','Living Legend'];
 
 // ══════════ CHALLENGE: Zustand ══════════
 function chStarter(){var l=CH_C.filter(function(c){return c.r==='c'&&c.fx[0].t;});return {id:l[Math.floor(Math.random()*l.length)].id,n:0,sv:0};}
-function chDef(){var st=chStarter();var cards={};cards[st.id]=1;return{v:3,xp:0,log:[],loads:{},ok:{},streak:0,best:0,streakDay:null,freezes:1,fwk:null,boxes:[],cards:cards,pity:0,
+function chRlDef(){return {ci:null,sw:0,sa:0,tS:0,tA:0,clean:0,stp:0,slots:CH_SLOT0,deb:[],eff:null,wo:[],wt:{},urge:null,cheats:[],mon:null,hist:{},used:{s:0,a:0}};}
+function chDef(){var st=chStarter();var cards={};cards[st.id]=1;return{v:4,rl:chRlDef(),liga:0,ligaMax:0,mast:{},resetD:null,xp:0,log:[],loads:{},ok:{},streak:0,best:0,streakDay:null,freezes:1,fwk:null,boxes:[],cards:cards,pity:0,
  lastCheck:null,start:null,q:null,lastT:0,hot:0,dailyBox:null,mod:null,set:{hard:2,rack:true,snd:true},boost:0,comeback:false,wkGold:{},lastEx:{},
  deck:[st],coins:5,hg:0,sc:null,shop:null,nx:[],deckDay:null,intro:true,
  vars:{},pp:0,wish:null,ms:null,wp:null,setsDone:{},albumDone:false,ttl:null,hs:{day:0,dayD:null,wk:0,wkD:null},wkp:null,bossSeen:null,lastBoss:null,intro2:false,
@@ -2293,6 +2351,16 @@ function chMigrate3(){
  ch.intro2=true;ch.v=3;
 }
 chMigrate3();
+// v3 → v4: Neustart bei 0 (Wunsch des Users). Bleiben: Einstellungen, Trainingsgewichte, Verlauf (log/days), gesehene Hinweise.
+function chMigrate4(){
+ if(ch.v>=4)return;
+ var keep={set:ch.set,loads:ch.loads,ok:ch.ok,lastEx:ch.lastEx,log:ch.log,days:ch.days,seen:ch.seen,start:ch.start,lastCheck:ch.lastCheck,fwk:ch.fwk};
+ ch=chDef();Object.keys(keep).forEach(function(k){if(keep[k]!=null)ch[k]=keep[k];});
+ ch.resetD=chToday();ch.rl.ci=chAddDays(ch.resetD,-1);ch.intro=false;ch.intro4=true;ch.v=4;
+}
+chMigrate4();
+ch.rl=Object.assign(chRlDef(),ch.rl||{});ch.mast=ch.mast||{};
+if(!ch.rl.ci)ch.rl.ci=chAddDays(chToday(),-1);
 if(!ch.days)chDaysFromLog();
 if(!ch.seen){ch.seen={};if(ch.stats.boxes)ch.seen.kisten=1;if(ch.stats.wps)ch.seen.wonder=1;if(ch.stats.snacks)ch.seen.hitze=1;if(ch.stats.ms)ch.seen.missionen=1;}
 ch.deck=ch.deck.filter(function(d){return CH_CM[d.id];});
@@ -2341,10 +2409,14 @@ function chTitle(L){return CH_TITLES[Math.min(L-1,CH_TITLES.length-1)];}
 function chModIs(id){return ch.mod&&ch.mod.day===chToday()&&ch.mod.id===id;}
 function chSp(k){var n=0;ch.deck.forEach(function(d){CH_CM[d.id].fx.forEach(function(e){if(e.sp===k)n+=e.sa||1;});});return n;}
 // Deck-Plätze: Shadow-Karten belegen keinen Platz (max. +3)
-function chDeckCap(){return CH_DECK+Math.min(3,ch.deck.filter(function(d){return d.v==='s';}).length);}
+// Grund-Plätze kommen aus dem echten Leben (ch.rl.slots), Debuffs blockieren Plätze
+function chDebAct(){var t=chToday();return (ch.rl.deb||[]).filter(function(b){return b.until>=t;});}
+function chDeckCap(){return Math.max(1,(ch.rl.slots||CH_SLOT0)+Math.min(3,ch.deck.filter(function(d){return d.v==='s';}).length)-chDebAct().length);}
+function chActDeck(){return ch.deck.slice(0,chDeckCap());}
+function chLg(){return CH_LIGA[ch.liga||0];}
 function chDeckFull(){return ch.deck.length>=chDeckCap();}
 // Boss-Tag: jeder Sonntag hat einen Boss, der Reihe nach
-function chBossK(t){t=t||chToday();if(chDow(t)!==6)return null;return CH_BOSSK[Math.floor(new Date(t+'T12:00:00').getTime()/6048e5)%CH_BOSSK.length];}
+function chBossK(t){if(chNoBoss)return null;t=t||chToday();if(chDow(t)!==6)return null;return CH_BOSSK[Math.floor(new Date(t+'T12:00:00').getTime()/6048e5)%CH_BOSSK.length];}
 function chBossIs(k){return chBossK()===k;}
 function chNextBoss(){var t=chToday();for(var i=0;i<7;i++){var d=chAddDays(t,i),k=chBossK(d);if(k)return {k:k,in:i};}return null;}
 // Varianten
@@ -2536,15 +2608,26 @@ function chXpMul(){var m=1;if(chModIs('xp15'))m*=1.5;if(ch.boost>Date.now())m*=2
 function chN(v){return String(Math.round(v*100)/100).replace('.',',');}
 function chBig(n){return Math.round(n).toLocaleString('de-DE');}
 function chFmtM(m){return m>=1000?chBig(m):chN(m>=100?Math.round(m*10)/10:m);}
-function chSnacksToday(){var t=chToday();return ch.log.filter(function(l){return l.g&&l.d===t;});}
+function chSnacksToday(){var t=chToday();return ch.log.filter(function(l){return l.g&&l.d===t&&!l.wo;});}
 function chAlbumN(){return CH_C.filter(function(c){return ch.cards[c.id];}).length;}
-function chSnackMed(t){var from=chAddDays(t,-CH_GOALD),a=[];ch.log.forEach(function(l){if(l.pts&&l.d>=from&&l.d<t)a.push(l.pts);});if(a.length<CH_GOALMIN)return 0;a.sort(function(x,y){return x-y;});return a[Math.floor(a.length/2)];}
-function chScDay(){var t=chToday();if(!ch.sc||ch.sc.d!==t){var L=chLvl(ch.xp).L,dw=chDow(t);var n=ch.q&&ch.q.day===t?ch.q.n:5;
- var b=Math.max(CH_GOALB[dw]*(1+.1*(L-1)),chSnackMed(t)*n*CH_GOALF[dw]);if(chBossK(t)==='wall')b*=2;
+function chSnackMed(t){var from=chAddDays(t,-CH_GOALD),a=[];if(ch.resetD&&from<ch.resetD)from=ch.resetD;ch.log.forEach(function(l){if(l.pts&&l.d>=from&&l.d<t)a.push(l.pr||l.pts);});if(a.length<CH_GOALMIN)return 0;a.sort(function(x,y){return x-y;});return a[Math.floor(a.length/2)];}
+// Erwartete Punkte des heutigen Tagesplans mit dem Deck auf den verdienten Plätzen (Debuffs zählen nicht: die blockierte Karte zählt im Ziel mit),
+// mit mäßiger Hitze, ohne Boss, Tagesbonus, Comeback, Boost, Einweg-Gegenstände und ohne Real-Life-Malus.
+var chNoBoss=false;
+function chGoalCalc(){
+ var t=chToday(),items=ch.q&&ch.q.day===t?ch.q.items.filter(function(i){return !i.bonus;}):null;if(!items||!items.length)return 0;
+ var sv={deck:ch.deck,hot:ch.hot,lastT:ch.lastT,nx:ch.nx,deb:ch.rl.deb,eff:ch.rl.eff,slots:ch.rl.slots,mod:ch.mod,cb:ch.comeback,boost:ch.boost},sum=0,now=Date.now();
+ try{chNoBoss=true;ch.rl.deb=[];ch.rl.eff=null;ch.nx=[];ch.mod=null;ch.comeback=false;ch.boost=0;ch.deck=ch.deck.slice(0,chDeckCap());
+  items.forEach(function(it,i){var h=Math.min(i,CH_GOALH);ch.hot=h-1;ch.lastT=h?now-60000:0;sum+=chScore(it,'passt',true).pts;});}
+ finally{chNoBoss=false;ch.deck=sv.deck;ch.hot=sv.hot;ch.lastT=sv.lastT;ch.nx=sv.nx;ch.rl.deb=sv.deb;ch.rl.eff=sv.eff;ch.rl.slots=sv.slots;ch.mod=sv.mod;ch.comeback=sv.cb;ch.boost=sv.boost;}
+ return sum;
+}
+function chScDay(){var t=chToday();if(!ch.sc||ch.sc.d!==t){if(!ch.q||ch.q.day!==t)chEnsureDay();var L=chLvl(ch.xp).L,dw=chDow(t);
+ var b=Math.max(CH_GOALB[dw]*(1+.1*(L-1)),chGoalCalc()*CH_GOALF[dw]*CH_GOALK);if(chBossK(t)==='wall')b*=2;b*=chLg().g;
  var r=b<1000?10:Math.pow(10,Math.floor(Math.log10(b))-1);ch.sc={d:t,pts:0,gb:Math.round(b/r)*r,hit:false};}return ch.sc;}
-function chGoalCur(){var s=chScDay(),g=chGoalNow();return s.hit?g*Math.pow(2,(s.od||0)+1):g;}
+function chGoalCur(){var s=chScDay(),g=chGoalNow();return s.hit?g*Math.pow(CH_ODF,(s.od||0)+1):g;}
 function chOdCheck(){var s=chScDay();if(!s.hit)return;var g=chGoalNow();
- while(s.pts>=g*Math.pow(2,(s.od||0)+1)){s.od=(s.od||0)+1;var k=s.od;ch.coins+=3;ch.pp=(ch.pp||0)+2;if(k%2===0)ch.boxes.push('pack');
+ while(s.pts>=g*Math.pow(CH_ODF,(s.od||0)+1)){s.od=(s.od||0)+1;var k=s.od;ch.coins+=3;ch.pp=(ch.pp||0)+2;if(k%2===0)ch.boxes.push('pack');
   chEvs.push({t:'ban',x:'⚡ OVERDRIVE '+k+'! +3 🪙 +2 🌠'+(k%2===0?' + Booster Pack':''),c:'#ff3df2'});if(k===1)chMsTick('od');}}
 function chGoalNow(){var g=chScDay().gb*(1-Math.min(50,chSp('goal'))/100);var r=g<1000?10:50;return Math.max(10,Math.round(g/r)*r);}
 function chSellV(d){return Math.floor(CH_PRICE[CH_CM[d.id].r]/2)+(d.sv||0)+({f:2,h:3,p:5,s:5}[d.v]||0);}
@@ -2554,7 +2637,7 @@ function chCtx(it,feel){
  return {g:it.g,p:p,hv:!!p.hv,eq:p.eq,sec:p.u==='s',reps:L.r,feel:feel,hot:chBossIs('warden')?0:chHotN(),hotN:chHotN(),cap:chDeckCap(),n:td.length+1,gs:gs,gn:Object.keys(gs).length,
   restd:td.length===0&&ch.log.length>0&&chDayCount(chAddDays(t,-1))===0,cb:ch.comeback,h:new Date().getHours(),dow:chDow(t),
   wkG:wc[it.g],goldN:CH_G.filter(function(g){return wc[g.k]>=CH_GOLD;}).length,streak:ch.streak,coins:ch.coins,frz:ch.freezes,
-  L:chLvl(ch.xp).L,album:chAlbumN(),deckN:ch.deck.length,hit:chScDay().hit};
+  L:chLvl(ch.xp).L,album:chAlbumN(),deckN:chActDeck().length,hit:!!(ch.sc&&ch.sc.d===t&&ch.sc.hit)};
 }
 function chCond(e,x,pos){
  var a=e.a,g=x.g;
@@ -2601,10 +2684,11 @@ function chScore(it,feel,dry){
  st.push({k:'base',lab:p.hv?'💪 Schwere Übung':'💪 Übung',chips:chips,mult:mult});
  var ha=x.hot*(chModIs('combo')?2:1);if(bk==='golem')ha/=2;if(ha){mult+=ha;st.push({k:'ex',lab:'🔥 Hitze',t:'m',v:ha,chips:chips,mult:mult});}
  function ex(lab,t,v){if(t==='c')chips+=v;else if(t==='m')mult+=v;else if(t==='x')mult*=v;else coins+=v;st.push({k:'ex',lab:lab,t:t,v:v,chips:chips,mult:mult});}
+ var SE=chStepEff();if(SE==='hi')ex('🏃 Walker','m',3);
  chSetBoni().forEach(function(b){chEvalFx({fx:b.fx},null,-1,x).forEach(function(r){ex(b.lab,r.t,r.v);});});
- ch.deck.forEach(function(d,i){
+ var AD=chActDeck();AD.forEach(function(d,i){
   if(bk==='jailer'&&i===0){st.push({k:'card',i:i,lock:1,chips:chips,mult:mult});return;}
-  chEvalCard(i,x).forEach(function(r){
+  chEvalCard(i,x,AD).forEach(function(r){
    if(bk==='golem'&&r.t==='m')r={t:'m',v:r.v/2};
    if(bk==='miser'&&r.t==='$')return;
    if(r.t==='c')chips+=r.v;else if(r.t==='m')mult+=r.v;else if(r.t==='x')mult*=r.v;else coins+=r.v;
@@ -2619,10 +2703,12 @@ function chScore(it,feel,dry){
  if(ch.boost>Date.now())ex('⚡ Boost','x',2);
  if(ch.comeback)ex('🪽 Comeback','x',1.5);
  if(bk==='couch'&&(it.g==='bizeps'||it.g==='trizeps'))ex('🛋️ The Couch Lord','x',.5);
+ var rlF=1;if(SE==='lo'){ex('🛋️ Couch Legs','x',.8);rlF*=.8;}
+ chDebAct().forEach(function(b){var D=CH_DEB[b.k];rlF*=D.v;if(D.k==='x')ex(D.e+' '+D.n,'x',D.v);else{var nc=Math.round(chips*D.v);st.push({k:'ex',lab:D.e+' '+D.n+': Chips ×0,75',t:'c',v:nc-chips,chips:nc,mult:mult,boss:1});chips=nc;}});
  if(bk==='sloth'){chips=Math.round(chips/2);st.push({k:'ex',lab:'🦥 The Sloth King: Chips halb',t:'c',v:-chips,chips:chips,mult:mult,boss:1});}
  var crit=null;if(!dry){var cr=Math.random(),cc=chModIs('crit')?.3:.12;if(cr<.03)crit=5;else if(cr<cc)crit=2;if(crit)ex(crit===5?'💥 JACKPOT':'⚡ KRITISCH','x',crit);}
  var pts=Math.round(chips*mult);
- return {st:st,chips:chips,mult:mult,pts:pts,coins:coins,crit:crit,xp:(p.hv?20:12)+2*Math.floor(Math.log10(Math.max(1,pts))),x:x};
+ return {st:st,chips:chips,mult:mult,pts:pts,pr:Math.round(pts/rlF),coins:coins,crit:crit,xp:(p.hv?20:12)+2*Math.floor(Math.log10(Math.max(1,pts))),x:x};
 }
 function chValTxt(t,v){return t==='c'?'+'+chN(v)+' Chips':t==='m'?'+'+chN(v)+' Mult':t==='x'?'×'+chN(v)+' Mult':'+'+chN(v)+' 🪙';}
 function chGrow(ev,x){
@@ -2636,17 +2722,21 @@ function chGrow(ev,x){
 function chDeckDay(){
  var t=chToday();if(ch.deckDay===t)return;var d=ch.deckDay;ch.deckDay=t;if(!d)return;
  var n=0;while(d<t&&n<60){d=chAddDays(d,1);n++;}
- for(var i=0;i<n;i++)ch.deck.forEach(function(inst){CH_CM[inst.id].fx.forEach(function(e){if(e.sp==='sell')inst.sv=(inst.sv||0)+(e.sa||1);if(e.gev==='day')inst.n=(inst.n||0)+1;});});
+ for(var i=0;i<n;i++){ch.deck.forEach(function(inst){CH_CM[inst.id].fx.forEach(function(e){if(e.sp==='sell')inst.sv=(inst.sv||0)+(e.sa||1);if(e.gev==='day')inst.n=(inst.n||0)+1;});});
+  ch.deck=ch.deck.filter(function(inst){var c=CH_CM[inst.id];
+   if(inst.per){inst.per--;if(inst.per<=0){chEvs.push({t:'ban',x:'⌛ '+c.e+' '+c.n+' ist vergangen und weg',c:'#ff3d5a'});return false;}}
+   if(inst.rent){if(ch.coins>=1)ch.coins--;else{chEvs.push({t:'ban',x:'🪙 Keine Miete für '+c.n+': Karte ist weg',c:'#ff3d5a'});return false;}}
+   return true;});}
 }
 function chAddHg(n){ch.hg=(ch.hg||0)+n;while(ch.hg>=CH_HG){ch.hg-=CH_HG;ch.boxes.push('pack');ch.stats.packs++;chEvs.push({t:'ban',x:'🎴 Sanduhren voll: Booster Pack!',c:'#3bff8f'});}}
 function chCheckGoal(x){
  var s=chScDay();if(s.hit||s.pts<chGoalNow())return false;s.hit=true;
- var intr=Math.min(5,Math.floor(ch.coins/5));ch.coins+=4+intr;
- chEvs.push({t:'ban',x:'🎯 Ziel-Score geschafft! +4 🪙'+(intr?' +'+intr+' Zinsen':'')+' · Shop offen',c:'#ffc400'});
+ var intr=Math.min(5,Math.floor(ch.coins/5)),lgc=2*(ch.liga||0);ch.coins+=4+intr+lgc;
+ chEvs.push({t:'ban',x:'🎯 Ziel-Score geschafft! +'+(4+lgc)+' 🪙'+(intr?' +'+intr+' Zinsen':'')+' · Shop offen',c:'#ffc400'});
  var bk=chBossK();
  if(bk){var B=CH_BOSS[bk];ch.lastBoss=bk;ch.stats.bosses++;ch.coins+=6;ch.boxes.push('boss');
-  chEvs.push({t:'ban',x:'👑 '+B.n+' besiegt! +6 🪙 + Boss-Kiste',c:'#ff2d55'});}
- ch.wp={d:chToday(),cards:null,done:false};chEvs.push({t:'wp'});
+  chEvs.push({t:'ban',x:'👑 '+B.n+' besiegt! +6 🪙 + Boss-Kiste',c:'#ff2d55'});chBossWin();}
+ chMastery();ch.wp={d:chToday(),cards:null,done:false};chEvs.push({t:'wp'});
  chMsTick('goal');
  chGrow('goal',x);chHint('overdrive');return true;
 }
@@ -2738,7 +2828,7 @@ function chClaimWish(id){
  ch.pp-=pr;chGain(id,'');if(ch.wish===id)ch.wish=null;chSave();
  chSnd('leg');vib([60,30,60,30,140]);chConfetti([CH_RC[c.r],'#fff','#3bff8f'],150);toast('🌠 '+c.n+' gehört dir!');chCardDetail(id,0,1);
 }
-function chWishDeck(id){if(chDeckFull()||chInDeck(id))return;ch.deck.push({id:id,n:0,sv:0,v:''});chSave();chSnd('box');vib([30,30,60]);toast(CH_CM[id].e+' '+CH_CM[id].n+' liegt im Deck');chCloseX();}
+function chWishDeck(id){if(chDeckFull()||chInDeck(id))return;ch.deck.push(chInst(id,''));chSave();chSnd('box');vib([30,30,60]);toast(CH_CM[id].e+' '+CH_CM[id].n+' liegt im Deck');chCloseX();}
 function chOpenWish(){if(chBusy()||!ch.wish)return;chCardDetail(ch.wish);}
 function chWishHtml(){
  if(!ch.wish||!CH_CM[ch.wish])return '';var c=CH_CM[ch.wish],pr=CH_WISH[c.r],ok=ch.pp>=pr;
@@ -2765,6 +2855,28 @@ function chDayRec(){var t=chToday(),sc=chScDay();ch.days=ch.days||{};ch.days[t]=
 function chDaysFromLog(){ch.days=ch.days||{};ch.log.forEach(function(l){if(!l.g)return;var d=ch.days[l.d];if(!d)d=ch.days[l.d]={p:0,g:null,h:null,b:chBossK(l.d),n:0,old:1};if(d.old){d.p+=l.pts||0;d.n++;}});
  Object.keys(ch.days).forEach(function(k){delete ch.days[k].old;});}
 var chPgRange=14;
+function chPgRlHtml(){
+ var R=ch.rl,t=chToday(),h='',cl=0,ck=0,cheat=0;
+ h+='<div class="ch-sec"><h4>REAL LIFE</h4><span>letzte 4 Wochen</span></div><div class="pg-card"><div class="pg-rl">';
+ for(var i=27;i>=0;i--){var d=chAddDays(t,-i-1),H=R.hist[d],cls='';
+  if(H){ck++;if(H.f==='clean'){cl++;cls='c';}else if(H.f==='miss')cls='m';else{cls='x';}}
+  h+='<i class="'+cls+'" title="'+d+'">'+(H&&H.f!=='clean'&&H.f!=='miss'?CH_FOOD[H.f].e.slice(0,2):'')+'</i>';}
+ cheat=R.cheats.filter(function(c){return c.d>=chAddDays(t,-28);}).length;
+ h+='</div><div class="pg-leg"><span><i style="background:#00b386"></i>sauber</span><span><i style="background:#5b2a3a"></i>Cheat</span><span><i style="background:#2a2a40"></i>kein Check-in</span></div>';
+ h+='<div class="pg-kpi"><div><b>'+(ck?Math.round(cl/ck*100):0)+' %</b><span>saubere Tage</span></div><div><b>'+(R.used.s+R.used.a)+'</b><span>Tickets eingelöst</span></div><div><b>'+cheat+'</b><span>Cheats ohne Ticket</span></div></div>';
+ h+='<div class="pg-kpi"><div><b>'+R.clean+'</b><span>saubere Serie</span></div><div><b>'+chWoMonth()+'</b><span>Workouts diesen Monat</span></div><div><b>'+(R.slots||CH_SLOT0)+'/5</b><span>Deck-Plätze</span></div></div></div>';
+ // Gewicht
+ var ks=Object.keys(R.wt).sort().filter(function(k){return k>=chAddDays(t,-180);}),L=chWtLast();
+ h+='<div class="ch-sec"><h4>GEWICHT</h4><span>'+(L?String(L.v).replace('.',',')+' kg am '+L.d.slice(8,10)+'.'+L.d.slice(5,7)+'.':'noch nichts eingetragen')+'</span></div><div class="pg-card">';
+ if(ks.length>=2){var vs=ks.map(function(k){return R.wt[k];}),mn=Math.min.apply(0,vs)-.5,mx=Math.max.apply(0,vs)+.5,t0=new Date(ks[0]+'T12:00:00').getTime(),t1=Math.max(t0+864e5,new Date(ks[ks.length-1]+'T12:00:00').getTime());
+  var pts=ks.map(function(k){var x=(new Date(k+'T12:00:00').getTime()-t0)/(t1-t0)*300,y=90-(R.wt[k]-mn)/(mx-mn)*80;return x.toFixed(1)+','+y.toFixed(1);});
+  h+='<svg class="pg-wt" viewBox="-6 0 312 100" preserveAspectRatio="none"><polyline points="'+pts.join(' ')+'" fill="none" stroke="#00f5ff" stroke-width="2" vector-effect="non-scaling-stroke"/>'+pts.map(function(p){return '<circle cx="'+p.split(',')[0]+'" cy="'+p.split(',')[1]+'" r="2.5" fill="#00f5ff"/>';}).join('')+'</svg>';
+  var dlt=Math.round((vs[vs.length-1]-vs[0])*10)/10;h+='<div class="pg-note">'+(dlt<=0?'▼ ':'▲ ')+String(Math.abs(dlt)).replace('.',',')+' kg seit '+ks[0].slice(8,10)+'.'+ks[0].slice(5,7)+'. · Min '+String(Math.min.apply(0,vs)).replace('.',',')+' kg</div>';}
+ else h+='<div class="pg-note">Ab 2 Einträgen siehst du hier deine Kurve. Der Check-in fragt einmal pro Woche.</div>';
+ h+='<div class="ci-wt sm"><input id="pg-wt" type="number" inputmode="decimal" step="0.1" placeholder="'+(L?L.v:'kg')+'"><button class="btn bp" onclick="chWtAdd()">Heute eintragen</button></div></div>';
+ return h;
+}
+function chWtAdd(){var v=parseFloat(String(document.getElementById('pg-wt').value).replace(',','.'));if(!(v>30&&v<300)){toast('Gewicht in kg eingeben');return;}ch.rl.wt[chToday()]=Math.round(v*10)/10;chSave();toast('⚖️ Gespeichert');rFortschritt();}
 function chPgSet(n){chPgRange=n;rFortschritt();}
 function chGoTab(s){var tb=document.querySelector('.tab[data-s="'+s+'"]');if(tb)tb.click();}
 function chProgHtml(){
@@ -2772,6 +2884,7 @@ function chProgHtml(){
  var t=chToday(),lv=chLvl(ch.xp),h='';
  // Kopf
  h+='<div class="pg-head"><div class="pg-lv"><small>LEVEL</small><b>'+lv.L+'</b></div><div class="pg-ht"><b>'+chTitle(lv.L)+'</b>'+(ch.ttl?'<span class="ch-ttl">'+ch.ttl+'</span>':'')+'<span>'+ch.stats.snacks+' Häppchen · Serie '+ch.streak+' (beste '+ch.best+') · '+chAlbumN()+'/'+CH_C.length+' Karten</span></div></div>';
+ h+=chPgRlHtml();
  // Punkte-Verlauf
  var n=chPgRange,days=[];for(var i=n-1;i>=0;i--){var k=chAddDays(t,-i);days.push({k:k,d:ch.days[k]});}
  var mx=1,sum=0,cnt=0,hits=0,tried=0;days.forEach(function(x){if(x.d){mx=Math.max(mx,x.d.p,x.d.g||0);sum+=x.d.p;cnt++;if(x.d.h!=null&&x.k!==t){tried++;if(x.d.h)hits++;}}});
@@ -2810,6 +2923,162 @@ function chProgHtml(){
  return '<div class="pg">'+h+'</div>';
 }
 
+// ══════════ Real Life: Check-in, Tickets, Debuffs, Deck-Plätze, Workout, Gewicht ══════════
+function chStepEff(){var e=ch.rl.eff;return e&&e.d===chToday()?e.k:null;}
+function chMonK(d){return d.slice(0,7);}
+function chDebAdd(k,out){
+ var R=ch.rl,t=chToday(),rec=R.cheats.filter(function(c){return c.k===k&&c.d>=chAddDays(t,-7);}).length;
+ var dur=k==='rust'?7:rec>=2?3:2,until=chAddDays(t,dur-1),D=CH_DEB[k];
+ var cur=R.deb.filter(function(b){return b.k===k&&b.until>=t;})[0];
+ if(cur)cur.until=until>cur.until?until:cur.until;else R.deb.push({k:k,until:until});
+ R.deb=R.deb.filter(function(b){return b.until>=t;});
+ out.push({c:'',t:D.e+' '+D.n+' blockiert '+dur+' Tage lang einen Deck-Platz ('+D.d+')'});
+}
+// Einen Tag abrechnen. food: clean|s|a|sa|miss · steps: lo|ok|hi|miss
+function chCiApply(d,food,steps){
+ var R=ch.rl,t=chToday(),out=[],auto=food==='miss',unpl=false;
+ R.hist[d]={f:food,s:steps};
+ function cat(isC,key,tk,lab,deb){
+  if(auto){R[key]=0;return;}
+  if(!isC){R[key]++;if(R[key]>=CH_TKN){if(R[tk]<CH_TKMAX){R[tk]++;R[key]=0;out.push({c:'good',t:'🎟️ Neues '+lab+' Ticket! Damit darfst du einmal ohne Reue zuschlagen.'});}else R[key]=CH_TKN;}return;}
+  if(R[tk]>0){R[tk]--;R.used[key==='sw'?'s':'a']++;R[key]=0;out.push({c:'good',t:'🎟️ '+lab+' Ticket eingelöst. Genossen ohne Reue, kein Malus.'});return;}
+  unpl=true;R[key]=0;R.cheats.push({d:d,k:deb});out.push({c:'',t:(deb==='crash'?'🍦':'🍿')+' '+lab+' ohne Ticket: Fortschritt zum nächsten Ticket ist weg'});chDebAdd(deb,out);
+ }
+ cat(food==='s'||food==='sa','sw','tS','Sweet','crash');
+ cat(food==='a'||food==='sa','sa','tA','Salty','bloat');
+ if(unpl||auto){if(R.clean>0)out.push({c:'',t:'🧼 Saubere Serie '+R.clean+' → 0'+(auto?' (kein Check-in)':'')});R.clean=0;
+  if(R.slots>CH_SLOT0){R.slots--;out.push({c:'',t:'🃏 Deck-Platz '+(R.slots+1)+' verloren'});}}
+ else R.clean++;
+ if(steps==='lo'||steps==='miss')R.stp=0;else{R.stp++;if(R.stp%7===0){ch.coins+=5;out.push({c:'good',t:'🚶 7 Tage am Stück mindestens 7.000 Schritte: +5 🪙'});}}
+ if(d===chAddDays(t,-1)&&!auto){R.eff={d:t,k:steps};var SE=CH_STEPS[steps];out.push({c:steps==='lo'?'':'good',t:SE.e+' '+SE.n+': '+SE.d});}
+ CH_SLOTS.forEach(function(S2){if(R.slots===S2.n-1&&R.clean>=S2.clean&&R.stp>=S2.stp){R.slots=S2.n;out.push({c:'good',t:'🃏 Deck-Platz '+S2.n+' freigeschaltet!'});}});
+ if(!auto){ch.pp=(ch.pp||0)+1;out.push({c:'good',t:'🌠 +1 Pack-Punkt fürs ehrliche Eintragen'});}
+ if(d>R.ci)R.ci=d;
+ return out;
+}
+// Verpasste Check-ins (älter als gestern) und Monats-Abrechnung fürs Workout
+function chRlCatchUp(){
+ var R=ch.rl,t=chToday(),y=chAddDays(t,-1),out=[],g=0;
+ while(R.ci<chAddDays(y,-1)&&g++<60){var d=chAddDays(R.ci,1);out=out.concat(chCiApply(d,'miss','miss'));}
+ var m=chMonK(t);if(!R.mon)R.mon=m;
+ if(R.mon!==m){var pm=R.mon;R.mon=m;var from=pm+'-01';
+  if((ch.resetD||ch.start||t)<=from&&!R.wo.some(function(w){return chMonK(w)===pm;})){out.push({c:'',t:'🏋️ Im letzten Monat kein einziges richtiges Workout.'});chDebAdd('rust',out);}}
+ return out;
+}
+function chCiNeed(){return ch.rl.ci<chAddDays(chToday(),-1);}
+function chWtLast(){var ks=Object.keys(ch.rl.wt).sort();return ks.length?{d:ks[ks.length-1],v:ch.rl.wt[ks[ks.length-1]]}:null;}
+var chCiS=null;
+function chCheckin(){
+ if(!chCiNeed()){if(chQ.length)chQ.shift()();return;}
+ var y=chAddDays(chToday(),-1);chCiS={d:y,food:null,steps:null};chCiStep('food');
+}
+function chCiStep(k){
+ var x=document.getElementById('chx');x.className='chx';x.style.justifyContent='';var R=ch.rl;
+ var dn=new Date(chCiS.d+'T12:00:00').toLocaleDateString('de-DE',{weekday:'long'});
+ var h='<div class="chx-rays" style="--c:#ffc400"></div><div class="chx-name" style="color:#ffc400">☀️ GUTEN MORGEN</div>';
+ if(k==='food'){
+  h+='<div class="ci-q">Hast du gestern ('+dn+') gecheatet?</div><div class="ci-tk"><span>🎟️ Sweet: <b>'+R.tS+'</b></span><span>🎟️ Salty: <b>'+R.tA+'</b></span></div><div class="ci-opts">';
+  ['clean','s','a','sa'].forEach(function(f){var F=CH_FOOD[f];h+='<button class="ci-o'+(f==='clean'?' good':'')+'" onclick="chCiPick(\'food\',\''+f+'\')"><span>'+F.e+'</span>'+(f==='clean'?'Nein, sauber':F.n)+'</button>';});
+  h+='</div><div class="chx-hint" style="animation:none">Hast du ein Ticket, wird es automatisch eingelöst. Ehrlich sein lohnt sich: +1 🌠</div>';
+ } else if(k==='steps'){
+  h+='<div class="ci-q">Wie viele Schritte hattest du gestern?</div><div class="ci-opts">';
+  ['lo','ok','hi'].forEach(function(s){var S2=CH_STEPS[s];h+='<button class="ci-o'+(s==='hi'?' good':s==='lo'?' bad':'')+'" onclick="chCiPick(\'steps\',\''+s+'\')"><span>'+S2.e+'</span>'+S2.t+'<small>'+S2.d+'</small></button>';});
+  h+='</div>';
+ } else if(k==='wt'){
+  var L=chWtLast();
+  h+='<div class="ci-q">Kurz auf die Waage? ⚖️</div><div class="ci-wt"><button onclick="chWtStep(-1)">−</button><input id="ci-wt" type="number" inputmode="decimal" step="0.1" value="'+(L?L.v:chBW())+'"><span>kg</span><button onclick="chWtStep(1)">+</button></div>';
+  h+='<div class="chx-btns"><button class="btn bp bf" onclick="chCiWt(1)">Speichern</button><button class="btn bs bf" onclick="chCiWt(0)">Heute nicht</button></div>';
+ }
+ x.innerHTML=h;chSnd('flip');chHaptic();
+}
+function chWtStep(s){var i=document.getElementById('ci-wt');i.value=(Math.round((parseFloat(i.value||0)+s*.1)*10)/10).toFixed(1);chHaptic();}
+function chCiPick(k,v){chCiS[k]=v;if(k==='food'){chCiStep('steps');return;}
+ var L=chWtLast();if(!L||L.d<chAddDays(chToday(),-6))chCiStep('wt');else chCiFin();}
+function chCiWt(save){if(save){var v=parseFloat(String(document.getElementById('ci-wt').value).replace(',','.'));if(v>30&&v<300){ch.rl.wt[chToday()]=Math.round(v*10)/10;}}chCiFin();}
+function chCiFin(){
+ var out=chCiApply(chCiS.d,chCiS.food,chCiS.steps);chCiS=null;chSave();
+ var bad=out.some(function(r){return !r.c;});
+ var x=document.getElementById('chx');x.className='chx'+(bad?' bad':'');
+ var h='<div class="chx-name" style="color:'+(bad?'#ff3d5a':'#3bff8f')+'">'+(bad?'😬 CHECK-IN':'✅ CHECK-IN')+'</div><div class="chx-rep">';
+ out.forEach(function(r,i){h+='<div class="'+r.c+'" style="animation-delay:'+(i*.15)+'s">'+r.t+'</div>';});
+ h+='</div><div class="chx-btns"><button class="btn bp bf" onclick="chCloseX()">'+(bad?'Heute besser 💪':'Weiter')+'</button></div>';
+ x.innerHTML=h;if(bad){chSnd('bad');vib([120,60,120]);}else{chSnd('done');vib(30);}
+}
+function chUrge(ev){
+ var t=chToday(),R=ch.rl;if(R.urge===t){toast('Heute schon eingelöst. Stark bleiben! 💪');return;}
+ R.urge=t;ch.pp=(ch.pp||0)+2;ch.coins+=1;chSave();
+ var r=ev.currentTarget.getBoundingClientRect();chFx(r.left+r.width/2,r.top,'+2 🌠 +1 🪙','');chSnd('crit');vib([30,30,60]);
+ chBanner('💪 Heißhunger besiegt! Stark.','#3bff8f');rChallenge();
+}
+// Richtiges Workout: ersetzt den Tagesplan
+function chWoWeek(){var m=chMon(chToday()),u={};ch.rl.wo.forEach(function(d){if(d>=m)u[d]=1;});return Object.keys(u).length;}
+function chWoMonth(){var m=chMonK(chToday()),u={};ch.rl.wo.forEach(function(d){if(chMonK(d)===m)u[d]=1;});return Object.keys(u).length;}
+var chWoSel=null;
+function chWoOpen(inner){
+ if(!inner&&chBusy())return;if(!chWoSel)chWoSel={};
+ var x=document.getElementById('chx');x.className='chx';x.style.justifyContent='flex-start';
+ var n=0;Object.keys(chWoSel).forEach(function(k){n+=chWoSel[k];});
+ var h='<div class="chx-top"><h2>🏋️ WORKOUT</h2><div class="chx-coins">'+chWoWeek()+'/3 diese Woche</div><button onclick="chWoSel=null;chCloseX()">✕</button></div><div class="chx-scroll">';
+ h+='<div class="chx-info">Ein richtiges Training, z. B. Brust und Trizeps. Tippe die Muskelgruppen an und stell die Sätze ein. Ersetzt den Tagesplan. Ab 10 Sätzen ist der Ziel-Score geschafft (am Boss-Tag zählt es nur halb), die Flamme ist sicher.</div><div class="wo-g">';
+ CH_G.forEach(function(g){var s=chWoSel[g.k]||0;h+='<div class="wo-r'+(s?' on':'')+'"><span class="n" onclick="chWoTog(\''+g.k+'\')">'+g.i+' '+g.n+'</span>'+(s?'<button onclick="chWoSet(\''+g.k+'\',-1)">−</button><b>'+s+'</b><button onclick="chWoSet(\''+g.k+'\',1)">+</button>':'<button class="add" onclick="chWoTog(\''+g.k+'\')">+ Sätze</button>')+'</div>';});
+ h+='</div><button class="btn bp bf" style="margin-top:14px'+(n?'':';opacity:.4')+'" onclick="chWoDone()">✓ Workout fertig ('+n+' Sätze)</button></div>';
+ x.innerHTML=h;
+}
+function chWoTog(k){if(chWoSel[k])delete chWoSel[k];else chWoSel[k]=4;chHaptic();chWoOpen(1);}
+function chWoSet(k,d){chWoSel[k]=Math.max(0,Math.min(12,(chWoSel[k]||0)+d));if(!chWoSel[k])delete chWoSel[k];chHaptic();chWoOpen(1);}
+function chWoDone(){
+ var sel=chWoSel||{},n=0;Object.keys(sel).forEach(function(k){n+=sel[k];});if(!n){toast('Wähle mindestens eine Muskelgruppe');return;}
+ chUndoSnap=null;var t=chToday(),R=ch.rl,first=R.wo.indexOf(t)<0,c0=ch.coins;
+ Object.keys(sel).forEach(function(g){for(var i=0;i<sel[g];i++)ch.log.push({t:Date.now(),d:t,ex:'Workout',g:g,r:0,w:0,feel:'passt',pts:0,wo:1});});
+ R.wo.push(t);ch.stats.wos=(ch.stats.wos||0)+1;
+ var r=chWoApply(n,first);chWoSel=null;
+ chCloseX();chConfetti(['#00f5ff','#ffc400','#fff'],180);chSnd('leg');vib([60,30,60,30,140]);
+ chBanner('🏋️ Workout: '+n+' Sätze → +'+chBig(r.pts)+' Punkte','#00f5ff');
+}
+// Rechnet ein Workout mit n Sätzen ab (auch für die Simulation)
+function chWoApply(n,first){
+ var t=chToday(),sc=chScDay(),g=chGoalNow(),pts=Math.round(g*Math.min(1.25,.1*n)*(chBossK()?.5:1));
+ sc.pts+=pts;chHsAdd(pts);chAddXp(n*8);chAddHg(Math.floor(n/3));
+ if(ch.q&&ch.q.day===t){ch.q.items.forEach(function(i){if(!i.done){i.done=true;i.wo=1;}});
+  if(!ch.q.qdone){ch.q.qdone=true;chAddXp(50);ch.coins+=3;ch.pp=(ch.pp||0)+2;chEvs.push({t:'ban',x:'🎉 Tagesplan durch Workout erledigt! +50 XP +3 🪙 +2 🌠',c:'#00f5ff'});}}
+ if(first&&chWoWeek()===3){ch.coins+=5;ch.boxes.push('pack');chEvs.push({t:'ban',x:'🏋️ 3 Workouts diese Woche! +5 🪙 + Booster Pack',c:'#ffc400'});}
+ chCheckGoal(null);chOdCheck();chCredit();chDayRec();chSave();if(typeof rChallenge==='function')rChallenge();
+ return {pts:pts};
+}
+// Ligen und Mastery
+function chLigaOpen(inner){
+ if(!inner&&chBusy())return;var x=document.getElementById('chx');x.className='chx';x.style.justifyContent='';
+ var h='<div class="chx-name" style="color:var(--ac)">🏅 LIGA</div><div class="chx-info2"><div>Je höher die Liga, desto schwerer. Die nächste Liga schaltest du frei, wenn du <b>'+CH_LIGAW+' Bosse</b> in deiner höchsten Liga besiegst (bisher '+(ch.ligaW||0)+'/'+CH_LIGAW+'). Pro Liga gibt es +2 🪙 mehr fürs Tagesziel.</div></div><div class="lg-l">';
+ CH_LIGA.forEach(function(L,i){var lock=i>ch.ligaMax;h+='<div class="lg-o'+(i===ch.liga?' sel':'')+(lock?' lock':'')+'" style="--c:'+L.c+'" onclick="chLigaSet('+i+')"><span class="e">'+(lock?'🔒':L.e)+'</span><div><b>'+L.n+'</b><small>'+L.d+(lock?' · '+CH_LIGAW+' Bosse in der '+CH_LIGA[i-1].n+' besiegen':'')+'</small></div></div>';});
+ h+='</div><div class="chx-btns"><button class="btn bs bf" onclick="chCloseX();setTimeout(function(){chInfo(\'mastery\')},60)">⭐ Was ist Mastery?</button><button class="btn bp bf" onclick="chCloseX()">Fertig</button></div>';
+ x.innerHTML=h;chSnd('flip');
+}
+function chLigaSet(i){if(i>ch.ligaMax){chSnd('bad');toast('Noch gesperrt 🔒');return;}ch.liga=i;var sc=chScDay();if(!sc.pts&&!sc.hit)ch.sc=null;chSave();toast(CH_LIGA[i].e+' '+CH_LIGA[i].n+(ch.sc?' · gilt ab morgen':''));chLigaOpen(1);}
+function chMastN(lv){lv=lv||4;return CH_C.filter(function(c){return (ch.mast[c.id]||0)>=lv;}).length;}
+function chBossWin(){
+ var out=[];
+ if(ch.liga===ch.ligaMax&&ch.ligaMax<CH_LIGA.length-1){ch.ligaW=(ch.ligaW||0)+1;
+  if(ch.ligaW>=CH_LIGAW){ch.ligaW=0;ch.ligaMax++;out.push('🏅 '+CH_LIGA[ch.ligaMax].e+' '+CH_LIGA[ch.ligaMax].n+' freigeschaltet!');}
+  else out.push('🏅 Boss-Sieg '+ch.ligaW+'/'+CH_LIGAW+' für die '+CH_LIGA[ch.ligaMax+1].n);}
+ out.forEach(function(x){chEvs.push({t:'ban',x:x,c:'#ff3df2'});});
+}
+// Tagesziel geschafft → alle aktiven Karten gemeistert in der aktuellen Liga
+function chMastery(){
+ var lv=ch.liga+1,nw=0;chActDeck().forEach(function(d){if((ch.mast[d.id]||0)<lv){ch.mast[d.id]=lv;nw++;}});
+ if(nw)chEvs.push({t:'ban',x:'⭐ '+nw+(nw===1?' Karte':' Karten')+' gemeistert in der '+CH_LIGA[ch.liga].n,c:'#ff3df2'});
+}
+function chInst(id,v){var o={id:id,n:0,sv:0,v:v||''},L=chLg();if(L.per&&Math.random()<L.per)o.per=CH_PERD;else if(L.rent&&Math.random()<L.rent/(1-(L.per||0)))o.rent=1;return o;}
+function chRlHtml(){
+ var R=ch.rl,t=chToday(),h='<div class="ch-sec"><h4>REAL LIFE</h4><span onclick="chInfo(\'reallife\')" style="cursor:pointer">Tickets & Deck-Plätze ⓘ</span></div><div class="rl">';
+ function tk(lab,e,n,tks){return '<div class="rl-t'+(tks?' has':'')+'" onclick="chInfo(\'reallife\')"><div class="r"><span>'+e+' '+lab+'</span><b>'+(tks?'🎟️×'+tks:n+'/'+CH_TKN)+'</b></div><div class="b"><div style="width:'+(n/CH_TKN*100)+'%"></div></div></div>';}
+ h+='<div class="rl-row">'+tk('Sweet','🍦',R.sw,R.tS)+tk('Salty','🍿',R.sa,R.tA)+'</div>';
+ var nx=CH_SLOTS.filter(function(S2){return S2.n===R.slots+1;})[0],sl;
+ if(nx){var need=Math.max(nx.clean-R.clean,nx.stp-R.stp);sl='🃏 Platz '+nx.n+': noch <b>'+need+'</b> '+(need===1?'Tag':'Tage')+(nx.stp?' sauber + 7.000 Schritte':' sauber');}else sl='🃏 Alle 5 Deck-Plätze frei. Nicht verspielen!';
+ h+='<div class="rl-info"><span>🧼 <b>'+R.clean+'</b> sauber</span><span>🚶 <b>'+R.stp+'</b> Tage 7k+</span></div><div class="rl-info sl"><span>'+sl+'</span></div>';
+ h+='<div class="rl-row"><button class="rl-b'+(R.urge===t?' off':'')+'" onclick="chUrge(event)">💪 Heißhunger besiegt</button><button class="rl-b wo'+(R.wo.indexOf(t)>=0?' off':'')+'" onclick="chWoOpen()">🏋️ Workout <small>'+chWoWeek()+'/3</small></button></div>';
+ return h+'</div>';
+}
+
 // ══════════ Aktionen ══════════
 function chDone(feel,ev){
  var it=chCurItem();if(!it||chScoring)return;
@@ -2818,12 +3087,12 @@ function chDone(feel,ev){
  var L=chLoad(it.ex),t=chToday();
  var before=chWeekCounts()[it.g];
  var realDeck=ch.deck;
- if(chBossIs('shuffle')&&ch.deck.length>1){ch.deck=ch.deck.slice();for(var si=ch.deck.length-1;si>0;si--){var sj=Math.floor(Math.random()*(si+1)),tmp=ch.deck[si];ch.deck[si]=ch.deck[sj];ch.deck[sj]=tmp;}}
- var deckSnap=ch.deck.slice();
+ if(chBossIs('shuffle')&&ch.deck.length>1){var sa=chActDeck().slice(),srest=ch.deck.slice(sa.length);for(var si=sa.length-1;si>0;si--){var sj=Math.floor(Math.random()*(si+1)),tmp=sa[si];sa[si]=sa[sj];sa[sj]=tmp;}ch.deck=sa.concat(srest);}
+ var deckSnap=chActDeck().slice();
  var R=chScore(it,feel,false),x=R.x,hn=x.hotN;ch.deck=realDeck;
  ch.nx=[];
  it.done=true;it.feel=feel;it.r=L.r;it.w=L.w;it.pts=R.pts;
- ch.log.push({t:Date.now(),d:t,ex:it.ex,g:it.g,r:L.r,w:L.w||0,feel:feel,pts:R.pts});
+ ch.log.push({t:Date.now(),d:t,ex:it.ex,g:it.g,r:L.r,w:L.w||0,feel:feel,pts:R.pts,pr:R.pr});
  ch.lastEx[it.g]=it.ex;ch.stats.snacks++;
  chProgress(it.ex,feel);
  if(hn>=3&&hn>(ch.hot||0))chEvs.push({t:'ban',x:'🔥 '+hn+'× am Stück – du läufst heiß!',c:'#ff7a00'});
@@ -2836,7 +3105,7 @@ function chDone(feel,ev){
  chGrow('snack',x);chGrow('easy',x);chGrow('hv',x);chGrow('hot3',x);
  chMsTick('snack',{g:it.g,hv:x.hv,hot:hn,pts:R.pts,bonus:!!it.bonus});
  var hit=chCheckGoal(x);chOdCheck();
- var hgN=(1+chSp('hg'))*(chModIs('box')?2:1);chAddHg(hgN);
+ var hgN=(1+chSp('hg'))*(chModIs('box')?2:1)+(chStepEff()==='hi'&&x.n===1?1:0);chAddHg(hgN);
  var after=before+1;chPopG=it.g;
  if(before<CH_GREEN&&after>=CH_GREEN){chAddXp(25);chEvs.push({t:'ban',x:'✅ '+CH_GM[it.g].n+' gehalten! +25 XP',c:'#00ff9f'});}
  if(before<CH_GOLD&&after>=CH_GOLD){chAddXp(40);ch.coins+=2;chEvs.push({t:'ban',x:'🥇 '+CH_GM[it.g].n+' auf Gold! +40 XP +2 🪙',c:'#ffc400'});}
@@ -2858,7 +3127,7 @@ function chScoreShow(it,R,I,deck){
  var el=document.createElement('div');el.id='ch-score';el.className='chs';
  var h='<div class="chs-box"><div class="chs-ex">'+it.ex+'</div><div class="chs-cm"><div class="chs-c"><small>CHIPS</small><b id="chs-c">0</b></div><div class="chs-x">×</div><div class="chs-m"><small>MULT</small><b id="chs-m">0</b></div></div><div class="chs-lab" id="chs-lab">&nbsp;</div>';
  var bk=chBossK();if(bk)h+='<div class="chs-boss">'+CH_BOSS[bk].e+' BOSS: '+CH_BOSS[bk].n+'</div>';
- var nS=Math.max(CH_DECK,deck.length);h+='<div class="chs-deck" style="grid-template-columns:repeat('+nS+',minmax(0,1fr))">';
+ var nS=Math.max(5,chDeckCap(),deck.length);h+='<div class="chs-deck" style="grid-template-columns:repeat('+nS+',minmax(0,1fr))">';
  for(var i=0;i<nS;i++){var d=deck[i];h+=d?'<div class="chs-k r-'+CH_CM[d.id].r+chVarCls(d.v)+'" id="chs-k'+i+'"><span>'+CH_CM[d.id].e+'</span>'+(d.v?'<i class="vfx"></i>':'')+'</div>':'<div class="chs-k empty"></div>';}
  h+='</div><div class="chs-tot" id="chs-tot">&nbsp;</div><div class="chs-sub" id="chs-sub"></div><div class="chs-skip">Tippen zum Überspringen</div></div>';
  el.innerHTML=h;document.body.appendChild(el);
@@ -2922,7 +3191,7 @@ function chMobDone(ev){
 }
 function chOnWorkout(sess){ // klassisches Workout aus "Heute" zählt mit
  var n=0;(sess.exercises||[]).forEach(function(e){(e.sets||[]).forEach(function(s){if(s.done)n++;});});
- if(!n)return;chAddXp(n*8);if(n>=8)ch.boxes.push('silber');chAddHg(Math.floor(n/3));
+ if(!n)return;if(n>=8&&ch.rl.wo.indexOf(chToday())<0)ch.rl.wo.push(chToday());chAddXp(n*8);if(n>=8)ch.boxes.push('silber');chAddHg(Math.floor(n/3));
  chEvs.push({t:'ban',x:'🏋️ Workout: '+n+' Sätze → +'+(n*8)+' XP'+(n>=8?' + Kiste':''),c:'#00f5ff'});
  chCredit();chSave();
 }
@@ -2930,7 +3199,7 @@ function chOnWorkout(sess){ // klassisches Workout aus "Heute" zählt mit
 // ══════════ Render ══════════
 function rChallenge(){
  var el=document.getElementById('s-challenge');if(!el)return;
- var rep=chProcess();chEnsureDay();chMsGen();chCredit();chSave();
+ var rep=chProcess().concat(chRlCatchUp());chEnsureDay();chMsGen();chCredit();chSave();
  var t=chToday(),lv=chLvl(ch.xp),q=ch.q,c=chWeekCounts();
  var dn=q.items.filter(function(i){return i.done;}).length,cur=chCurItem(),dc=chDayCount(t);
  var pct=Math.round(lv.cur/lv.need*100);
@@ -2943,18 +3212,24 @@ function rChallenge(){
  h+='<div class="ch-pill" onclick="chShowCards()">🃏 Album '+chAlbumN()+'/'+CH_C.length+'</div>';
  h+='<div class="ch-pill'+(sc.hit?' shop':' lock')+'" onclick="chShop()">'+(sc.hit?'🛒':'🔒')+' Shop'+(sc.hit&&ch.shopSeen!==t?'<span class="ch-badge">NEU</span>':'')+'</div></div>';
  h+=chBossHtml(sc);
+ var LG=chLg();h+='<div class="ch-liga" style="--c:'+LG.c+'" onclick="chLigaOpen()"><span>'+LG.e+' '+LG.n+'</span><span>⭐ '+chMastN(1)+' gemeistert · ändern ›</span></div>';
  if(chWpAvail())h+='<div class="ch-wpb" onclick="chWonder()">✨ WONDER PICK bereit! <span>Zieh 1 von 5 Karten</span></div>';
  var gc=chGoalCur();
  h+='<div class="ch-goal'+(sc.hit?' ok od':'')+'" onclick="chInfo(\''+(sc.hit?'overdrive':'score')+'\')"><div class="r"><span>'+(sc.hit?'⚡ OVERDRIVE '+((sc.od||0)+1):'🎯 ZIEL-SCORE')+'</span><span class="v">'+chBig(sc.pts)+' / '+chBig(gc)+'</span><span class="co">🪙 '+ch.coins+'</span></div><div class="ch-gbar"><div id="ch-gfill" data-w="'+Math.min(100,sc.pts/gc*100)+'"></div></div>'+(sc.hit?'<div class="ch-odt">Ziel geschafft'+(sc.od?' · Overdrive '+sc.od+' erreicht':'')+'. Nächste Stufe: '+chBig(gc)+' Punkte → +3 🪙 +2 🌠'+(((sc.od||0)+1)%2===0?' + Booster Pack':'')+'</div>':'')+'</div>';
- var cap=chDeckCap(),nS=Math.max(cap,ch.deck.length);
- h+='<div class="ch-sec"><h4>DEIN DECK</h4><span onclick="chInfo(\'deck\')" style="cursor:pointer">'+ch.deck.length+'/'+cap+' · ziehen zum Sortieren ⓘ</span></div><div class="ch-deck" id="ch-deck" style="grid-template-columns:repeat('+nS+',minmax(0,1fr))">';
+ var cap=chDeckCap(),nS=Math.max(cap,ch.deck.length),DB=chDebAct(),lockN=Math.max(0,CH_SLOTS[CH_SLOTS.length-1].n-(ch.rl.slots||CH_SLOT0));
+ var cols=nS+DB.length+lockN;
+ h+='<div class="ch-sec"><h4>DEIN DECK</h4><span onclick="chInfo(\'deck\')" style="cursor:pointer">'+Math.min(cap,ch.deck.length)+'/'+cap+' · ziehen zum Sortieren ⓘ</span></div><div class="ch-deck" id="ch-deck" style="grid-template-columns:repeat('+cols+',minmax(0,1fr))">';
  for(var di=0;di<nS;di++){var dd=ch.deck[di];
-  if(dd){var dc2=CH_CM[dd.id];h+='<div class="ch-dk r-'+dc2.r+chVarCls(dd.v)+(chBossIs('jailer')&&di===0?' lock':'')+'" data-i="'+di+'">'+(dd.v?'<i class="vfx"></i>':'')+'<div class="e">'+dc2.e+'</div><div class="n">'+dc2.n+'</div></div>';}
+  if(dd){var dc2=CH_CM[dd.id],off=di>=cap;h+='<div class="ch-dk r-'+dc2.r+chVarCls(dd.v)+(chBossIs('jailer')&&di===0?' lock':'')+(off?' off':'')+'" data-i="'+di+'">'+(dd.v?'<i class="vfx"></i>':'')+(dd.per?'<i class="dk-b">⌛'+dd.per+'</i>':dd.rent?'<i class="dk-b">🪙</i>':'')+(ch.mast[dd.id]?'<i class="dk-m" style="color:'+CH_LIGA[ch.mast[dd.id]-1].c+'">★</i>':'')+'<div class="e">'+dc2.e+'</div><div class="n">'+(off?'inaktiv':dc2.n)+'</div></div>';}
   else h+='<div class="ch-dk empty" onclick="chInfo(\'deck\')">+</div>';}
+ DB.forEach(function(b){var D=CH_DEB[b.k],dl=Math.round((new Date(b.until+'T12:00:00')-new Date(t+'T12:00:00'))/864e5)+1;h+='<div class="ch-dk deb" onclick="chInfo(\'reallife\')"><i class="dk-b">'+dl+'T</i><div class="e">'+D.e+'</div><div class="n">'+D.n+'</div></div>';});
+ for(var li=0;li<lockN;li++)h+='<div class="ch-dk empty lk" onclick="chInfo(\'reallife\')">🔒</div>';
  h+='</div>';
  h+=chHeatHtml();
  if(ch.mod&&ch.mod.day===t)h+='<div class="ch-mod" onclick="chInfo(\'bonus\')">'+ch.mod.x+'</div>';
  if(ch.comeback)h+='<div class="ch-mod" style="border-color:#00ff9f">🪽 Comeback ×1,5 Mult</div>';
+ var SE=chStepEff();if(SE&&SE!=='ok')h+='<div class="ch-mod" style="border-color:'+(SE==='hi'?'#3bff8f':'#ff3d5a')+'" onclick="chInfo(\'reallife\')">'+CH_STEPS[SE].e+' '+CH_STEPS[SE].n+' <span>'+CH_STEPS[SE].d+'</span></div>';
+ DB.forEach(function(b){var D=CH_DEB[b.k];h+='<div class="ch-mod" style="border-color:#ff3d5a" onclick="chInfo(\'reallife\')">'+D.e+' '+D.n+' <span>'+D.d+' · blockiert 1 Platz bis '+b.until.slice(8,10)+'.'+b.until.slice(5,7)+'.</span></div>';});
  if(ch.nx&&ch.nx.length)h+='<div class="ch-mod" style="border-color:#ffc400">'+ch.nx.map(function(k){return CH_ITEMS[k].e+' '+CH_ITEMS[k].n;}).join(' · ')+' <span>wirkt beim nächsten Häppchen</span></div>';
  if(cur){
   var p=CH_PM[cur.ex],L=chLoad(cur.ex),G=CH_GM[cur.g],P=chScore(cur,'passt',true),idx=q.items.indexOf(cur);
@@ -2974,6 +3249,7 @@ function rChallenge(){
  h+='<div class="ch-hg" onclick="chInfo(\'packs\')"><div class="s">';for(var hi=0;hi<CH_HG;hi++)h+='<span class="'+(hi<hg?'on':'')+'">⏳</span>';
  h+='</div><div class="t">'+(hl===1?'<b>Noch 1 Häppchen</b> bis zum nächsten Pack!':'Noch '+hl+' Häppchen bis zum nächsten Pack')+'</div></div>';
  h+=chWishHtml();
+ h+=chRlHtml();
  h+=chMsHtml();
  h+='<div class="ch-day">';
  q.items.forEach(function(i){h+='<div class="ch-dot'+(i.done?' d':i===cur?' c':'')+(i.bonus?' b':'')+'">'+(i.done?'✓':CH_GM[i.g].i)+'</div>';});
@@ -2994,6 +3270,8 @@ function rChallenge(){
  chDeckBind();
  if(ch.intro){ch.intro=false;ch.intro2=false;chSave();chQueue(function(){chInfo('intro');});}
  if(ch.intro2){ch.intro2=false;chSave();chQueue(function(){chInfo('neu2');});}
+ if(ch.intro4){ch.intro4=false;chSave();chQueue(function(){chInfo('neu4');});}
+ if(chCiNeed())chQueue(chCheckin);
  if(chBossK(t)&&ch.bossSeen!==t){ch.bossSeen=t;chSave();chQueue(chBossIntro);}
  if(rep.length)chQueue(function(){chShowReport(rep);});else chDaily();
  if(chEvs.length&&!chBusy())setTimeout(chPlay,300);
@@ -3117,7 +3395,7 @@ function chPickHtml(){
  return '<div class="chx-pick big"><b>👆 Tippe eine Karte an, um sie in dein Deck zu legen.</b><span>Nur eine pro Pack. Alle Karten kommen in dein Album.</span></div>';
 }
 function chPickMark(){if(!chBX||chBX.wp)return;var idx=chPickIdx();chBX.res.cards.forEach(function(rc,i){var e=document.getElementById('chc'+i);if(!e)return;e.classList.toggle('can',chBX.picked==null&&idx.indexOf(i)>=0);e.classList.toggle('picked',chBX.picked!=null&&chBX.pickedI===i);});}
-function chPickDeck(i){if(!chBX||chBX.picked!=null)return;var rc=chBX.res.cards[i];if(!rc||!chFits(rc.v,rc.id))return;ch.deck.push({id:rc.id,n:0,sv:0,v:rc.v||''});chBX.picked=rc.id;chBX.pickedI=i;chSave();chSnd('box');vib([30,30,60]);var e=document.getElementById('chx-pick');if(e)e.innerHTML=chPickHtml();chPickMark();}
+function chPickDeck(i){if(!chBX||chBX.picked!=null)return;var rc=chBX.res.cards[i];if(!rc||!chFits(rc.v,rc.id))return;ch.deck.push(chInst(rc.id,rc.v));chBX.picked=rc.id;chBX.pickedI=i;chSave();chSnd('box');vib([30,30,60]);var e=document.getElementById('chx-pick');if(e)e.innerHTML=chPickHtml();chPickMark();}
 function chNextBox(){chBX=null;chOpenBox();}
 function chCloseX(){var x=document.getElementById('chx');x.className='chx hidden';x.innerHTML='';x.style.justifyContent='';chBX=null;
  if(chQ.length){chQ.shift()();return;}
@@ -3129,11 +3407,11 @@ function chShowCards(){
  var x=document.getElementById('chx');x.className='chx';x.style.justifyContent='flex-start';
  var own=chAlbumN();
  var h='<div class="chx-top"><h2>ALBUM '+own+'/'+CH_C.length+'</h2><div class="chx-coins" style="color:#3bff8f">🌠 '+(ch.pp||0)+'</div><button onclick="chCloseX()">✕</button></div>';
- h+='<div class="chx-info">Tippe eine Karte an: Effekt sehen oder mit Pack-Punkten 🌠 als Wunschkarte holen. Varianten gefunden: <b>'+chVarN()+'</b>. Komplette Sets geben einen Dauer-Bonus und einen Titel.<br>Legendäre Karte spätestens in '+(CH_PITY-ch.pity)+' Karten garantiert.'+(ch.albumDone?'':' Ganzes Album: ×2 Mult für immer.')+'</div><div class="chx-scroll">';
+ h+='<div class="chx-info">Tippe eine Karte an: Effekt sehen oder mit Pack-Punkten 🌠 als Wunschkarte holen. Varianten gefunden: <b>'+chVarN()+'</b>. Komplette Sets geben einen Dauer-Bonus und einen Titel.<br>Legendäre Karte spätestens in '+(CH_PITY-ch.pity)+' Karten garantiert.<br>⭐ Gemeistert: '+chMastN(1)+' · in der Black League: <b>'+chMastN(4)+'/'+CH_C.length+'</b> (Endziel)'+(ch.albumDone?'':' Ganzes Album: ×2 Mult für immer.')+'</div><div class="chx-scroll">';
  CH_SETS.forEach(function(S2){var l=CH_C.filter(function(c){return c.s===S2.k;}).sort(function(a,b){return CH_RK.indexOf(a.r)-CH_RK.indexOf(b.r);});var o=l.filter(function(c){return ch.cards[c.id];}).length,done=o===l.length;
   h+='<div class="ch-sec" style="margin-top:10px"><h4'+(done?' style="color:#ffc400"':'')+'>'+S2.e+' '+S2.n.toUpperCase()+'</h4><span>'+o+'/'+l.length+(done?' ✓':'')+'</span></div>';
   h+='<div class="chx-setb'+(done?' on':'')+'">'+(done?'✅ ':'🔒 ')+'Set-Bonus: '+chFxTxt(S2.fx)+' · Titel „'+S2.t+'“</div><div class="chx-coll">';
-  l.forEach(function(c){var n=ch.cards[c.id],vs=ch.vars[c.id]||'';h+='<div class="chx-mc r-'+c.r+(n?'':' lock')+(ch.wish===c.id?' wish':'')+'" onclick="chCardDetail('+c.id+')">'+(n>1?'<div class="x">×'+n+'</div>':'')+(ch.wish===c.id?'<div class="w">🌠</div>':'')+'<div class="e">'+c.e+'</div><div class="n">'+(n?c.n:'???')+'</div>'+(vs?'<div class="vd">'+vs.split('').map(function(k){return '<i class="v-'+k+'"></i>';}).join('')+'</div>':'')+'</div>';});
+  l.forEach(function(c){var n=ch.cards[c.id],vs=ch.vars[c.id]||'';h+='<div class="chx-mc r-'+c.r+(n?'':' lock')+(ch.wish===c.id?' wish':'')+'" onclick="chCardDetail('+c.id+')">'+(n>1?'<div class="x">×'+n+'</div>':'')+(ch.wish===c.id?'<div class="w">🌠</div>':'')+(ch.mast[c.id]?'<div class="ms" style="color:'+CH_LIGA[ch.mast[c.id]-1].c+'">★</div>':'')+'<div class="e">'+c.e+'</div><div class="n">'+(n?c.n:'???')+'</div>'+(vs?'<div class="vd">'+vs.split('').map(function(k){return '<i class="v-'+k+'"></i>';}).join('')+'</div>':'')+'</div>';});
   h+='</div>';});
  x.innerHTML=h+'</div>';chSnd('flip');
 }
@@ -3216,7 +3494,7 @@ function chDeckDetail(i){
  if(chBX||chScoring)return;var d=ch.deck[i];if(!d)return;var c=CH_CM[d.id];
  var x=document.getElementById('chx');x.className='chx';x.style.justifyContent='';
  var h='<div class="chx-rays" style="--c:'+CH_RC[c.r]+'"></div>'+chBigCard(c,d);
- h+='<div class="chx-info2"><div>Platz '+(i+1)+' von '+chDeckCap()+'. Das Deck wird von links nach rechts ausgewertet. ×Mult wirkt rechts am stärksten.</div>'+(chBossIs('jailer')&&i===0?'<div>⛓️ Boss The Jailer: Diese Karte ist heute gesperrt.</div>':'')+'</div>';
+ h+='<div class="chx-info2"><div>Platz '+(i+1)+' von '+chDeckCap()+'. Das Deck wird von links nach rechts ausgewertet. ×Mult wirkt rechts am stärksten.</div>'+(chBossIs('jailer')&&i===0?'<div>⛓️ Boss The Jailer: Diese Karte ist heute gesperrt.</div>':'')+(i>=chDeckCap()?'<div>💤 Inaktiv: Kein Platz frei. Schieb sie nach links oder verdien dir einen Platz.</div>':'')+(d.per?'<div>⌛ Vergänglich: noch '+d.per+(d.per===1?' Tag':' Tage')+'.</div>':'')+(d.rent?'<div>🪙 Miete: kostet 1 🪙 pro Tag.</div>':'')+(ch.mast[d.id]?'<div>⭐ Gemeistert in der '+CH_LIGA[ch.mast[d.id]-1].n+'.</div>':'')+'</div>';
  h+='<div class="chx-btns"><div style="display:flex;gap:8px"><button class="btn bs bf"'+(i?'':' disabled style="opacity:.35"')+' onclick="chDeckMove('+i+',-1)">◀ Links</button><button class="btn bs bf"'+(i<ch.deck.length-1?'':' disabled style="opacity:.35"')+' onclick="chDeckMove('+i+',1)">Rechts ▶</button></div>';
  h+='<button class="btn bs bf" style="border-color:#ffc400;color:#ffc400" onclick="chSell('+i+',this)">Verkaufen für '+chSellV(d)+' 🪙</button><button class="btn bp bf" onclick="chCloseX()">Fertig</button></div>';
  x.innerHTML=h;chSnd('flip');chHaptic();
@@ -3269,7 +3547,7 @@ function chBuy(k,i){
  if(k==='c'&&!chFits(o.v)){toast('Deck voll – verkaufe erst eine Karte');chSnd('bad');return;}
  if(ch.coins<pr){toast('Zu wenig Münzen 🪙');chSnd('bad');return;}
  ch.coins-=pr;o.sold=true;chMsTick('shop');
- if(k==='c'){var c=CH_CM[o.id];ch.deck.push({id:o.id,n:0,sv:0,v:o.v||''});chGain(o.id,o.v||'');chSave();chSnd('box');vib([30,30,60]);toast(c.e+' '+c.n+' liegt im Deck');chShop(1);return;}
+ if(k==='c'){var c=CH_CM[o.id];ch.deck.push(chInst(o.id,o.v));chGain(o.id,o.v||'');chSave();chSnd('box');vib([30,30,60]);toast(c.e+' '+c.n+' liegt im Deck');chShop(1);return;}
  if(k==='p'){ch.boxes.unshift(o.t);chSave();chBX=null;document.getElementById('chx').style.justifyContent='';chOpenBox();if(chBX)chBX.shop=true;return;}
  if(o.k==='pre'||o.k==='shake'){ch.nx.push(o.k);toast(CH_ITEMS[o.k].e+' Wirkt beim nächsten Häppchen');}
  else if(o.k==='energy'){if(chHeat()===0)ch.hot=0;ch.lastT=Date.now();toast('🔋 Hitze ist wieder voll');}
@@ -3305,17 +3583,20 @@ function chSettingsHtml(){
 }
 function chSetHard(k){ch.set.hard=k;chSave();rEinstellungen();toast('Härte: '+CH_HARD[k].n+' '+CH_HARD[k].i);}
 function chSetOpt(k){ch.set[k]=!ch.set[k];if(k==='rack'&&ch.q&&!ch.set.rack){ch.q.items.forEach(function(i){if(!i.done&&CH_PM[i.ex].rack)i.ex=chPickEx(i.g,false,[]);});}chSave();rEinstellungen();}
-function chReset(){if(!confirm('Challenge wirklich komplett zurücksetzen? XP, Karten und Serie sind dann weg.'))return;var s=ch.set;ch=chDef();ch.set=s;chSave();toast('Challenge zurückgesetzt');}
+function chReset(){if(!confirm('Challenge wirklich komplett zurücksetzen? XP, Karten und Serie sind dann weg.'))return;var s=ch.set;ch=chDef();ch.set=s;ch.resetD=chToday();ch.rl.ci=chAddDays(ch.resetD,-1);ch.intro4=true;chSave();toast('Challenge zurückgesetzt');}
 var CH_INFO={
+ neu4:['☀️','NEUSTART: REAL LIFE',['Alles startet bei 0. Deine Trainingsgewichte und dein Verlauf bleiben.','<b>Jeden Morgen</b> ein Check-in: Hast du gestern gecheatet (süß/salzig)? Wie viele Schritte?','<b>7 saubere Tage</b> = 1 Ticket 🎟️. Mit Ticket ist Ben & Jerry\'s erlaubt, ohne Malus.','Cheat ohne Ticket: Eine <b>Debuff-Karte</b> blockiert 2 Tage lang einen Deck-Platz, und du verlierst einen Deck-Platz.','Du startest mit <b>3 Deck-Plätzen</b>. Platz 4 und 5 verdienst du dir im echten Leben.','<b>🏋️ Workout</b>: Ein richtiges Training ersetzt den Tagesplan. 3 pro Woche geben einen Bonus. Kein einziges im Monat gibt einen Malus.','<b>Ligen</b>: Besiege 2 Bosse, dann schaltest du die nächste, schwerere Liga frei. Endziel: Alle Karten in der Black League meistern ⭐.']],
+ reallife:['🧼','REAL LIFE',['<b>Check-in jeden Morgen</b> für gestern: Essen und Schritte. Ehrlich eintragen gibt +1 🌠. Kein Check-in zählt wie ein Cheat (Serie weg, Platz weg).','<b>Tickets</b>: 7 saubere Tage bei Süßem = 1 Sweet Ticket 🍦, bei Salzigem = 1 Salty Ticket 🍿. Höchstens 2 auf Vorrat. Cheatest du mit Ticket, wird es eingelöst: kein Malus.','<b>Cheat ohne Ticket</b>: Fortschritt zum Ticket ist weg. Sugar Crash (×0,75 Mult) oder Salt Bloat (Chips ×0,75) blockiert 2 Tage einen Deck-Platz, beim zweiten Mal in 7 Tagen 3 Tage. Außerdem verlierst du einen verdienten Deck-Platz.','<b>Deck-Plätze</b>: Start mit 3. Platz 4 nach 7 sauberen Tagen am Stück. Platz 5 nach 14 sauberen Tagen und 14 Tagen mit mindestens 7.000 Schritten. Ein eingelöstes Ticket zählt als sauber.','<b>Schritte</b>: unter 7.000 = Couch Legs (heute ×0,8 Mult). 10.000+ = Walker (heute +3 Mult, +1 Sanduhr). 7 Tage am Stück 7.000+ = +5 🪙.','<b>Heißhunger besiegt</b>: einmal am Tag drücken, wenn du NICHT zugegriffen hast. +2 🌠 +1 🪙.','<b>Workout</b>: Ersetzt den Tagesplan. 3 Workouts pro Woche = +5 🪙 + Booster Pack. Kein Workout im ganzen Monat = Rusty Frame blockiert 7 Tage einen Platz.']],
+ mastery:['⭐','MASTERY',['Schaffst du das Tagesziel, wird jede Karte in deinem aktiven Deck <b>gemeistert</b>, mit der Farbe deiner Liga. Bosse brauchst du für die nächste Liga.','🥉 Bronze · 🥈 Silver · 🥇 Gold · 🖤 Black','Das Endziel: <b>alle '+CH_C.length+' Karten in der Black League</b> gemeistert. Auch die Mythic-Karten.','Im Album siehst du an jedem Stern, wie weit eine Karte ist.']],
  neu2:['⚔️','NEU: BOSSE & MEHR',['<b>Boss-Tag</b> jeden Sonntag: Ein Boss macht es schwerer. Schaff den Ziel-Score, dann gibt es eine Boss-Kiste und vielleicht eine <b style="color:#ff2d55">Mythic</b>-Karte.','<b>3 Missionen</b> jeden Tag bringen Münzen 🪙 oder Pack-Punkte 🌠.','<b>Wonder Pick</b>: Nach dem Ziel-Score werden 5 Karten gemischt. Du ziehst eine.','<b>Pack-Punkte 🌠</b> gibt es für jedes geöffnete Pack und für Missionen. Damit holst du dir im Album eine Wunschkarte.','Seltene <b>Varianten</b>: Foil, Holo, Prism und Shadow machen Karten stärker.','<b>Komplette Sets</b> geben einen Dauer-Bonus und einen Titel.']],
  boss:['⚔️','BOSS-TAG',['Jeden Sonntag kommt ein Boss mit einer Erschwernis. Die Bosse wechseln jede Woche.','Schaffst du den Ziel-Score, ist er besiegt: Boss-Kiste, +6 🪙 und mit 35 % Glück seine <b style="color:#ff2d55">Mythic</b>-Karte.','Mythic-Karten gibt es nur so. Das Set „Boss Trophies“ hat 8 davon.']],
  missionen:['✅','MISSIONEN',['Jeden Tag 3 Aufgaben, die etwas mehr verlangen als der Tagesplan. Jede bringt Münzen 🪙 oder Pack-Punkte 🌠 (für Wunschkarten im Album).','Schaffst du alle 3, gibt es +5 🌠 extra.','Morgen gibt es neue.']],
  wonder:['✨','WONDER PICK',['Nach dem Ziel-Score siehst du 5 Karten kurz offen.','Dann werden sie verdeckt gemischt und du ziehst eine. Jede hat die gleiche Chance.']],
  sets:['🏅','SETS & TITEL',['Jedes Set im Album hat einen Dauer-Bonus. Sammelst du alle Karten eines Sets, wirkt er bei jedem Häppchen.','Dazu bekommst du einen Titel und eine Gold-Kiste.','Das ganze Album bringt ×2 Mult für immer.']],
  intro:['🃏','NEU: DEIN DECK',['Jedes Häppchen bringt jetzt Punkte: <b>Chips × Mult</b>.','Bis zu 5 Karten im Deck geben +Chips, +Mult oder ×Mult. Sie werden von links nach rechts ausgewertet.','Schaffst du den <b>Ziel-Score</b> des Tages, gibt es Münzen 🪙 und der <b>Shop</b> öffnet. Dort kaufst du neue Karten.',CH_HG+' Häppchen füllen die Sanduhren ⏳ und geben ein Booster Pack.','Jeden Tag gibt es 3 Missionen, jeden Sonntag wartet ein Boss.','Du startest mit 1 Karte und 5 🪙.']],
- deck:['🃏','DEIN DECK',['Bis zu 5 Karten. Jede gibt +Chips, +Mult oder ×Mult, oft mit einer Bedingung.','Reihenfolge zählt: links nach rechts. ×Mult ganz rechts bringt am meisten.','Ziehen zum Umsortieren. Antippen zeigt den Effekt, dort kannst du auch verkaufen.','Neue Karten gibt es im Shop und aus Packs und Kisten (eine pro Pack darfst du ins Deck legen).','Seltene Varianten: <b>Foil</b> +50 Chips (1 zu 25), <b>Holo</b> +10 Mult (1 zu 50), <b>Prism</b> ×1,5 Mult (1 zu 200), <b>Shadow</b> belegt keinen Platz (1 zu 500).']],
- score:['🎯','ZIEL-SCORE',['Jedes Häppchen bringt Punkte = Chips × Mult. Die Punkte des Tages zählen zusammen.','Schaffst du den Ziel-Score: +4 🪙, dazu 1 🪙 Zinsen pro 5 gesparte Münzen (max. 5), und der Shop öffnet.','Das Ziel passt sich dir an: Es richtet sich nach deinen typischen Punkten pro Häppchen der letzten 7 Tage und nach der Zahl der Häppchen im Tagesplan. Wird dein Deck stärker, steigt es mit. Von Montag bis Samstag wird es etwas schwerer.','Den ganzen Tagesplan musst du also fast immer machen. Mit einem besseren Deck oder Bonus-Häppchen schaffst du es sicherer.','Jedes Häppchen gibt außerdem +1 🪙.']],
- overdrive:['⚡','OVERDRIVE',['Ziel geschafft? Dann geht es weiter: Die nächste Stufe ist doppelt so hoch (2×, 4×, 8× das Ziel …).','Jede Stufe gibt +3 🪙 und +2 🌠, jede zweite auch ein Booster Pack.','So lohnt sich auch ein richtig langes Training.']],
+ deck:['🃏','DEIN DECK',['Du startest mit 3 Plätzen. Platz 4 und 5 verdienst du dir im echten Leben (sauber essen, Schritte). Debuffs blockieren Plätze, Karten ganz rechts werden dann inaktiv. Jede gibt +Chips, +Mult oder ×Mult, oft mit einer Bedingung.','Reihenfolge zählt: links nach rechts. ×Mult ganz rechts bringt am meisten.','Ziehen zum Umsortieren. Antippen zeigt den Effekt, dort kannst du auch verkaufen.','Neue Karten gibt es im Shop und aus Packs und Kisten (eine pro Pack darfst du ins Deck legen).','Seltene Varianten: <b>Foil</b> +50 Chips (1 zu 25), <b>Holo</b> +10 Mult (1 zu 50), <b>Prism</b> ×1,5 Mult (1 zu 200), <b>Shadow</b> belegt keinen Platz (1 zu 500).']],
+ score:['🎯','ZIEL-SCORE',['Jedes Häppchen bringt Punkte = Chips × Mult. Die Punkte des Tages zählen zusammen.','Schaffst du den Ziel-Score: +4 🪙, dazu 1 🪙 Zinsen pro 5 gesparte Münzen (max. 5), und der Shop öffnet.','Das Ziel wird jeden Morgen aus deinem Deck berechnet: So viele Punkte bringt dein Deck mit dem heutigen Tagesplan bei etwas Hitze. Kauf tagsüber eine starke Karte, wird es leichter. Von Montag bis Samstag wird es etwas schwerer.','Debuffs senken das Ziel nicht: Die blockierte Karte zählt im Ziel mit. Deshalb tut ein Cheat ohne Ticket richtig weh.','Den ganzen Tagesplan musst du also fast immer machen. Mit einem besseren Deck oder Bonus-Häppchen schaffst du es sicherer.','Jedes Häppchen gibt außerdem +1 🪙.']],
+ overdrive:['⚡','OVERDRIVE',['Ziel geschafft? Dann geht es weiter: Die nächste Stufe ist dreimal so hoch (3×, 9×, 27× das Ziel …).','Jede Stufe gibt +3 🪙 und +2 🌠, jede zweite auch ein Booster Pack.','So lohnt sich auch ein richtig langes Training.']],
  shop:['🛒','SHOP',['Öffnet, sobald du den Ziel-Score des Tages geschafft hast. Du kannst den ganzen Tag wieder rein.','Jeden Tag neue Ware: Karten fürs Deck, ein Pack und ein Einweg-Gegenstand. Gekaufte Karten landen direkt im Deck.','Neu würfeln kostet Münzen und wird jedes Mal teurer.','Karten aus deinem Album tauchen öfter auf.']],
  packs:['⏳','SANDUHREN',['Jedes Häppchen füllt eine Sanduhr.',CH_HG+' Sanduhren = ein Booster Pack mit 3 Karten.','Eine Karte aus jedem Pack darfst du direkt ins Deck legen.','Jedes Pack und jede Kiste gibt 1 Pack-Punkt 🌠. Damit holst du dir im Album eine Wunschkarte.']],
  kisten:['🎁','KISTEN & PACKS',['3× auf die Kiste tippen, Karten umdrehen, dann eine Karte antippen, um sie in dein Deck zu legen.','Du bekommst sie: jeden Tag die Tagesbox, '+CH_HG+' Sanduhren (Booster Pack), jedes 5. Level (Gold), 7 Tage Serie (Gold), ganze Woche Gold (Legendär). Boss besiegt (Boss-Kiste), Set komplett (Gold). Packs gibt es auch im Shop.','Drin: Karten, manchmal Münzen 🪙, Joker ❄️, XP oder ein Boost. Doppelte Karten geben Münzen.']],
