@@ -1655,7 +1655,20 @@ init();
 .ch-stk{display:flex;flex-direction:column;align-items:center;font-family:'Orbitron',monospace;font-weight:900;font-size:13px;min-width:44px}
 .ch-flame{font-size:28px;line-height:1;animation:chFlick 1.1s infinite alternate;filter:drop-shadow(0 0 8px #ff7a00)}
 .ch-flame.off{filter:grayscale(1);opacity:.35;animation:none}
-.ch-frz{font-size:10px;color:#7dd3fc;margin-top:2px}
+.ch-frz{font-size:8px;color:var(--t2);margin-top:2px;letter-spacing:1px}
+.ch-flame.wait{filter:grayscale(.75);opacity:.55;animation:chFlick 2.4s infinite alternate}
+.ice-wrap{position:relative;width:180px;height:200px;margin:18px auto 6px;touch-action:manipulation;cursor:pointer;-webkit-user-select:none;user-select:none}
+.ice-fl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:96px;filter:grayscale(1) brightness(.7);transition:filter .3s,transform .4s}
+.ice-fl.lit{filter:drop-shadow(0 0 24px #ff7a00);transform:scale(1.25);animation:chFlick .6s infinite alternate}
+.ice-blk{position:absolute;inset:0;border-radius:22px;background:linear-gradient(150deg,rgba(224,247,255,.82),rgba(125,211,252,.55) 55%,rgba(56,189,248,.7));border:2px solid rgba(255,255,255,.7);box-shadow:inset 0 0 30px rgba(255,255,255,.6),0 0 30px rgba(125,211,252,.45);transition:opacity .2s,transform .5s}
+.ice-blk svg{position:absolute;inset:0;width:100%;height:100%}
+.ice-blk.hit{animation:iceHit .14s}
+.ice-blk.boom{transform:scale(1.6) rotate(8deg);opacity:0!important;transition:transform .45s ease-out,opacity .45s}
+@keyframes iceHit{0%,100%{transform:translate(0,0)}25%{transform:translate(-6px,3px) rotate(-2deg)}75%{transform:translate(6px,-3px) rotate(2deg)}}
+.ice-sh{position:fixed;width:10px;height:10px;background:#e0f7ff;border-radius:2px;pointer-events:none;z-index:9999;animation:iceSh .6s ease-out forwards}
+@keyframes iceSh{to{transform:translate(var(--dx),var(--dy)) rotate(260deg);opacity:0}}
+.ice-bar{width:200px;height:8px;border-radius:4px;background:rgba(255,255,255,.12);margin:8px auto 0;overflow:hidden}
+.ice-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7dd3fc,#ff7a00);transition:width .12s}
 .ch-row{display:flex;gap:8px;margin-bottom:12px}
 .ch-pill{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 8px;border-radius:12px;background:#151526;border:1px solid #2a2a44;font-weight:700;font-size:13px;cursor:pointer;position:relative;user-select:none}
 .ch-pill:active{transform:scale(.96)}
@@ -2685,7 +2698,7 @@ function chProcess(){
  while(d<t&&guard<90){guard++;
   if(chDayCount(d)<CH_MIN&&ch.streakDay!==d){
    var dn=new Date(d+'T12:00:00').toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'numeric'});
-   if(ch.freezes>0){ch.freezes--;if(ch.streakDay===chAddDays(d,-1))ch.streakDay=d;rep.push({c:'frz',t:'❄️ '+dn+': Joker hat deine Serie gerettet'});}
+   if(ch.freezes>0){ch.freezes--;ch.ice=(ch.ice||0)+1;if(ch.streakDay===chAddDays(d,-1))ch.streakDay=d;rep.push({c:'frz',t:'❄️ '+dn+': Joker hat deine Serie gerettet'});}
    else{
     var lost=chSubXp(H.day);var txt='💀 '+dn+': Tag verpasst → −'+lost+' XP';
     if(H.half&&ch.streak>0){ch.streak=Math.floor(ch.streak/2);ch.streakDay=ch.streak?d:null;txt+=', Serie halbiert';}
@@ -3334,7 +3347,7 @@ function rChallenge(){
  var h='<div class="ch-wrap">';
  h+='<div class="ch-head"><div class="ch-lv"><small>LEVEL</small><b>'+lv.L+'</b></div><div class="ch-hm"><div class="ch-title" onclick="chInfo(\'sets\')">'+chTitle(lv.L)+(ch.ttl?'<span class="ch-ttl">'+ch.ttl+'</span>':'')+'</div>';
  h+='<div class="ch-xpbar"><div class="ch-xpfill" id="ch-xpf" data-w="'+pct+'"></div></div><div class="ch-xptx">'+lv.cur+' / '+lv.need+' XP'+(ch.boost>Date.now()?' · <span style="color:#ffc400">⚡ Boost '+Math.ceil((ch.boost-Date.now())/60000)+' Min</span>':'')+'</div></div>';
- h+='<div class="ch-stk" onclick="chInfo(\'flamme\')" style="cursor:pointer"><div class="ch-flame'+(ch.streak?'':' off')+'">🔥</div>'+ch.streak+'<div class="ch-frz">❄️ '+ch.freezes+'</div></div></div>';
+ h+='<div class="ch-stk" onclick="chInfo(\'flamme\')" style="cursor:pointer"><div class="ch-flame'+(!ch.streak?' off':ch.streakDay===t?'':' wait')+'">🔥</div>'+ch.streak+'<div class="ch-frz">'+(ch.streak===1?'TAG':'TAGE')+'</div></div></div>';
  chDeckDay();var sc=chScDay(),goal=chGoalNow();chOdCheck();
  h+='<div class="ch-row"><div class="ch-pill'+(ch.boxes.length?' hot':'')+'" onclick="chOpenBox()">🎁 Kisten'+(ch.boxes.length?'<span class="ch-badge">'+ch.boxes.length+'</span>':'')+'</div>';
  h+='<div class="ch-pill" onclick="chShowCards()">🃏 Album '+chAlbumN()+'/'+CH_C.length+'</div>';
@@ -3401,7 +3414,7 @@ function rChallenge(){
  if(ch.intro4){ch.intro4=false;chSave();chQueue(function(){chInfo('neu4');});}
  if(chCiNeed())chQueue(chCheckin);
  if(chBossK(t)&&ch.bossSeen!==t){ch.bossSeen=t;chSave();chQueue(chBossIntro);}
- if(rep.length)chQueue(function(){chShowReport(rep);});else chDaily();
+ if(rep.length||ch.ice)chQueue(function(){chShowReport(rep);});else chDaily();
  if(chEvs.length&&!chBusy())setTimeout(chPlay,300);
 }
 function chDaily(){
@@ -3755,6 +3768,7 @@ function chShowLevel(ev){
  chSnd('lvl');vib([60,40,60,40,160]);chConfetti(['#00f5ff','#bf00ff','#fff','#00ff9f'],200);
 }
 function chShowReport(rep){
+ if(ch.ice){chIceBreak(rep);return;}
  var bad=rep.some(function(r){return !r.c;});
  var x=document.getElementById('chx');x.className='chx'+(bad?' bad':'');
  var h='<div class="chx-name" style="color:'+(bad?'#ff3d5a':'#7dd3fc')+'">'+(bad?'💀 ABRECHNUNG':'❄️ BERICHT')+'</div><div class="chx-rep">';
@@ -3763,6 +3777,31 @@ function chShowReport(rep){
  h+='<div class="chx-btns"><button class="btn bp bf" onclick="chCloseX()">'+(bad?'Ich hol mir das zurück 💪':'Weiter')+'</button></div>';
  x.innerHTML=h;if(bad){chSnd('bad');vib([200,80,200]);}
 }
+
+// Eis brechen (wie Duolingo): Joker hat die Serie gerettet → Flamme ist eingefroren, man tippt das Eis kaputt
+var CH_ICE_N=12,chIce=null;
+function chIceBreak(rep){
+ var x=document.getElementById('chx');x.className='chx';chIce={n:0,rep:rep.filter(function(r){return r.c!=='frz';}),days:ch.ice};
+ x.innerHTML='<div class="chx-name" style="color:#7dd3fc">❄️ DEINE FLAMME IST EINGEFROREN</div><div class="chx-info" style="text-align:center">'+(chIce.days>1?chIce.days+' Joker haben':'Ein Joker hat')+' deine Serie gerettet. Brich das Eis!</div>'+
+  '<div class="ice-wrap" onpointerdown="chIceTap(event)"><div class="ice-fl" id="ice-fl">🔥</div><div class="ice-blk" id="ice-b"><svg id="ice-cr" viewBox="0 0 100 100" preserveAspectRatio="none"></svg></div></div>'+
+  '<div class="ice-bar"><i id="ice-p"></i></div><div class="chx-hint" id="ice-tx">👆 Tippe schnell aufs Eis!</div><div class="chx-btns" id="ice-btn"></div>';
+}
+function chIceTap(ev){
+ if(!chIce||chIce.n>=CH_ICE_N)return;ev.preventDefault();chIce.n++;var n=chIce.n,b=document.getElementById('ice-b');
+ var cx=20+Math.random()*60,cy=20+Math.random()*60,pts=[cx+','+cy],a=Math.random()*6.28;
+ for(var i=0;i<3;i++){a+=(Math.random()-.5)*1.4;cx+=Math.cos(a)*(10+n);cy+=Math.sin(a)*(10+n);pts.push(cx.toFixed(1)+','+cy.toFixed(1));}
+ document.getElementById('ice-cr').insertAdjacentHTML('beforeend','<polyline points="'+pts.join(' ')+'" fill="none" stroke="#fff" stroke-width="'+(1+n/8)+'" stroke-linecap="round" opacity=".9"/>');
+ b.style.opacity=1-n/CH_ICE_N*.45;b.classList.remove('hit');void b.offsetWidth;b.classList.add('hit');
+ document.getElementById('ice-p').style.width=(n/CH_ICE_N*100)+'%';
+ for(var k=0;k<3;k++){var sh=document.createElement('i');sh.className='ice-sh';sh.style.left=ev.clientX+'px';sh.style.top=ev.clientY+'px';sh.style.setProperty('--dx',((Math.random()-.5)*160)+'px');sh.style.setProperty('--dy',(-40-Math.random()*90)+'px');document.body.appendChild(sh);setTimeout(sh.remove.bind(sh),650);}
+ chSnd(n%2?'tick':'tick2');vib(15+n*3);
+ if(n<CH_ICE_N){if(n===Math.round(CH_ICE_N/2))document.getElementById('ice-tx').textContent='💥 Weiter, gleich bricht es!';return;}
+ b.classList.add('boom');document.getElementById('ice-fl').classList.add('lit');var hd=document.querySelector('#chx .chx-name');if(hd){hd.textContent='🔥 DIE FLAMME BRENNT WIEDER';hd.style.color='#ff7a00';}ch.ice=0;chSave();
+ chConfetti(['#7dd3fc','#e0f7ff','#ff7a00','#ffc400'],160);chSnd('leg');vib([60,40,60,40,180]);
+ document.getElementById('ice-tx').innerHTML='<b style="color:#ff7a00">🔥 Flamme gerettet! Serie: '+ch.streak+(ch.streak===1?' Tag':' Tage')+'</b><br><span style="opacity:.7">Joker übrig: '+ch.freezes+'</span>';
+ setTimeout(function(){document.getElementById('ice-btn').innerHTML='<button class="btn bp bf" onclick="chIceDone()">Weiter</button>';},700);
+}
+function chIceDone(){var r=chIce?chIce.rep:[];chIce=null;if(r.length)chShowReport(r);else chCloseX();}
 
 // ══════════ Einstellungen ══════════
 function chSettingsHtml(){
@@ -3794,7 +3833,7 @@ var CH_INFO={
  shop:['🛒','SHOP',['Öffnet einmal, wenn du den Ziel-Score des Tages geschafft hast. Am Boss-Tag gibt es eine Karte mehr.','<b>Nur eine Chance:</b> Verlässt du den Shop, ist die Ware weg. Der nächste Shop kommt nach dem nächsten Tagesziel.','Karten fürs Deck, ein Pack und ein Einweg-Gegenstand. Gekaufte Karten landen direkt im Deck. Ist es voll, tauschst du gegen eine Deck-Karte und bekommst ihren Verkaufswert.','Neu würfeln kostet Münzen und wird jedes Mal teurer.','Karten aus deinem Album tauchen öfter auf.']],
  packs:['⏳','SANDUHREN',['Jedes Häppchen füllt eine Sanduhr.',CH_HG+' Sanduhren = ein Booster Pack mit 3 Karten.','Eine Karte aus jedem Pack darfst du direkt ins Deck legen.','Jedes Pack und jede Kiste gibt 1 Pack-Punkt 🌠. Damit holst du dir im Album eine Wunschkarte.']],
  kisten:['🎁','KISTEN & PACKS',['3× auf die Kiste tippen, Karten umdrehen, dann eine Karte antippen, um sie in dein Deck zu legen. Aus Gold-, Legendär- und Boss-Kisten darfst du 2 nehmen. Der Rest ist weg.','Du bekommst sie: jeden Tag die Tagesbox, '+CH_HG+' Sanduhren (Booster Pack), jedes 5. Level (Gold), 7 Tage Serie (Gold), ganze Woche Gold (Legendär). Boss besiegt (Boss-Kiste), Set komplett (Gold). Packs gibt es auch im Shop.','Drin: Karten, manchmal Münzen <i class="cn"></i>, Joker ❄️, XP oder ein Boost. Doppelte Karten geben Münzen.']],
- flamme:['🔥','DEINE SERIE',['Mach 3 Häppchen am Tag → die Flamme wächst um 1.','Verpasst du einen Tag, rettet dich ein Joker ❄️ (Zahl darunter). Ohne Joker gibt es Minuspunkte.','Joker gibt es jede Woche gratis (je nach Härte), aus Kisten und im Shop.']],
+ flamme:['🔥','DEINE SERIE',['Mach 3 Häppchen am Tag → die Flamme wächst um 1.','Die Zahl sind deine Tage am Stück. Grau heißt: Heute ist die Flamme noch nicht sicher.','Verpasst du einen Tag, rettet dich ein Joker ❄️. Beim nächsten Öffnen ist deine Flamme eingefroren und du brichst das Eis. Ohne Joker gibt es Minuspunkte.','Joker gibt es jede Woche gratis (je nach Härte), aus Kisten und im Shop.']],
  hitze:['🌡️','HITZE',['Nach jedem Häppchen ist die Leiste voll und läuft in 15 Min. langsam leer.','Machst du das nächste Häppchen, solange sie nicht leer ist, steigt dein Bonus: ×1,2 Mult, ×1,4 … bis ×2,6 Mult.','Warm trainieren ist auch besser für die Muskeln.']],
  bonus:['🎲','TAGESBONUS',['Kommt jeden Tag zufällig aus der Tagesbox und gilt nur heute.','Power-Tag = ×1,5 Mult · Glückstag = öfter KRITISCH · Sanduhr-Regen = doppelte Sanduhren · Fieber = ×3 Mult für eine Muskelgruppe · Hitze-Tag = doppelter Hitze-Bonus.']]};
 function chHint(k){ch.seen=ch.seen||{};if(ch.seen[k])return;ch.seen[k]=1;chQueue(function(){chInfo(k);});}
@@ -3803,6 +3842,7 @@ function chInfo(k,next){
  if(chBusy())return;var I=CH_INFO[k];var x=document.getElementById('chx');x.className='chx';
  var h='<div class="chx-big">'+I[0]+'</div><div class="chx-name" style="color:var(--ac);margin:8px 0 0">'+I[1]+'</div><div class="chx-info2">';
  I[2].forEach(function(t,i){h+='<div style="animation-delay:'+(i*.08)+'s">'+t+'</div>';});
+ if(k==='flamme')h+='<div style="animation-delay:.3s">Du hast gerade <b>'+ch.freezes+' Joker ❄️</b>.</div>';
  if(k==='kisten')h+='<div style="animation-delay:.3s">Gerade hast du '+(ch.boxes.length?ch.boxes.length+' Kiste(n).':'keine Kiste. Mach ein Häppchen! 💪')+'</div>';
  x.innerHTML=h+'</div><div class="chx-btns"><button class="btn bp bf" onclick="chCloseX();'+(next?'setTimeout(function(){'+next+'},60)':'')+'">'+(next?'Verstanden, weiter':'Alles klar')+'</button></div>';chHaptic();
 }
