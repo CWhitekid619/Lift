@@ -7,6 +7,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="LIFT">
 <meta name="theme-color" content="#06060a">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <title>LIFT</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -3929,5 +3932,6 @@ document.addEventListener('visibilitychange',function(){if(!document.hidden&&doc
 if(prof&&document.getElementById('s-challenge').classList.contains('active'))rChallenge();
 </script>
 
+<script>/* Block 3: PWA – Service Worker (offline, schneller Start) */if('serviceWorker' in navigator&&location.protocol!=='file:')addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});</script>
 </body>
 </html>
