@@ -2130,6 +2130,9 @@ details.prc summary{cursor:pointer;list-style:none}details.prc summary::-webkit-
 .ch-mod{background:#131322;border-color:#2e2e4a}
 .ch-heat.hot{box-shadow:none}
 .ch-dot.d{box-shadow:none}
+/* Block 2 (28.11.): Dauer-Animationen pausieren, wenn App im Hintergrund (html.ch-hid) oder Kasten außerhalb des Bildschirms (.ch-off) */
+html.ch-hid *,html.ch-hid *::before,html.ch-hid *::after,.ch-off,.ch-off *,.ch-off::before,.ch-off::after,.ch-off *::before,.ch-off *::after{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 .rl{margin-bottom:14px;padding:10px;border-radius:14px;background:#0f1418;border:1px solid #1f3a2c;display:flex;flex-direction:column;gap:8px}
 .rl-row{display:flex;gap:8px}
 .rl-t{flex:1;padding:7px 9px;border-radius:10px;background:#121c1a;border:1px solid #1f3a2c;cursor:pointer}
@@ -2500,7 +2503,7 @@ var chQ=[];
 var chScoring=null;
 function chBusy(){return !!chBX||!!chScoring||!document.getElementById('chx').classList.contains('hidden');}
 function chQueue(fn){if(chBusy())chQ.push(fn);else fn();}
-var chEvs=[],chUndoSnap=null,chUndoT=null,chBX=null,chPrevXp=null,chPopG=null,chAC=null;
+var chIO=null,chEvs=[],chUndoSnap=null,chUndoT=null,chBX=null,chPrevXp=null,chPopG=null,chAC=null;
 
 // ══════════ Hilfen ══════════
 function chDK(d){d=new Date(d);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -3435,7 +3438,7 @@ function rChallenge(){
  h+='<div class="ch-stats"><div class="ch-st"><b>'+ch.stats.snacks+'</b><span>Häppchen</span></div><div class="ch-st"><b>'+ch.best+'</b><span>Beste Serie</span></div><div class="ch-st"><b>'+ch.stats.goldWeeks+'</b><span>Gold-Wochen</span></div></div>';
  h+='<div class="ch-golink" onclick="chGoTab(\'fortschritt\')">📈 Rekorde, Kalender und Boss-Archiv <span>im Fortschritt-Tab →</span></div>';
  h+='</div>';
- el.innerHTML=h;chPopG=null;
+ el.innerHTML=h;chPopG=null;chObs(el);
  var xf=document.getElementById('ch-xpf');
  var start=chPrevXp!=null&&chPrevXp.L===lv.L?chPrevXp.p:0;xf.style.transition='none';xf.style.width=start+'%';
  requestAnimationFrame(function(){requestAnimationFrame(function(){xf.style.transition='';xf.style.width=pct+'%';el.querySelectorAll('.ch-gf,#ch-gfill').forEach(function(b){b.style.width=b.dataset.w+'%';});});});
@@ -3476,6 +3479,7 @@ function chSnd(type){
  }catch(e){}
 }
 function chConfetti(cols,n){
+ if(chRM())return; // Bewegung reduzieren: kein Konfetti
  var cv=document.createElement('canvas');cv.id='ch-conf';cv.width=innerWidth;cv.height=innerHeight;document.body.appendChild(cv);
  var x=cv.getContext('2d'),ps=[];
  for(var i=0;i<(n||120);i++)ps.push({x:innerWidth/2+(Math.random()-.5)*60,y:innerHeight*.42,vx:(Math.random()-.5)*16,vy:-Math.random()*16-4,s:Math.random()*7+4,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:chRnd(cols)});
@@ -3917,6 +3921,10 @@ vib=function(p){if(navigator.vibrate){try{navigator.vibrate(p);}catch(e){}return
  bar.addEventListener('click',function(e){if(moved){var tb=e.target.closest('.tab');if(tb&&tb.classList.contains('active')){e.stopPropagation();}moved=false;}},true);
  document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){chHaptic();});});
 })();
+// Block 2: Animationen pausieren (Hintergrund, außer Sicht), Bewegung reduzieren
+function chRM(){try{return matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){return false;}}
+function chObs(el){if(!('IntersectionObserver' in window))return;chIO=chIO||new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle('ch-off',!e.isIntersecting);});},{rootMargin:'120px 0px'});chIO.disconnect();el.querySelectorAll('.ch-wrap>*').forEach(function(n){chIO.observe(n);});}
+document.addEventListener('visibilitychange',function(){document.documentElement.classList.toggle('ch-hid',document.hidden);});
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&document.getElementById('s-challenge').classList.contains('active')&&!chBX)rChallenge();});
 if(prof&&document.getElementById('s-challenge').classList.contains('active'))rChallenge();
 </script>
