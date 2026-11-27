@@ -1838,6 +1838,12 @@ body.lean .tab[data-s="fortschritt"]{order:1}body.lean .tab-ch{order:2}body.lean
 .chx-pick .row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
 .chx-pick button{background:#1a1a30;border:1.5px solid var(--rc);color:#fff;border-radius:18px;padding:7px 12px;font-weight:800;font-size:12px;cursor:pointer}
 .chx-pick.ok{color:var(--gr);font-weight:800;font-size:13px}
+.dk-swap{z-index:1;margin:12px auto 0;max-width:340px;width:100%;text-align:center;background:#16162a;border:1px solid #ffc40066;border-radius:14px;padding:10px}
+.dk-swap>small{display:block;font-size:11px;color:#ffc400;font-weight:800;margin-bottom:8px}
+.dk-swap>div{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.dk-swap>div button{background:#1a1a30;border:1.5px solid var(--rc,#555);color:#fff;border-radius:12px;padding:6px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;min-width:54px}
+.dk-swap>div button span{font-size:22px}.dk-swap>div button small{font-size:10px;color:#ffc400;font-weight:800}
+.dk-swx{margin-top:8px;background:none;border:0;color:var(--t2);font-size:12px;text-decoration:underline;cursor:pointer}
 .chx-pick.big b{display:block;color:#fff;font-size:14px;margin-bottom:3px}.chx-pick.big span{font-size:11px}
 .chc.can .chc-front{animation:chCan 1.2s ease-in-out infinite}.chc.picked .chc-front{box-shadow:0 0 0 3px #3bff8f,0 0 30px #3bff8f}
 .chc.picked::after{content:'IM DECK';position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);background:#3bff8f;color:#001;font-size:9px;font-weight:900;padding:2px 8px;border-radius:8px;z-index:3;white-space:nowrap}
@@ -2883,9 +2889,10 @@ function chSetWish(id){ch.wish=ch.wish===id?null:id;chSave();chSnd('flip');toast
 function chClaimWish(id){
  var c=CH_CM[id],pr=CH_WISH[c.r];if(!pr||ch.pp<pr)return;
  ch.pp-=pr;chGain(id,'');if(ch.wish===id)ch.wish=null;chSave();
- chSnd('leg');vib([60,30,60,30,140]);chConfetti([CH_RC[c.r],'#fff','#3bff8f'],150);toast('🌠 '+c.n+' gehört dir!');chCardDetail(id,0,1);
+ chSnd('leg');vib([60,30,60,30,140]);chConfetti([CH_RC[c.r],'#fff','#3bff8f'],150);chWishPick(id);
 }
-function chWishDeck(id){if(chDeckFull()||chInDeck(id))return;ch.deck.push(chInst(id,''));chGoalRaise();chSave();chSnd('box');vib([30,30,60]);toast(CH_CM[id].e+' '+CH_CM[id].n+' liegt im Deck');chCloseX();}
+function chWishPick(id){var c=CH_CM[id];chBX={wp:true,res:{cards:[{id:id,v:''}]}};var x=document.getElementById('chx');x.className='chx';x.style.justifyContent='';
+ x.innerHTML='<div class="chx-rays" style="--c:'+CH_RC[c.r]+'"></div><div class="chx-name" style="color:#3bff8f">🌠 WUNSCHKARTE</div>'+chBigCard(c,null,false,'')+'<div id="chx-pick" style="width:100%;display:flex;flex-direction:column;align-items:center">'+chPickHtml()+'</div><div class="chx-btns"><button class="btn bs bf" onclick="chCloseX()">Weiter</button></div>';}
 function chOpenWish(){if(chBusy()||!ch.wish)return;chCardDetail(ch.wish);}
 function chWishHtml(){
  if(!ch.wish||!CH_CM[ch.wish])return '';var c=CH_CM[ch.wish],pr=CH_WISH[c.r],ok=ch.pp>=pr;
@@ -3268,7 +3275,7 @@ function rChallenge(){
  chDeckDay();var sc=chScDay(),goal=chGoalNow();chOdCheck();
  h+='<div class="ch-row"><div class="ch-pill'+(ch.boxes.length?' hot':'')+'" onclick="chOpenBox()">🎁 Kisten'+(ch.boxes.length?'<span class="ch-badge">'+ch.boxes.length+'</span>':'')+'</div>';
  h+='<div class="ch-pill" onclick="chShowCards()">🃏 Album '+chAlbumN()+'/'+CH_C.length+'</div>';
- h+='<div class="ch-pill'+(sc.hit?' shop':' lock')+'" onclick="chShop()">'+(sc.hit?'🛒':'🔒')+' Shop'+(sc.hit&&ch.shopSeen!==t?'<span class="ch-badge">NEU</span>':'')+'</div></div>';
+ var shOk=sc.hit&&!chShopOut();h+='<div class="ch-pill'+(shOk?' shop':' lock')+'" onclick="chShop()">'+(shOk?'🛒':'🔒')+' Shop'+(sc.hit&&!shOk?' zu':'')+(shOk&&ch.shopSeen!==t?'<span class="ch-badge">NEU</span>':'')+'</div></div>';
  h+=chBossHtml(sc);
  var LG=chLg();h+='<div class="ch-liga" style="--c:'+LG.c+'" onclick="chLigaOpen()"><span>'+LG.e+' '+LG.n+'</span><span>⭐ '+chMastN(1)+' gemeistert · ändern ›</span></div>';
  if(chWpAvail())h+='<div class="ch-wpb" onclick="chWonder()">✨ WONDER PICK bereit! <span>Zieh 1 von 5 Karten</span></div>';
@@ -3279,7 +3286,7 @@ function rChallenge(){
  h+='<div class="ch-sec"><h4>DEIN DECK</h4><span onclick="chInfo(\'deck\')" style="cursor:pointer">'+Math.min(cap,ch.deck.length)+'/'+cap+' · ziehen zum Sortieren ⓘ</span></div><div class="ch-deck" id="ch-deck" style="grid-template-columns:repeat('+cols+',minmax(0,1fr))">';
  for(var di=0;di<nS;di++){var dd=ch.deck[di];
   if(dd){var dc2=CH_CM[dd.id],off=di>=cap;h+='<div class="ch-dk r-'+dc2.r+chVarCls(dd.v)+(chBossIs('jailer')&&di===0?' lock':'')+(off?' off':'')+'" data-i="'+di+'">'+(dd.v?'<i class="vfx"></i>':'')+(dd.per?'<i class="dk-b">⌛'+dd.per+'</i>':dd.rent?'<i class="dk-b"><i class="cn"></i></i>':'')+(ch.mast[dd.id]?'<i class="dk-m" style="color:'+CH_LIGA[ch.mast[dd.id]-1].c+'">★</i>':'')+'<div class="e">'+dc2.e+'</div><div class="n">'+(off?'inaktiv':dc2.n)+'</div></div>';}
-  else h+='<div class="ch-dk empty" onclick="chDeckAdd()">+</div>';}
+  else h+='<div class="ch-dk empty" onclick="chInfo(\'deck\')">+</div>';}
  DB.forEach(function(b){var D=CH_DEB[b.k],dl=Math.round((new Date(b.until+'T12:00:00')-new Date(t+'T12:00:00'))/864e5)+1;h+='<div class="ch-dk deb" onclick="chInfo(\'reallife\')"><i class="dk-b">'+dl+'T</i><div class="e">'+D.e+'</div><div class="n">'+D.n+'</div></div>';});
  for(var li=0;li<lockN;li++)h+='<div class="ch-dk empty lk" onclick="chInfo(\'reallife\')">🔒</div>';
  h+='</div>';
@@ -3439,38 +3446,40 @@ function chBoxAfter(){
  h+='<div id="chx-pick" style="width:100%;display:flex;flex-direction:column;align-items:center">'+chPickHtml()+'</div>';
  if(chBX.res.ex.length){h+='<div class="chx-ex">';chBX.res.ex.forEach(function(e,i){h+='<div style="animation-delay:'+(i*.15)+'s">'+e+'</div>';});h+='</div>';}
  if(chBX.res.mod)h+='<div class="chx-mod"><small>DEIN TAGESBONUS</small>'+chBX.res.mod.x+'</div>';
- h+='<div class="chx-btns">'+(ch.boxes.length?'<button class="btn bp bf" onclick="chNextBox()">🎁 Nächste Kiste öffnen ('+ch.boxes.length+')</button>':'')+(chBX.shop?'<button class="btn bs bf" onclick="chBX=null;chShop(1)">🛒 Zurück zum Shop</button>':'')+'<button class="btn bs bf" onclick="chCloseX()">Weiter</button></div>';
+ h+='<div class="chx-btns">'+(ch.boxes.length?'<button class="btn bp bf" onclick="chNextBox()">🎁 Nächste Kiste öffnen ('+ch.boxes.length+')</button>':'')+(chBX.shop?'<button class="btn bp bf" onclick="chBX=null;chShop(1)">🛒 Zurück zum Shop</button>':'<button class="btn bs bf" onclick="chCloseX()">Weiter</button>')+'</div>';
  a.innerHTML=h;if(chBX.res.mod)chSnd('crit');chPickMark();
 }
 function chInDeck(id){return ch.deck.some(function(d){return d.id===id;});}
-// Exemplare: verkaufte oder verbrauchte Karten kosten ein Exemplar. Freie Exemplare legt man aus dem Album ins Deck.
-function chUse(id){ch.sold=ch.sold||{};ch.sold[id]=(ch.sold[id]||0)+1;if(ch.bench)delete ch.bench[id];}
-function chFree(id){return (ch.cards[id]||0)-((ch.sold||{})[id]||0)-(chInDeck(id)?1:0);}
-function chCanAdd(id){return CH_CM[id].fx.length&&!chInDeck(id)&&chFree(id)>=1;}
+// Kein Vorrat (wie Balatro): Was nicht im Deck liegt, ist weg. Das Album zeigt nur, was man entdeckt hat. ch.sold zählt verkaufte/verbrauchte Karten.
+function chUse(id){ch.sold=ch.sold||{};ch.sold[id]=(ch.sold[id]||0)+1;}
+// Deck voll: Deck-Karte j verkaufen und die neue Karte an ihre Stelle legen
+function chSwapIn(j,inst){var d=ch.deck[j];if(!d)return 0;var v=chSellV(d);ch.coins+=v;chUse(d.id);ch.deck[j]=inst;toast('💰 '+CH_CM[d.id].n+' verkauft: +'+v+' Münzen');return v;}
+function chSwapRow(fn,cancel){return '<div class="dk-swap"><small>Deck voll: Welche Karte fliegt raus? Du bekommst ihren Verkaufswert.</small><div>'+ch.deck.map(function(d,j){var c=CH_CM[d.id];return '<button class="r-'+c.r+'" onclick="'+fn+j+')"><span>'+c.e+'</span><small>+'+chSellV(d)+' <i class="cn"></i></small></button>';}).join('')+'</div><button class="dk-swx" onclick="'+cancel+'">Abbrechen</button></div>';}
 function chGoalRaise(){var s=ch.sc;if(!s||s.d!==chToday()||s.hit)return;var o=s.gb;ch.sc=null;var n=chScDay();n.pts=s.pts;n.od=s.od;n.gb=Math.max(o,n.gb);}
-function chAlbumAdd(id,from){if(chDeckFull()||!chCanAdd(id))return;var b=(ch.bench||{})[id];ch.deck.push(b||chInst(id,''));if(b)delete ch.bench[id];chGoalRaise();chSave();chSnd('box');vib([30,30,60]);toast(CH_CM[id].e+' '+CH_CM[id].n+' liegt im Deck');if(from==='pick'&&!chDeckFull())chDeckAdd();else chCloseX();}
-function chDeckOut(i){var d=ch.deck[i];if(!d)return;ch.deck.splice(i,1);ch.bench=ch.bench||{};ch.bench[d.id]=d;chSave();chSnd('flip');vib(15);chCloseX();toast(CH_CM[d.id].e+' '+CH_CM[d.id].n+' liegt wieder im Album');}
-function chDeckAdd(){
- var x=document.getElementById('chx');x.className='chx';x.style.justifyContent='flex-start';
- var l=CH_C.filter(function(c){return chCanAdd(c.id);}).sort(function(a,b){return CH_RK.indexOf(b.r)-CH_RK.indexOf(a.r);});
- var h='<div class="chx-top"><h2>KARTE INS DECK</h2><div class="chx-coins">'+Math.min(chDeckCap(),ch.deck.length)+'/'+chDeckCap()+'</div><button onclick="chCloseX()">✕</button></div><div class="chx-scroll">';
- if(chDeckFull())h+='<div class="chx-info">Dein Deck ist voll. Tippe im Deck auf eine Karte und leg sie zurück ins Album, dann ist ein Platz frei.</div>';
- else if(!l.length)h+='<div class="chx-info">Keine freie Karte im Album. Neue Karten gibt es aus Packs, Kisten und im Shop.</div>';
- else{h+='<div class="chx-info">Tippe eine Karte an, um sie auf den freien Platz zu legen.</div>';
-  l.forEach(function(c){h+='<div class="dk-add r-'+c.r+'" onclick="chAlbumAdd('+c.id+',\'pick\')"><span class="e">'+c.e+'</span><span class="t"><b>'+c.n+'</b><small style="color:'+CH_RC[c.r]+'">'+CH_RN[c.r]+'</small><span>'+chCardFx(c,(ch.bench||{})[c.id])+'</span></span><span class="p">+</span></div>';});}
- x.innerHTML=h+'</div>';chSnd('flip');
-}
 function chFits(v,id){if(id&&chInDeck(id))return false;return ch.deck.length<chDeckCap()||(v==='s'&&ch.deck.filter(function(d){return d.v==='s';}).length<3);}
-function chPickIdx(){var idx=[],keys=[];chBX.res.cards.forEach(function(rc,i){var k=rc.id+(rc.v||'');if(keys.indexOf(k)<0&&CH_CM[rc.id].fx.length&&chFits(rc.v,rc.id)){keys.push(k);idx.push(i);}});return idx;}
+// Aus Gold-, Legendär- und Boss-Kisten darf man 2 Karten nehmen, sonst 1. Der Rest ist weg.
+function chPickMax(){return chBX&&['gold','legend','boss'].indexOf(chBX.tier)>=0?2:1;}
+function chPickLeft(){return chPickMax()-(chBX.picks||[]).length;}
+function chPickIdx(){var P=chBX.picks||[],idx=[],keys=[];chBX.res.cards.forEach(function(rc,i){var k=rc.id+(rc.v||'');if(P.indexOf(i)<0&&keys.indexOf(k)<0&&CH_CM[rc.id].fx.length&&!chInDeck(rc.id)){keys.push(k);idx.push(i);}});return idx;}
 function chPickHtml(){
- if(chBX.picked!=null){var c=CH_CM[chBX.picked];return '<div class="chx-pick ok">✅ '+c.e+' '+c.n+' liegt jetzt in deinem Deck</div>';}
+ var P=chBX.picks||[],left=chPickLeft();
+ var dn=P.map(function(i){var c=CH_CM[chBX.res.cards[i].id];return c.e+' '+c.n;});
+ var ok=dn.length?'<div class="chx-pick ok">✅ '+dn.join(' und ')+(dn.length>1?' liegen':' liegt')+' jetzt in deinem Deck</div>':'';
+ if(chBX.swap!=null)return ok+chSwapRow('chPickSwap('+chBX.swap+',','chPickNo()');
+ if(left<=0)return ok;
  var idx=chPickIdx();
- if(!idx.length)return chDeckFull()?'<div class="chx-pick">Dein Deck ist voll ('+ch.deck.length+'/'+chDeckCap()+'). Die Karten sind trotzdem in deinem Album. Zum Tauschen tippe später im Deck auf eine Karte und verkaufe sie.</div>':'<div class="chx-pick">Die Karten sind jetzt in deinem Album.</div>';
- if(chBX.wp){var rc=chBX.res.cards[0],c=CH_CM[rc.id];return '<div class="chx-pick"><button class="r-'+c.r+'" onclick="chPickDeck(0)">🃏 '+c.n+' ins Deck legen</button></div>';}
- return '<div class="chx-pick big"><b>👆 Tippe eine Karte an, um sie in dein Deck zu legen.</b><span>Nur eine pro Pack. Alle Karten kommen in dein Album.</span></div>';
+ if(!idx.length)return ok||'<div class="chx-pick">'+(chBX.res.cards.length===1&&chInDeck(chBX.res.cards[0].id)?'Die Karte liegt schon in deinem Deck.':'Keine Karte passt in dein Deck. Im Album sind sie als entdeckt eingetragen.')+'</div>';
+ if(chBX.wp){var rc=chBX.res.cards[0],c=CH_CM[rc.id];return ok+'<div class="chx-pick"><button class="r-'+c.r+'" onclick="chPickDeck(0)">🃏 '+c.n+' ins Deck legen</button><span>Sonst ist sie weg. Im Album bleibt sie als entdeckt.</span></div>';}
+ return ok+'<div class="chx-pick big"><b>👆 Tippe '+(left>1?'bis zu '+left+' Karten':P.length?'noch eine Karte':'eine Karte')+' an, um sie in dein Deck zu legen.</b><span>Der Rest ist weg, im Album bleiben alle als entdeckt.'+(chDeckFull()?' Dein Deck ist voll: Du tauschst gegen eine Deck-Karte.':'')+'</span></div>';
 }
-function chPickMark(){if(!chBX||chBX.wp)return;var idx=chPickIdx();chBX.res.cards.forEach(function(rc,i){var e=document.getElementById('chc'+i);if(!e)return;e.classList.toggle('can',chBX.picked==null&&idx.indexOf(i)>=0);e.classList.toggle('picked',chBX.picked!=null&&chBX.pickedI===i);});}
-function chPickDeck(i){if(!chBX||chBX.picked!=null)return;var rc=chBX.res.cards[i];if(!rc||!chFits(rc.v,rc.id))return;ch.deck.push(chInst(rc.id,rc.v));chBX.picked=rc.id;chBX.pickedI=i;chSave();chSnd('box');vib([30,30,60]);var e=document.getElementById('chx-pick');if(e)e.innerHTML=chPickHtml();chPickMark();}
+function chPickMark(){if(!chBX||chBX.wp)return;var P=chBX.picks||[],idx=chPickIdx(),left=chPickLeft();chBX.res.cards.forEach(function(rc,i){var e=document.getElementById('chc'+i);if(!e)return;e.classList.toggle('can',left>0&&idx.indexOf(i)>=0);e.classList.toggle('picked',P.indexOf(i)>=0);});}
+function chPickRe(){var e=document.getElementById('chx-pick');if(e)e.innerHTML=chPickHtml();chPickMark();}
+function chPickDeck(i){if(!chBX||chPickLeft()<=0||chPickIdx().indexOf(i)<0)return;var rc=chBX.res.cards[i];
+ if(!chFits(rc.v,rc.id)){chBX.swap=i;chSnd('flip');vib(15);chPickRe();return;}
+ ch.deck.push(chInst(rc.id,rc.v));chPicked(i);}
+function chPickSwap(i,j){if(!chBX||chBX.swap!==i)return;var rc=chBX.res.cards[i];chSwapIn(j,chInst(rc.id,rc.v));chBX.swap=null;chPicked(i);}
+function chPickNo(){if(!chBX)return;chBX.swap=null;chPickRe();}
+function chPicked(i){(chBX.picks=chBX.picks||[]).push(i);chSave();chSnd('box');vib([30,30,60]);chPickRe();}
 function chNextBox(){chBX=null;chOpenBox();}
 function chCloseX(){var x=document.getElementById('chx');x.className='chx hidden';x.innerHTML='';x.style.justifyContent='';chBX=null;
  if(chQ.length){chQ.shift()();return;}
@@ -3482,7 +3491,7 @@ function chShowCards(){
  var x=document.getElementById('chx');x.className='chx';x.style.justifyContent='flex-start';
  var own=chAlbumN();
  var h='<div class="chx-top"><h2>ALBUM '+own+'/'+CH_C.length+'</h2><div class="chx-coins" style="color:#3bff8f">🌠 '+(ch.pp||0)+'</div><button onclick="chCloseX()">✕</button></div>';
- h+='<div class="chx-info">Hier sind alle Karten, die du gefunden hast. Tippe eine an: Effekt sehen, <b>ins Deck legen</b> oder als Wunschkarte holen. Varianten gefunden: <b>'+chVarN()+'</b>. Komplette Sets geben einen Dauer-Bonus und einen Titel.<br>Legendäre Karte spätestens in '+(CH_PITY-ch.pity)+' Karten garantiert.<br>⭐ Gemeistert: '+chMastN(1)+' · in der Black League: <b>'+chMastN(4)+'/'+CH_C.length+'</b> (Endziel)'+(ch.albumDone?'':' Ganzes Album: ×2 Mult für immer.')+'</div><div class="chx-scroll">';
+ h+='<div class="chx-info">Hier sind alle Karten, die du gefunden hast. Tippe eine an: Effekt sehen oder als Wunschkarte holen. Ins Deck kommen Karten nur aus Shop, Packs und Kisten. Varianten gefunden: <b>'+chVarN()+'</b>. Komplette Sets geben einen Dauer-Bonus und einen Titel.<br>Legendäre Karte spätestens in '+(CH_PITY-ch.pity)+' Karten garantiert.<br>⭐ Gemeistert: '+chMastN(1)+' · in der Black League: <b>'+chMastN(4)+'/'+CH_C.length+'</b> (Endziel)'+(ch.albumDone?'':' Ganzes Album: ×2 Mult für immer.')+'</div><div class="chx-scroll">';
  CH_SETS.forEach(function(S2){var l=CH_C.filter(function(c){return c.s===S2.k;}).sort(function(a,b){return CH_RK.indexOf(a.r)-CH_RK.indexOf(b.r);});var o=l.filter(function(c){return ch.cards[c.id];}).length,done=o===l.length;
   h+='<div class="ch-sec" style="margin-top:10px"><h4'+(done?' style="color:#ffc400"':'')+'>'+S2.e+' '+S2.n.toUpperCase()+'</h4><span>'+o+'/'+l.length+(done?' ✓':'')+'</span></div>';
   h+='<div class="chx-setb'+(done?' on':'')+'">'+(done?'✅ ':'🔒 ')+'Set-Bonus: '+chFxTxt(S2.fx)+' · Titel „'+S2.t+'“</div><div class="chx-coll">';
@@ -3536,7 +3545,7 @@ function chCardDetail(id,back,got){
  if(c.r==='m')h+='<div>🏆 Gibt es nur in der Boss-Kiste.</div>';
  h+='</div><div class="chx-btns">';
  var note='';
- if(!back&&n){if(chInDeck(id))note='🃏 Liegt in deinem Deck.';else if(chCanAdd(id)){if(!chDeckFull())h+='<button class="btn bp bf" onclick="chAlbumAdd('+id+')">🃏 Ins Deck legen</button>';else note='🃏 Deck voll: Leg erst eine Deck-Karte zurück ins Album.';}else if(chFree(id)<1)note='Kein freies Exemplar mehr (verkauft oder verbraucht).';}
+ if(!back&&n&&chInDeck(id))note='🃏 Liegt in deinem Deck.';
  if(note)h=h.replace('<div class="chx-btns">','<div class="chx-info2" style="margin-top:-6px"><div>'+note+'</div></div><div class="chx-btns">');
  if(!back&&pr){if((ch.pp||0)>=pr)h+='<button class="btn bp bf" onclick="chClaimWish('+id+')">🌠 Für '+pr+' Pack-Punkte holen</button>';
   h+='<button class="btn bs bf" onclick="chSetWish('+id+')">'+(ch.wish===id?'★ Wunschkarte entfernen':'☆ Als Wunschkarte merken')+'</button>';}
@@ -3574,7 +3583,7 @@ function chDeckDetail(i){
  h+='<div class="dk-mini">'+ch.deck.map(function(e,k){return '<span class="'+(k===i?'on':'')+(k>=chDeckCap()?' off':'')+'" onclick="chDeckDetail('+k+')">'+CH_CM[e.id].e+'</span>';}).join('')+'</div>';
  var inf=(chBossIs('jailer')&&i===0?'<div>⛓️ Boss The Jailer: Diese Karte ist heute gesperrt.</div>':'')+(i>=chDeckCap()?'<div>💤 Inaktiv: Kein Platz frei. Schieb sie nach links oder verdien dir einen Platz.</div>':'')+(d.per?'<div>⌛ Vergänglich: noch '+d.per+(d.per===1?' Tag':' Tage')+'.</div>':'')+(d.rent?'<div><i class="cn"></i> Miete: kostet 1 <i class="cn"></i> pro Tag.</div>':'')+(ch.mast[d.id]?'<div>⭐ Gemeistert in der '+CH_LIGA[ch.mast[d.id]-1].n+'.</div>':'');
  if(inf)h+='<div class="chx-info2">'+inf+'</div>';
- h+='<div class="chx-btns"><button class="btn bs bf" onclick="chDeckOut('+i+')">↩ Zurück ins Album</button><button class="btn bp bf" onclick="chCloseX()">Fertig</button></div>';
+ h+='<div class="chx-btns"><button class="btn bp bf" onclick="chCloseX()">Fertig</button></div>';
  x.innerHTML=h;chSnd('flip');chHaptic();
 }
 function chSell(i,b){
@@ -3587,33 +3596,36 @@ function chSell(i,b){
 var CH_PACKP={pack:8,silber:12,gold:18};
 function chShopPr(o){return CH_PRICE[CH_CM[o.id].r]+({f:2,h:3,p:6,s:6}[o.v]||0);}
 function chShopCards(){
- var n=3+chSp('shop'),out=[],guard=0;
+ var n=3+chSp('shop')+(chBossK()?1:0),out=[],guard=0;
  while(out.length<n&&guard++<60){var r=Math.random(),rar=r<.02?'l':r<.10?'e':r<.38?'r':'c';
-  var w=[];CH_C.forEach(function(c){if(c.r!==rar||out.indexOf(c.id)>=0)return;var k=ch.cards[c.id]?3:1;for(var i=0;i<k;i++)w.push(c.id);});
+  var w=[];CH_C.forEach(function(c){if(c.r!==rar||out.indexOf(c.id)>=0||chInDeck(c.id))return;var k=ch.cards[c.id]?3:1;for(var i=0;i<k;i++)w.push(c.id);});
   if(w.length)out.push(chRnd(w));}
  return out.map(function(id){return {id:id,sold:false,v:chRollVar()};});
 }
 function chShopPack(){var r=Math.random();return {t:r<.6?'pack':r<.9?'silber':'gold',sold:false};}
-function chShopGen(){var t=chToday();if(!ch.shop||ch.shop.d!==t){ch.shop={d:t,cards:chShopCards(),packs:[chShopPack()],item:{k:chRnd(Object.keys(CH_ITEMS)),sold:false},rr:0};chSave();}return ch.shop;}
+function chShopGen(){var t=chToday();if(!ch.shop||ch.shop.d!==t){ch.shop={d:t,cards:chShopCards(),packs:[chShopPack()],item:{k:chRnd(Object.keys(CH_ITEMS)),sold:false},rr:0,boss:!!chBossK()};chSave();}return ch.shop;}
 function chShop(inner){
  if(!inner&&chBusy())return;
  if(!chScDay().hit){chInfo('shop');return;}
+ if(chShopOut()){chInfo('shopzu');return;}
  if(!inner&&chFirst('shop','chShop()'))return;
  ch.shopSeen=chToday();var S2=chShopGen();chSave();
  var x=document.getElementById('chx');x.className='chx';x.style.justifyContent='flex-start';
- var h='<div class="chx-top"><h2>🛒 SHOP</h2><div class="chx-coins"><i class="cn"></i> '+ch.coins+'</div><button onclick="chCloseX()">✕</button></div><div class="chx-scroll">';
+ var h='<div class="chx-top"><h2>🛒 '+(S2.boss?'BOSS-SHOP':'SHOP')+'</h2><div class="chx-coins"><i class="cn"></i> '+ch.coins+'</div><button onclick="chShopLeave(this)">✕</button></div><div class="chx-scroll">';
  h+='<div class="ch-sec"><h4>KARTEN FÜRS DECK</h4><span>Deck '+ch.deck.length+'/'+chDeckCap()+'</span></div>';
  S2.cards.forEach(function(o,i){var c=CH_CM[o.id],pr=CH_PRICE[c.r];
   pr=chShopPr(o);
   h+='<div class="shp'+(o.sold?' sold':'')+'"><div class="chx-mc r-'+c.r+chVarCls(o.v)+'" onclick="chCardDetail('+c.id+',1)"><div class="e">'+c.e+'</div>'+chVarFx(o.v)+'</div><div class="shp-t"><b>'+c.n+'</b><small style="color:'+CH_RC[c.r]+'">'+CH_RN[c.r]+(o.v?' · <span class="vtx v-'+o.v+'">'+CH_VAR[o.v].n+'</span>':'')+(ch.cards[c.id]?'':' · NEU')+'</small><span>'+chCardFx(c,null)+(o.v?' '+CH_VAR[o.v].n+': '+CH_VAR[o.v].d:'')+'</span></div>';
   h+='<button'+(o.sold||ch.coins<pr?' class="off"':'')+' onclick="chBuy(\'c\','+i+')">'+(o.sold?'✓':pr+' <i class="cn"></i>')+'</button></div>';});
+ if(S2.swap!=null&&S2.cards[S2.swap]&&!S2.cards[S2.swap].sold)h+=chSwapRow('chShopSwap(','chShopNo()');
  h+='<div class="ch-sec" style="margin-top:14px"><h4>PACKS</h4></div>';
  S2.packs.forEach(function(o,i){var B=CH_BOX[o.t],pr=CH_PACKP[o.t];
   h+='<div class="shp'+(o.sold?' sold':'')+'"><div class="shp-e">'+B.e+'</div><div class="shp-t"><b>'+B.n+'</b><span>'+B.cards+(B.cards>1?' Karten':' Karte')+'</span></div><button'+(o.sold||ch.coins<pr?' class="off"':'')+' onclick="chBuy(\'p\','+i+')">'+(o.sold?'✓':pr+' <i class="cn"></i>')+'</button></div>';});
  var I=CH_ITEMS[S2.item.k];
  h+='<div class="ch-sec" style="margin-top:14px"><h4>EINWEG</h4></div><div class="shp'+(S2.item.sold?' sold':'')+'"><div class="shp-e">'+I.e+'</div><div class="shp-t"><b>'+I.n+'</b><span>'+I.d+'</span></div><button'+(S2.item.sold||ch.coins<I.p?' class="off"':'')+' onclick="chBuy(\'i\',0)">'+(S2.item.sold?'✓':I.p+' <i class="cn"></i>')+'</button></div>';
  h+='<button class="btn bs bf" style="margin-top:16px" onclick="chReroll()">🎲 Karten neu würfeln ('+(2+S2.rr)+' <i class="cn"></i>)</button>';
- h+='<div class="chx-info" style="margin-top:10px;text-align:center">Morgen gibt es neue Ware. Karten aus deinem Album tauchen öfter auf.</div>';
+ h+='<button class="btn bp bf" style="margin-top:10px" onclick="chShopLeave(this)">🚪 Shop verlassen</button>';
+ h+='<div class="chx-info" style="margin-top:10px;text-align:center">Verlässt du den Shop, ist die Ware weg. Der nächste Shop kommt nach dem nächsten Tagesziel.</div>';
  x.innerHTML=h+'</div>';
 }
 function chBuy(k,i){
@@ -3621,7 +3633,7 @@ function chBuy(k,i){
  if(k==='c'){o=S2.cards[i];pr=chShopPr(o);}else if(k==='p'){o=S2.packs[i];pr=CH_PACKP[o.t];}else{o=S2.item;pr=CH_ITEMS[o.k].p;}
  if(o.sold)return;
  if(k==='c'&&chInDeck(o.id)){toast('Die Karte liegt schon in deinem Deck');chSnd('bad');return;}
- if(k==='c'&&!chFits(o.v)){toast('Deck voll – verkaufe erst eine Karte');chSnd('bad');return;}
+ if(k==='c'&&!chFits(o.v)){S2.swap=S2.swap===i?null:i;chSnd('flip');vib(15);chShop(1);return;}
  if(ch.coins<pr){toast('Zu wenig Münzen');chSnd('bad');return;}
  ch.coins-=pr;o.sold=true;chMsTick('shop');
  if(k==='c'){var c=CH_CM[o.id];ch.deck.push(chInst(o.id,o.v));chGain(o.id,o.v||'');chSave();chSnd('box');vib([30,30,60]);toast(c.e+' '+c.n+' liegt im Deck');chShop(1);return;}
@@ -3631,7 +3643,14 @@ function chBuy(k,i){
  else if(o.k==='frz'){ch.freezes=Math.min(5,ch.freezes+1);toast('❄️ +1 Joker');}
  chSave();chSnd('box');chShop(1);
 }
-function chReroll(){var S2=ch.shop,c=2+S2.rr;if(ch.coins<c){toast('Zu wenig Münzen');chSnd('bad');return;}ch.coins-=c;S2.rr++;S2.cards=chShopCards();chSave();chSnd('flip');vib(20);chShop(1);}
+function chShopOut(){return !!ch.shop&&ch.shop.d===chToday()&&!!ch.shop.out;}
+function chShopLeave(b){if(!b.dataset.ok){document.querySelectorAll('[onclick^="chShopLeave"]').forEach(function(e){e.dataset.ok=1;});b.textContent=b.textContent==='✕'?'Weg?':'Wirklich? Die Ware ist dann weg';chSnd('tick');return;}
+ if(ch.shop){ch.shop.out=true;ch.shop.swap=null;}chSave();chSnd('flip');chCloseX();}
+function chShopNo(){if(ch.shop)ch.shop.swap=null;chShop(1);}
+function chShopSwap(j){var S2=ch.shop;if(!S2||S2.swap==null)return;var o=S2.cards[S2.swap],d=ch.deck[j];if(!o||o.sold||!d)return;var pr=chShopPr(o);
+ if(ch.coins+chSellV(d)<pr){toast('Zu wenig Münzen, auch mit dem Verkauf');chSnd('bad');return;}
+ chSwapIn(j,chInst(o.id,o.v));ch.coins-=pr;o.sold=true;S2.swap=null;chMsTick('shop');chGain(o.id,o.v||'');chSave();chSnd('box');vib([30,30,60]);chShop(1);}
+function chReroll(){var S2=ch.shop,c=2+S2.rr;if(ch.coins<c){toast('Zu wenig Münzen');chSnd('bad');return;}ch.coins-=c;S2.rr++;S2.swap=null;S2.cards=chShopCards();chSave();chSnd('flip');vib(20);chShop(1);}
 function chShowLevel(ev){
  var x=document.getElementById('chx');x.className='chx';
  x.innerHTML='<div class="chx-rays" style="--c:#00f5ff"></div><div class="chx-lvl"><div class="a">LEVEL UP</div><div class="b">'+ev.L+'</div><div class="c">'+chTitle(ev.L)+'</div></div><div class="chx-ex"><div style="animation-delay:.6s">'+(ev.tier?'🎁 '+CH_BOX[ev.tier].n+' erhalten':'<i class="cn"></i> +3 Münzen · Kiste bei jedem 5. Level')+'</div></div><div class="chx-btns"><button class="btn bp bf" onclick="chCloseX()">Weiter</button></div>';
@@ -3671,12 +3690,13 @@ var CH_INFO={
  wonder:['✨','WONDER PICK',['Nach dem Ziel-Score siehst du 5 Karten kurz offen.','Dann werden sie verdeckt gemischt und du ziehst eine. Jede hat die gleiche Chance.']],
  sets:['🏅','SETS & TITEL',['Jedes Set im Album hat einen Dauer-Bonus. Sammelst du alle Karten eines Sets, wirkt er bei jedem Häppchen.','Dazu bekommst du einen Titel und eine Gold-Kiste.','Das ganze Album bringt ×2 Mult für immer.']],
  intro:['🃏','NEU: DEIN DECK',['Jedes Häppchen bringt jetzt Punkte: <b>Chips × Mult</b>.','Bis zu 5 Karten im Deck geben +Chips, +Mult oder ×Mult. Sie werden von links nach rechts ausgewertet.','Schaffst du den <b>Ziel-Score</b> des Tages, gibt es Münzen <i class="cn"></i> und der <b>Shop</b> öffnet. Dort kaufst du neue Karten.',CH_HG+' Häppchen füllen die Sanduhren ⏳ und geben ein Booster Pack.','Jeden Tag gibt es 3 Missionen, jeden Sonntag wartet ein Boss.','Du startest mit 1 Karte und 5 <i class="cn"></i>.']],
- deck:['🃏','DEIN DECK',['Du startest mit 3 Plätzen. Platz 4 und 5 verdienst du dir im echten Leben (sauber essen, Schritte). Debuffs blockieren Plätze, Karten ganz rechts werden dann inaktiv. Jede gibt +Chips, +Mult oder ×Mult, oft mit einer Bedingung.','Reihenfolge zählt: links nach rechts. ×Mult ganz rechts bringt am meisten.','<b>Karte ins Deck:</b> Tippe auf einen freien Platz (+) oder im Album auf eine Karte → „Ins Deck legen“.','<b>Karte raus:</b> Im Deck antippen → „Zurück ins Album“ (kostenlos) oder verkaufen (Münzen, die Karte ist dann weg).','Ziehen zum Umsortieren. Neue Karten gibt es im Shop und aus Packs und Kisten.','Legst du tagsüber eine stärkere Karte aus dem Album ins Deck, steigt das Tagesziel mit.','Seltene Varianten: <b>Foil</b> +50 Chips (1 zu 25), <b>Holo</b> +10 Mult (1 zu 50), <b>Prism</b> ×1,5 Mult (1 zu 200), <b>Shadow</b> belegt keinen Platz (1 zu 500).']],
+ deck:['🃏','DEIN DECK',['Du startest mit 3 Plätzen. Platz 4 und 5 verdienst du dir im echten Leben (sauber essen, Schritte). Debuffs blockieren Plätze, Karten ganz rechts werden dann inaktiv. Jede gibt +Chips, +Mult oder ×Mult, oft mit einer Bedingung.','Reihenfolge zählt: links nach rechts. ×Mult ganz rechts bringt am meisten.','<b>Kein Vorrat:</b> Du hast nur die Karten auf deinen Plätzen. Neue gibt es im Shop, aus Packs, Kisten, Wonder Pick und als Wunschkarte. Was du nicht nimmst, ist weg.','<b>Karte raus:</b> Im Deck antippen und verkaufen. Sie ist dann weg und kann wieder in Shop und Kisten auftauchen. Im Album bleibt sie als entdeckt.','Deck voll? Beim Nehmen einer neuen Karte wählst du, welche Deck-Karte dafür verkauft wird.','Ziehen zum Umsortieren.','Seltene Varianten: <b>Foil</b> +50 Chips (1 zu 25), <b>Holo</b> +10 Mult (1 zu 50), <b>Prism</b> ×1,5 Mult (1 zu 200), <b>Shadow</b> belegt keinen Platz (1 zu 500).']],
  score:['🎯','ZIEL-SCORE',['Jedes Häppchen bringt Punkte = Chips × Mult. Die Punkte des Tages zählen zusammen.','Schaffst du den Ziel-Score: +4 <i class="cn"></i>, dazu 1 <i class="cn"></i> Zinsen pro 5 gesparte Münzen (max. 5), und der Shop öffnet.','Das Ziel wird jeden Morgen aus deinem Deck berechnet: So viele Punkte bringt dein Deck mit dem heutigen Tagesplan bei etwas Hitze. Kauf tagsüber eine starke Karte, wird es leichter. Von Montag bis Samstag wird es etwas schwerer.','Debuffs senken das Ziel nicht: Die blockierte Karte zählt im Ziel mit. Deshalb tut ein Cheat ohne Ticket richtig weh.','Den ganzen Tagesplan musst du also fast immer machen. Mit einem besseren Deck oder Bonus-Häppchen schaffst du es sicherer.','Jedes Häppchen gibt außerdem +1 <i class="cn"></i>.']],
  overdrive:['⚡','OVERDRIVE',['Ziel geschafft? Dann geht es weiter: Die nächste Stufe ist dreimal so hoch (3×, 9×, 27× das Ziel …).','Jede Stufe gibt +3 <i class="cn"></i> und +2 🌠, jede zweite auch ein Booster Pack.','So lohnt sich auch ein richtig langes Training.']],
- shop:['🛒','SHOP',['Öffnet, sobald du den Ziel-Score des Tages geschafft hast. Du kannst den ganzen Tag wieder rein.','Jeden Tag neue Ware: Karten fürs Deck, ein Pack und ein Einweg-Gegenstand. Gekaufte Karten landen direkt im Deck.','Neu würfeln kostet Münzen und wird jedes Mal teurer.','Karten aus deinem Album tauchen öfter auf.']],
+ shopzu:['🔒','SHOP ZU',['Du warst heute schon im Shop. Die Ware ist weg.','Der nächste Shop öffnet, wenn du das nächste Tagesziel schaffst.']],
+ shop:['🛒','SHOP',['Öffnet einmal, wenn du den Ziel-Score des Tages geschafft hast. Am Boss-Tag gibt es eine Karte mehr.','<b>Nur eine Chance:</b> Verlässt du den Shop, ist die Ware weg. Der nächste Shop kommt nach dem nächsten Tagesziel.','Karten fürs Deck, ein Pack und ein Einweg-Gegenstand. Gekaufte Karten landen direkt im Deck. Ist es voll, tauschst du gegen eine Deck-Karte und bekommst ihren Verkaufswert.','Neu würfeln kostet Münzen und wird jedes Mal teurer.','Karten aus deinem Album tauchen öfter auf.']],
  packs:['⏳','SANDUHREN',['Jedes Häppchen füllt eine Sanduhr.',CH_HG+' Sanduhren = ein Booster Pack mit 3 Karten.','Eine Karte aus jedem Pack darfst du direkt ins Deck legen.','Jedes Pack und jede Kiste gibt 1 Pack-Punkt 🌠. Damit holst du dir im Album eine Wunschkarte.']],
- kisten:['🎁','KISTEN & PACKS',['3× auf die Kiste tippen, Karten umdrehen, dann eine Karte antippen, um sie in dein Deck zu legen.','Du bekommst sie: jeden Tag die Tagesbox, '+CH_HG+' Sanduhren (Booster Pack), jedes 5. Level (Gold), 7 Tage Serie (Gold), ganze Woche Gold (Legendär). Boss besiegt (Boss-Kiste), Set komplett (Gold). Packs gibt es auch im Shop.','Drin: Karten, manchmal Münzen <i class="cn"></i>, Joker ❄️, XP oder ein Boost. Doppelte Karten geben Münzen.']],
+ kisten:['🎁','KISTEN & PACKS',['3× auf die Kiste tippen, Karten umdrehen, dann eine Karte antippen, um sie in dein Deck zu legen. Aus Gold-, Legendär- und Boss-Kisten darfst du 2 nehmen. Der Rest ist weg (im Album bleibt alles als entdeckt).','Du bekommst sie: jeden Tag die Tagesbox, '+CH_HG+' Sanduhren (Booster Pack), jedes 5. Level (Gold), 7 Tage Serie (Gold), ganze Woche Gold (Legendär). Boss besiegt (Boss-Kiste), Set komplett (Gold). Packs gibt es auch im Shop.','Drin: Karten, manchmal Münzen <i class="cn"></i>, Joker ❄️, XP oder ein Boost. Doppelte Karten geben Münzen.']],
  flamme:['🔥','DEINE SERIE',['Mach 3 Häppchen am Tag → die Flamme wächst um 1.','Verpasst du einen Tag, rettet dich ein Joker ❄️ (Zahl darunter). Ohne Joker gibt es Minuspunkte.','Joker gibt es jede Woche gratis (je nach Härte), aus Kisten und im Shop.']],
  hitze:['🌡️','HITZE',['Nach jedem Häppchen ist die Leiste voll und läuft in 15 Min. langsam leer.','Machst du das nächste Häppchen, solange sie nicht leer ist, steigt dein Bonus: ×1,2 Mult, ×1,4 … bis ×2,6 Mult.','Warm trainieren ist auch besser für die Muskeln.']],
  bonus:['🎲','TAGESBONUS',['Kommt jeden Tag zufällig aus der Tagesbox und gilt nur heute.','Power-Tag = ×1,5 Mult · Glückstag = öfter KRITISCH · Sanduhr-Regen = doppelte Sanduhren · Fieber = ×3 Mult für eine Muskelgruppe · Hitze-Tag = doppelter Hitze-Bonus.']]};
