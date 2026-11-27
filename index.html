@@ -1680,7 +1680,8 @@ init();
 .ch-dayinfo{font-size:11px;color:var(--t2);margin-bottom:14px}
 .ch-dayinfo b{color:#ffb066}
 .ch-mob{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;background:#121222;border:1px dashed #33335a;margin-bottom:14px}
-.ch-mob .t{flex:1;font-size:12px}.ch-mob .t b{display:block;font-size:13px}.ch-mob .t small{display:block;font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2px;color:var(--ac2);font-weight:900}.ch-mob .t span{display:block;font-size:11px;color:var(--t2);margin:1px 0 6px;line-height:1.35}.ch-mob .t a{display:block;font-size:13px;font-weight:700;color:var(--ac);text-decoration:underline;text-underline-offset:3px;margin-top:6px}
+.ch-mob .t{flex:1;font-size:12px}.ch-mob .t b{display:block;font-size:13px}.ch-mob .t small{display:block;font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2px;color:var(--ac2);font-weight:900}.ch-mob .t span{display:block;font-size:11px;color:var(--t2);margin:1px 0 6px;line-height:1.35}.ch-mob .t span i{font-style:normal}.ch-mob .t span .mob-pl{width:22px;height:22px;padding:0;margin-right:7px;border-radius:50%;font-size:9px;line-height:20px;vertical-align:middle;background:#1d1d33;border:1px solid var(--ac);color:var(--ac);font-weight:900}.ch-mob .t span .mob-pl.on{background:var(--ac);color:#000}.ch-mob .t span:has(.mob-pl.on) i{color:var(--ac);font-weight:700}
+.ch-mob .t a{display:block;font-size:13px;font-weight:700;color:var(--ac);text-decoration:underline;text-underline-offset:3px;margin-top:6px}
 .ch-mob button{background:#1d1d33;border:1px solid #33335a;color:var(--tx);border-radius:10px;padding:8px 12px;font-weight:800;cursor:pointer}
 .ch-mob.done{opacity:.45}
 .ch-sec{display:flex;justify-content:space-between;align-items:baseline;margin:6px 2px 8px}
@@ -2115,24 +2116,49 @@ var CH_P=[
  {n:'Beinheben liegend',g:'bauch',eq:'BW',rr:[10,15,20],tip:'Unterer Rücken bleibt am Boden.'}
 ];
 var CH_PM={};CH_P.forEach(function(p){CH_PM[p.n]=p;});
-var CH_MOB=[ // k: roll = Rolle/Ball, move = Dehnung/Bewegung. Pro Tag 1 roll + 2 move (ca. 5 Min.)
- {k:'roll',n:'Foam Roll Quads',t:'60 Sek. pro Bein'},
- {k:'roll',n:'Foam Roll Thoracic Spine',t:'60 Sek.'},
- {k:'roll',n:'Foam Roll Calves',t:'45 Sek. pro Bein'},
- {k:'roll',n:'Foam Roll IT Band',t:'45 Sek. pro Bein'},
- {k:'roll',n:'Peanut Ball Thoracic Mobilization',t:'60 Sek.'},
- {k:'roll',n:'Peanut Ball Suboccipital Release',t:'45 Sek.'},
+var CH_MOB=[ // k: roll = Rolle/Ball, move = Dehnung, hang = Hängen. s = Sekunden (Timer), ps = pro Seite (Timer läuft 2×), pre = Vorlauf
+ {k:'roll',n:'Foam Roll Quads',t:'60 Sek. pro Bein',s:60,ps:1},
+ {k:'roll',n:'Foam Roll Thoracic Spine',t:'60 Sek.',s:60},
+ {k:'roll',n:'Foam Roll Calves',t:'45 Sek. pro Bein',s:45,ps:1},
+ {k:'roll',n:'Foam Roll IT Band',t:'45 Sek. pro Bein',s:45,ps:1},
+ {k:'roll',n:'Peanut Ball Thoracic Mobilization',t:'60 Sek.',s:60},
+ {k:'roll',n:'Peanut Ball Suboccipital Release',t:'45 Sek.',s:45},
  {k:'move',n:"World's Greatest Stretch",t:'5× pro Seite'},
- {k:'move',n:'Half Kneeling Hip Flexor Stretch',t:'30 Sek. pro Seite'},
+ {k:'move',n:'Half Kneeling Hip Flexor Stretch',t:'30 Sek. pro Seite',s:30,ps:1},
  {k:'move',n:'Cat Cow',t:'10×'},
- {k:'move',n:'Dead Hang',t:'30 Sek.'},
  {k:'move',n:'90 90 Hip Switch',t:'8× pro Seite'},
  {k:'move',n:'Thread the Needle Stretch',t:'6× pro Seite'},
- {k:'move',n:'Deep Squat Hold',t:'45 Sek.'},
- {k:'move',n:'Couch Stretch',t:'30 Sek. pro Seite'},
- {k:'move',n:'Wall Slides',t:'10×'}];
-function chMobPick(){var r=CH_MOB.filter(function(m){return m.k==='roll';}),m=CH_MOB.filter(function(m){return m.k==='move';}).sort(function(){return Math.random()-.5;});return [chRnd(r).n,m[0].n,m[1].n];}
+ {k:'move',n:'Deep Squat Hold',t:'45 Sek.',s:45},
+ {k:'move',n:'Couch Stretch',t:'30 Sek. pro Seite',s:30,ps:1},
+ {k:'move',n:'Wall Slides',t:'10×'},
+ {k:'hang',n:'Dead Hang',t:'60 Sek. · schulterbreit',s:60,pre:3},
+ {k:'hang',n:'Wide Grip Dead Hang',t:'45 Sek. · weit gegriffen',s:45,pre:3},
+ {k:'hang',n:'Narrow Grip Dead Hang',t:'45 Sek. · Hände eng',s:45,pre:3},
+ {k:'hang',n:'Chin Up Grip Dead Hang',t:'45 Sek. · Untergriff',s:45,pre:3}];
+// Pro Tag: 1 Rolle/Ball, 1 Dehnung, dazu Hängen (50 %) oder eine 2. Dehnung
+function chMobPick(){function K(k){return CH_MOB.filter(function(m){return m.k===k;}).sort(function(){return Math.random()-.5;});}
+ var r=K('roll'),m=K('move');return [r[0].n,m[0].n,Math.random()<.5?K('hang')[0].n:m[1].n];}
 function chMobList(q){return (Array.isArray(q.mob)?q.mob:chMobPick()).map(function(n){return CH_MOB.filter(function(m){return m.n===n;})[0]||{n:n,t:''};});}
+// Timer für Übungen mit Zeit (▶ neben der Zeit)
+var chMT=null;
+function chMobTimer(ev,i){ev.stopPropagation();if(chMT&&chMT.i===i){chMobTStop();return;}chMobTStop();
+ var m=chMobList(ch.q)[i];if(!m||!m.s)return;chMT={i:i,m:m,side:1};chMobPh(m.pre?'pre':'run');chMT.iv=setInterval(chMobTick,200);chHaptic();chMobTick();}
+function chMobPh(ph){chMT.ph=ph;chMT.ll=null;chMT.end=Date.now()+({pre:chMT.m.pre||3,run:chMT.m.s,sw:5}[ph])*1000;}
+function chMobTick(){
+ if(!chMT)return;var left=Math.ceil((chMT.end-Date.now())/1000);
+ if(left<=0){
+  if(chMT.ph==='pre'){chSnd('done');vib(80);chMobPh('run');}
+  else if(chMT.ph==='run'&&chMT.m.ps&&chMT.side===1){chMT.side=2;chSnd('done');vib([60,40,60]);chMobPh('sw');}
+  else if(chMT.ph==='sw'){chSnd('done');vib(80);chMobPh('run');}
+  else{var i=chMT.i;chMobTStop();chSnd('crit');vib([80,50,80]);var e0=document.getElementById('mobt-'+i);if(e0)e0.textContent='✓ geschafft';return;}
+  left=Math.ceil((chMT.end-Date.now())/1000);}
+ if(chMT.ph!=='run'&&left!==chMT.ll){chMT.ll=left;chSnd('flip');}
+ var e=document.getElementById('mobt-'+chMT.i),b=document.getElementById('mobb-'+chMT.i);
+ if(e)e.textContent=chMT.ph==='pre'?'Gleich hängen … '+left:chMT.ph==='sw'?'Seite wechseln … '+left:left+' Sek.'+(chMT.m.ps?' · Seite '+chMT.side+'/2':'');
+ if(b){b.textContent='■';b.classList.add('on');}
+}
+function chMobTStop(){if(!chMT)return;clearInterval(chMT.iv);var i=chMT.i,m=chMT.m;chMT=null;
+ var e=document.getElementById('mobt-'+i),b=document.getElementById('mobb-'+i);if(e)e.textContent=m.t;if(b){b.textContent='▶';b.classList.remove('on');}}
 function chMobUrl(n){return 'https://www.google.com/search?q='+encodeURIComponent(n+' exercise');}
 var CH_RN={c:'Common',r:'Rare',e:'Epic',l:'Legendary',m:'Mythic'};
 // Sets fürs Album. b = dauerhafter Bonus, wenn das Set komplett ist (gleicher Code wie bei Karten), t = Titel
@@ -3265,7 +3291,7 @@ function rChallenge(){
   h+='<div class="ch-now ch-donecard"><div class="e">🏆</div><h2>TAGESPLAN GESCHAFFT</h2><p>'+(sc.hit?'Ziel-Score geknackt. Mit Bonus-Häppchen holst du dir die nächste Overdrive-Stufe.':'Noch '+chBig(goal-sc.pts)+' Punkte bis zum Ziel-Score. Hol sie dir mit Bonus-Häppchen!')+'</p><button class="btn bp bf" onclick="chBonus()">⭐ Bonus-Häppchen holen</button></div>';
  }
  if(!Array.isArray(q.mob)){q.mob=chMobPick();chSave();}
- h+='<div class="ch-mob'+(q.mobDone?' done':'')+'"><div style="font-size:22px">🌀</div><div class="t"><small>MOBILITY · CA. 5 MIN.</small>'+chMobList(q).map(function(m){return '<a href="'+chMobUrl(m.n)+'" target="_blank" rel="noopener">'+m.n+'</a><span>'+m.t+'</span>';}).join('')+'</div><button onclick="chMobDone(event)">'+(q.mobDone?'✓':'+XP')+'</button></div>';
+ h+='<div class="ch-mob'+(q.mobDone?' done':'')+'"><div style="font-size:22px">🌀</div><div class="t"><small>MOBILITY · CA. 5 MIN.</small>'+chMobList(q).map(function(m,k){var on=chMT&&chMT.i===k;return '<a href="'+chMobUrl(m.n)+'" target="_blank" rel="noopener">'+m.n+'</a><span>'+(m.s?'<button class="mob-pl'+(on?' on':'')+'" id="mobb-'+k+'" onclick="chMobTimer(event,'+k+')">'+(on?'■':'▶')+'</button>':'')+'<i id="mobt-'+k+'">'+m.t+'</i></span>';}).join('')+'</div><button onclick="chMobDone(event)">'+(q.mobDone?'✓':'+XP')+'</button></div>';
  var hg=ch.hg||0,hl=CH_HG-hg;
  h+='<div class="ch-hg" onclick="chInfo(\'packs\')"><div class="s">';for(var hi=0;hi<CH_HG;hi++)h+='<span class="'+(hi<hg?'on':'')+'">⏳</span>';
  h+='</div><div class="t">'+(hl===1?'<b>Noch 1 Häppchen</b> bis zum nächsten Pack!':'Noch '+hl+' Häppchen bis zum nächsten Pack')+'</div></div>';
