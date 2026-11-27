@@ -1659,6 +1659,8 @@ init();
 .ch-cnt{font-size:11px;color:var(--t2);font-weight:700;letter-spacing:.5px}
 .ch-jetzt{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--ac2);font-weight:900}
 .ch-ex{font-size:23px;font-weight:800;line-height:1.15;margin:2px 0 6px}
+.ch-gq{font-size:14px;text-decoration:none;opacity:.55;vertical-align:middle;padding:4px 6px;margin-left:2px;border:1px solid #2e2e55;border-radius:8px}
+.ch-gq:active{opacity:1}
 .ch-big{font-family:'Orbitron',monospace;font-size:32px;font-weight:900;background:linear-gradient(135deg,#fff,var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1}
 .ch-big small{font-size:12px;font-family:'DM Sans',sans-serif;-webkit-text-fill-color:var(--t2);font-weight:600}
 .ch-warm{margin-top:8px;font-size:12px;color:#ffb066;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.35);border-radius:10px;padding:7px 10px}
@@ -2152,6 +2154,9 @@ var CH_P=[
  {n:'Beinheben liegend',g:'bauch',eq:'BW',rr:[10,15,20],tip:'Unterer Rücken bleibt am Boden.'}
 ];
 var CH_PM={};CH_P.forEach(function(p){CH_PM[p.n]=p;});
+// Englische Namen für den Google-Link an der Übungstafel
+var CH_EN={'Bankdrücken':'barbell bench press','KH Bankdrücken':'dumbbell bench press','Schrägbank KH':'incline dumbbell press','Überzüge KH':'dumbbell pullover','Fliegende KH':'dumbbell fly','Liegestütze':'push up','Klimmzüge':'pull up','Klimmzüge Untergriff':'chin up','Negativ-Klimmzüge':'negative pull up','LH-Rudern':'barbell row','Einarmiges KH-Rudern':'one arm dumbbell row','Brustgestütztes Rudern':'chest supported dumbbell row','Schulterdruck KH':'seated dumbbell shoulder press','Schulterdruck LH':'standing barbell overhead press','Seitheben':'dumbbell lateral raise','Reverse Flyes':'bent over reverse dumbbell fly','Arnold Press':'arnold press','Pike-Liegestütze':'pike push up','SZ-Curl':'ez bar curl','Hammer Curl':'hammer curl','Bizepscurl KH':'dumbbell bicep curl','Konzentrationscurl':'concentration curl','Skull Crushers':'ez bar skull crusher','Overhead Trizeps':'dumbbell overhead tricep extension','KH Kickback':'dumbbell tricep kickback','Enge Liegestütze':'close grip push up','Bankdips':'bench dips','Kniebeugen':'barbell back squat','Goblet Squat':'goblet squat','Bulgarian Split Squat':'dumbbell bulgarian split squat','Ausfallschritte KH':'dumbbell lunges','Step-Ups':'dumbbell step up','Rumänisches Kreuzheben':'barbell romanian deadlift','Kreuzheben':'barbell deadlift','Rumänisches Kreuzheben KH':'dumbbell romanian deadlift','Hip Thrust':'barbell hip thrust','Glute Bridge einbeinig':'single leg glute bridge','Plank':'plank','Seitlicher Plank':'side plank','Beinheben hängend':'hanging leg raise','Crunches':'crunches','Russian Twist':'dumbbell russian twist','Beinheben liegend':'lying leg raise'};
+function chGoogle(n){return 'https://www.google.com/search?q='+encodeURIComponent((CH_EN[n]||n)+' exercise how to');}
 var CH_MOB=[ // k: roll = Rolle/Ball, move = Dehnung, hang = Hängen. s = Sekunden (Timer), ps = pro Seite (Timer läuft 2×), pre = Vorlauf
  {k:'roll',n:'Foam Roll Quads',t:'60 Sek. pro Bein',s:60,ps:1},
  {k:'roll',n:'Foam Roll Thoracic Spine',t:'60 Sek.',s:60},
@@ -3330,7 +3335,7 @@ function rChallenge(){
   var p=CH_PM[cur.ex],L=chLoad(cur.ex),G=CH_GM[cur.g],idx=q.items.indexOf(cur);
   h+='<div class="ch-now'+(p.hv?' hv':'')+'"><div class="ch-now-top"><span class="ch-jetzt">JETZT</span><span class="ch-cnt">'+(cur.bonus?'⭐ BONUS':'HÄPPCHEN '+(idx+1)+'/'+q.n)+'</span></div>';
   h+='<span class="ch-chip">'+G.i+' '+G.n+' · '+c[cur.g]+'/'+CH_GOLD+'</span>';
-  h+='<div class="ch-ex" style="margin-top:8px">'+p.n+'</div><div class="ch-big">'+chTargetHtml(p,L)+'</div>';
+  h+='<div class="ch-ex" style="margin-top:8px">'+p.n+' <a class="ch-gq" href="'+chGoogle(p.n)+'" target="_blank" rel="noopener" title="Auf Google ansehen">🔍</a></div><div class="ch-big">'+chTargetHtml(p,L)+'</div>';
   if(p.hv&&chHeat()===0)h+='<div class="ch-warm">🔥 Aufwärmen: 8× '+String(chRound(p,L.w*.5)).replace('.',',')+' kg</div>';
   h+='<div class="ch-btns"><button class="ch-b ch-hard" onclick="chDone(\'schwer\',event)">😮‍💨<span>Schwer</span></button><button class="ch-b ch-go" onclick="chDone(\'passt\',event)">✓ GESCHAFFT</button><button class="ch-b ch-easy" onclick="chDone(\'leicht\',event)">😎<span>Leicht</span></button></div>';
   h+='<div class="ch-links"><span onclick="chSwap()">🔀 Andere Übung</span><span onclick="chLater()">⏭ Später</span></div></div>';
