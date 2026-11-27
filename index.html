@@ -67,6 +67,8 @@ input::placeholder{color:var(--t3)}
 .ob-q{font-family:'Orbitron',monospace;font-size:16px;font-weight:700;letter-spacing:1px;margin-bottom:4px}
 .ob-hint{color:var(--t2);font-size:12px;margin-bottom:20px}
 .ob-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.gr-pre{display:flex;gap:6px}.gr-pre .btn{flex:1;font-size:12px;padding:9px 4px}
+.gr-in{display:flex;gap:8px;margin:-2px 0 2px 14px}.gr-in label{flex:1;font-size:11px;color:var(--t2);display:flex;flex-direction:column;gap:3px}.gr-in input{width:100%;box-sizing:border-box}
 .ob-opt{background:#1a1a24;border:1px solid #333348;border-radius:10px;padding:14px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .2s}
 .ob-opt.sel{border-color:var(--ac);background:rgba(0,245,255,.06)}
 .ob-oi{font-size:22px;width:30px;text-align:center;flex-shrink:0}
@@ -303,6 +305,13 @@ input::placeholder{color:var(--t3)}
   </div>
   <div id="ob4" class="ob-step">
     <div class="ob-dots" id="dots4"></div>
+    <div class="ob-q">Deine Ausrüstung?</div>
+    <div class="ob-hint">Tippe an, was du hast. Ganz ohne Geräte geht auch.</div>
+    <div id="ob-gear" class="ob-opts"></div>
+    <button class="btn bp bf" onclick="obGo(5)">Weiter</button>
+  </div>
+  <div id="ob5" class="ob-step">
+    <div class="ob-dots" id="dots5"></div>
     <div class="ob-q">Wie oft pro Woche?</div>
     <div class="ob-opts">
       <div class="ob-opt" data-val="3" onclick="obSel('days',this)"><div class="ob-oi">📅</div><div class="ob-ot"><h3>3x</h3><p>Full Body</p></div></div>
@@ -378,7 +387,7 @@ input::placeholder{color:var(--t3)}
   <div class="spd-card">
     <h3>Plan speichern?</h3>
     <p>Du hast Übungen getauscht. Möchtest Du dieses Workout als neuen Trainingsplan speichern?</p>
-    <input type="text" id="spd-name" placeholder="Name des Plans (z.B. Pull Corey)" style="width:100%;box-sizing:border-box;margin-bottom:4px">
+    <input type="text" id="spd-name" placeholder="Name des Plans (z.B. Pull A)" style="width:100%;box-sizing:border-box;margin-bottom:4px">
     <div class="spd-btns">
       <button class="btn bs" style="flex:1" onclick="closeSavePlanDialog()">Nein</button>
       <button class="btn bp" style="flex:1" onclick="doSavePlan()">Speichern</button>
@@ -1470,9 +1479,9 @@ function importFile(e){
 var obProf={bw:null,height:null,age:null,goal:null,level:null,days:null};
 
 function showDots(step){
-  for(var i=1;i<=4;i++){
+  for(var i=1;i<=5;i++){
     var el=document.getElementById('dots'+i);if(!el)continue;
-    var h='';for(var j=1;j<=4;j++)h+='<div class="ob-dot'+(j<=step?' on':'')+'"></div>';
+    var h='';for(var j=1;j<=5;j++)h+='<div class="ob-dot'+(j<=step?' on':'')+'"></div>';
     el.innerHTML=h;
   }
 }
@@ -1491,12 +1500,14 @@ function obGo(step){
   }
   if(step===3&&!obProf.goal){toast('Bitte Ziel wählen');return;}
   if(step===4&&!obProf.level){toast('Bitte Level wählen');return;}
+  if(step===4){gearCtx='ob';gearTmp=Object.assign({st:0,kh:0,lh:0,rack:0,sz:0,bank:0},(prof&&prof.gear)||{});document.getElementById('ob-gear').innerHTML=gearHtml();}
+  if(step===5)obProf.gear=Object.assign({},gearTmp);
   document.querySelectorAll('.ob-step').forEach(function(s){s.classList.remove('active');});
   document.getElementById('ob'+step).classList.add('active');
   showDots(step);
 }
 function obSkip(){
-  prof={bw:75,height:175,age:28,goal:'recomp',level:'intermediate',days:4};
+  prof={bw:75,height:175,age:28,goal:'recomp',level:'intermediate',days:4,gear:Object.assign({},GEAR_ALL,GEAR_PRE.gym)};
   S.s('wt_prof',prof);
   document.getElementById('ob').classList.add('hidden');
   render('challenge');
@@ -1507,6 +1518,7 @@ function obFinish(){
   obProf.days=parseInt(obProf.days);
   prof=JSON.parse(JSON.stringify(obProf));
   S.s('wt_prof',prof);
+  chGearApply();
   genPlans();
   document.getElementById('ob').classList.add('hidden');
   toast('Plan ist bereit!');
@@ -1539,11 +1551,13 @@ function rEinstellungen(){
   for(var i=0;i<levels.length;i++){var lv=levels[i];h+='<div class="ob-opt'+(p.level===lv.v?' sel':'')+'" data-val="'+lv.v+'" onclick="stSel(\'level\',this)"><div class="ob-oi">'+lv.i+'</div><div class="ob-ot"><h3>'+lv.l+'</h3></div></div>';}
   h+='</div>';
   h+='<button class="btn bp bf" onclick="saveEinstellungen()">Speichern</button>';
+  h+='<div class="sh" style="margin-top:24px;margin-bottom:8px">Ausrüstung</div><div id="st-gear" class="ob-opts" style="margin-bottom:14px"></div>';
   if(typeof chSettingsHtml==='function') h+=chSettingsHtml();
   h+='<div class="sh" style="margin-top:24px;margin-bottom:8px">Onboarding</div>';
   h+='<button class="btn bs bf" onclick="reopenOb()">Onboarding wiederholen</button>';
   h+='</div>';
   el.innerHTML=h;
+  gearCtx='st';gearTmp=Object.assign({},chGear());document.getElementById('st-gear').innerHTML=gearHtml();
 }
 var stProf={};
 function stSel(key,el){
@@ -2108,25 +2122,26 @@ var CH_HARD={
  3:{n:'Brutal',i:'💀',d:'Verpasster Tag: −100 XP, Serie weg, eine ungeöffnete Kiste zerbricht. Muskelgruppe unter 4 Sätzen: −60 XP, dazu wird pro Woche eine Sammelkarte zerstört. Keine Gratis-Joker.',day:100,grp:60,free:0,brutal:true}};
 // eq: LH Langhantel, SZ, KH Kurzhantel, ST Klimmzugstange, BW Körpergewicht | f = Anteil Körpergewicht (Fortgeschritten) | rr = Wdh. [Anf, Fortg, Profi]
 // kh = Gewicht pro Hand, one = eine Hantel, ps = pro Seite, hv = schwer (mit Aufwärmsatz), rack = braucht Ablage, u:'s' = Sekunden
+// bk = braucht Hantelbank, hv2 = zählt als schwer, wenn keine Langhantel da ist (Ausrüstung im Profil)
 var CH_P=[
- {n:'Bankdrücken',g:'brust',eq:'LH',f:.65,r:10,hv:1,rack:1,tip:'Schulterblätter zusammen, Füße fest. Nie bis zum Versagen – du trainierst allein.'},
- {n:'KH Bankdrücken',g:'brust',eq:'KH',f:.22,r:10,kh:1,tip:'Hanteln über der Brust, kontrolliert runter.'},
- {n:'Schrägbank KH',g:'brust',eq:'KH',f:.18,r:10,kh:1,tip:'Bank auf ca. 30°, Hanteln über der oberen Brust.'},
- {n:'Überzüge KH',g:'brust',eq:'KH',f:.2,r:12,one:1,tip:'Quer auf der Bank, eine Hantel mit beiden Händen.'},
+ {n:'Bankdrücken',g:'brust',eq:'LH',bk:1,f:.65,r:10,hv:1,rack:1,tip:'Schulterblätter zusammen, Füße fest. Nie bis zum Versagen – du trainierst allein.'},
+ {n:'KH Bankdrücken',hv2:1,g:'brust',eq:'KH',bk:1,f:.22,r:10,kh:1,tip:'Hanteln über der Brust, kontrolliert runter.'},
+ {n:'Schrägbank KH',g:'brust',eq:'KH',bk:1,f:.18,r:10,kh:1,tip:'Bank auf ca. 30°, Hanteln über der oberen Brust.'},
+ {n:'Überzüge KH',g:'brust',eq:'KH',bk:1,f:.2,r:12,one:1,tip:'Quer auf der Bank, eine Hantel mit beiden Händen.'},
  {n:'Fliegende KH',g:'brust',eq:'KH',f:.09,r:12,kh:1,tip:'Arme leicht gebeugt, weiter Bogen.'},
  {n:'Liegestütze',g:'brust',eq:'BW',rr:[8,15,25],tip:'Körper wie ein Brett, Brust bis knapp über den Boden.'},
- {n:'Klimmzüge',g:'ruecken',eq:'ST',rr:[3,6,10],tip:'Ganz runter hängen, Brust zur Stange.'},
+ {n:'Klimmzüge',hv2:1,g:'ruecken',eq:'ST',rr:[3,6,10],tip:'Ganz runter hängen, Brust zur Stange.'},
  {n:'Klimmzüge Untergriff',g:'ruecken',eq:'ST',rr:[3,6,10],tip:'Handflächen zu dir, Ellbogen nach unten ziehen.'},
- {n:'Negativ-Klimmzüge',g:'ruecken',eq:'ST',rr:[3,4,6],tip:'Hochspringen, dann 4 Sekunden langsam runter.'},
+ {n:'Negativ-Klimmzüge',hv2:1,g:'ruecken',eq:'ST',rr:[3,4,6],tip:'Hochspringen, dann 4 Sekunden langsam runter.'},
  {n:'LH-Rudern',g:'ruecken',eq:'LH',f:.5,r:10,hv:1,tip:'Rücken gerade, Stange zum Bauchnabel ziehen.'},
- {n:'Einarmiges KH-Rudern',g:'ruecken',eq:'KH',f:.3,r:10,kh:1,ps:1,tip:'Auf der Bank abstützen, Ellbogen nach hinten.'},
- {n:'Brustgestütztes Rudern',g:'ruecken',eq:'KH',f:.22,r:10,kh:1,tip:'Bauch auf der Schrägbank, beide Hanteln hochziehen.'},
- {n:'Schulterdruck KH',g:'schultern',eq:'KH',f:.15,r:10,kh:1,tip:'Sitzend auf der Bank, Rücken an der Lehne.'},
+ {n:'Einarmiges KH-Rudern',hv2:1,g:'ruecken',eq:'KH',f:.3,r:10,kh:1,ps:1,tip:'Auf der Bank abstützen, Ellbogen nach hinten.'},
+ {n:'Brustgestütztes Rudern',g:'ruecken',eq:'KH',bk:1,f:.22,r:10,kh:1,tip:'Bauch auf der Schrägbank, beide Hanteln hochziehen.'},
+ {n:'Schulterdruck KH',hv2:1,g:'schultern',eq:'KH',f:.15,r:10,kh:1,tip:'Sitzend auf der Bank, Rücken an der Lehne.'},
  {n:'Schulterdruck LH',g:'schultern',eq:'LH',f:.38,r:8,hv:1,tip:'Stehend, Po und Bauch fest anspannen.'},
  {n:'Seitheben',g:'schultern',eq:'KH',f:.07,r:12,kh:1,tip:'Bis Schulterhöhe, nicht schwingen.'},
  {n:'Reverse Flyes',g:'schultern',eq:'KH',f:.06,r:12,kh:1,tip:'Vorgebeugt, Arme seitlich hochführen.'},
  {n:'Arnold Press',g:'schultern',eq:'KH',f:.13,r:10,kh:1,tip:'Mit Drehung nach oben drücken.'},
- {n:'Pike-Liegestütze',g:'schultern',eq:'BW',rr:[5,8,12],tip:'Po hoch, Kopf Richtung Boden.'},
+ {n:'Pike-Liegestütze',hv2:1,g:'schultern',eq:'BW',rr:[5,8,12],tip:'Po hoch, Kopf Richtung Boden.'},
  {n:'SZ-Curl',g:'bizeps',eq:'SZ',f:.3,r:10,tip:'Ellbogen bleiben am Körper.'},
  {n:'Hammer Curl',g:'bizeps',eq:'KH',f:.14,r:10,kh:1,tip:'Daumen zeigen nach oben.'},
  {n:'Bizepscurl KH',g:'bizeps',eq:'KH',f:.12,r:10,kh:1,tip:'Oben kurz anspannen, langsam runter.'},
@@ -2135,27 +2150,44 @@ var CH_P=[
  {n:'Overhead Trizeps',g:'trizeps',eq:'KH',f:.2,r:10,one:1,tip:'Eine Hantel mit beiden Händen hinter den Kopf.'},
  {n:'KH Kickback',g:'trizeps',eq:'KH',f:.07,r:12,kh:1,tip:'Oberarm parallel zum Boden, nur Unterarm bewegen.'},
  {n:'Enge Liegestütze',g:'trizeps',eq:'BW',rr:[6,12,20],tip:'Hände eng, Ellbogen am Körper.'},
- {n:'Bankdips',g:'trizeps',eq:'BW',rr:[8,12,20],tip:'Hände auf der Bank, Po knapp davor.'},
+ {n:'Bankdips',g:'trizeps',eq:'BW',rr:[8,12,20],tip:'Hände auf Bank oder Stuhl, Po knapp davor.'},
  {n:'Kniebeugen',g:'beine',eq:'LH',f:.75,r:8,hv:1,rack:1,tip:'Knie nach außen, mindestens bis parallel.'},
- {n:'Goblet Squat',g:'beine',eq:'KH',f:.25,r:12,one:1,tip:'Hantel vor der Brust, tief runter, Brust raus.'},
- {n:'Bulgarian Split Squat',g:'beine',eq:'KH',f:.12,r:8,kh:1,ps:1,tip:'Hinterer Fuß auf der Bank.'},
+ {n:'Goblet Squat',hv2:1,g:'beine',eq:'KH',f:.25,r:12,one:1,tip:'Hantel vor der Brust, tief runter, Brust raus.'},
+ {n:'Bulgarian Split Squat',hv2:1,g:'beine',eq:'KH',f:.12,r:8,kh:1,ps:1,tip:'Hinterer Fuß auf Bank oder Stuhl.'},
  {n:'Ausfallschritte KH',g:'beine',eq:'KH',f:.14,r:10,kh:1,ps:1,tip:'Großer Schritt, hinteres Knie fast am Boden.'},
- {n:'Step-Ups',g:'beine',eq:'KH',f:.1,r:10,kh:1,ps:1,tip:'Auf die Bank steigen, nur mit dem vorderen Bein drücken.'},
+ {n:'Step-Ups',g:'beine',eq:'KH',f:.1,r:10,kh:1,ps:1,tip:'Auf Bank oder stabilen Stuhl steigen, nur mit dem vorderen Bein drücken.'},
  {n:'Rumänisches Kreuzheben',g:'po',eq:'LH',f:.65,r:10,hv:1,tip:'Hüfte nach hinten, Stange nah an den Beinen.'},
  {n:'Kreuzheben',g:'po',eq:'LH',f:.95,r:6,hv:1,tip:'Rücken neutral, Stange über der Fußmitte.'},
- {n:'Rumänisches Kreuzheben KH',g:'po',eq:'KH',f:.25,r:10,kh:1,tip:'Hüfte nach hinten, Knie leicht gebeugt.'},
- {n:'Hip Thrust',g:'po',eq:'LH',f:.8,r:10,tip:'Schultern auf der Bank, oben den Po fest anspannen.'},
+ {n:'Rumänisches Kreuzheben KH',hv2:1,g:'po',eq:'KH',f:.25,r:10,kh:1,tip:'Hüfte nach hinten, Knie leicht gebeugt.'},
+ {n:'Hip Thrust',g:'po',eq:'LH',f:.8,r:10,tip:'Schultern auf Bank oder Sofa, oben den Po fest anspannen.'},
  {n:'Glute Bridge einbeinig',g:'po',eq:'BW',rr:[8,12,15],ps:1,tip:'Auf der Matte, Hüfte ganz hoch.'},
  {n:'Plank',g:'bauch',eq:'BW',u:'s',rr:[30,45,60],tip:'Po nicht zu hoch, Bauch fest.'},
  {n:'Seitlicher Plank',g:'bauch',eq:'BW',u:'s',rr:[20,30,45],ps:1,tip:'Hüfte hoch halten.'},
  {n:'Beinheben hängend',g:'bauch',eq:'ST',rr:[5,10,15],tip:'An der Klimmzugstange, nicht schwingen.'},
  {n:'Crunches',g:'bauch',eq:'BW',rr:[15,20,30],tip:'Rippen Richtung Becken ziehen.'},
  {n:'Russian Twist',g:'bauch',eq:'KH',f:.06,r:20,one:1,tip:'Füße hoch, von Seite zu Seite.'},
- {n:'Beinheben liegend',g:'bauch',eq:'BW',rr:[10,15,20],tip:'Unterer Rücken bleibt am Boden.'}
+ {n:'Beinheben liegend',g:'bauch',eq:'BW',rr:[10,15,20],tip:'Unterer Rücken bleibt am Boden.'},
+ // Ohne Geräte (Calisthenics), 27.11.2026
+ {n:'Knie-Liegestütze',g:'brust',eq:'BW',rr:[8,12,20],tip:'Knie am Boden, Körper von Knie bis Kopf gerade.'},
+ {n:'Liegestütze Füße erhöht',g:'brust',eq:'BW',rr:[5,10,15],hv2:1,tip:'Füße auf Stuhl oder Sofa, Körper bleibt gerade.'},
+ {n:'Tischrudern',g:'ruecken',eq:'BW',rr:[4,8,12],hv2:1,tip:'Unter einen stabilen Tisch legen, Kante fassen, Brust zur Platte ziehen.'},
+ {n:'Handtuch-Rudern an der Tür',g:'ruecken',eq:'BW',rr:[8,12,15],tip:'Handtuch um beide Klinken, Tür zu, nach hinten lehnen und dich heranziehen.'},
+ {n:'Superman',g:'ruecken',eq:'BW',rr:[10,12,15],tip:'Bauchlage, Arme und Beine anheben, 2 Sekunden halten.'},
+ {n:'Wandhandstand halten',g:'schultern',eq:'BW',u:'s',rr:[10,20,40],hv2:1,tip:'Füße an der Wand hochlaufen, Arme gestreckt, Bauch fest.'},
+ {n:'Tischrudern Untergriff',g:'bizeps',eq:'BW',rr:[4,8,12],tip:'Wie Tischrudern, Handflächen zu dir, Ellbogen eng am Körper.'},
+ {n:'Handtuch-Curl',g:'bizeps',eq:'BW',rr:[8,12,15],ps:1,tip:'Fuß in die Mitte eines Handtuchs, mit dem Bein dagegenhalten und hochziehen.'},
+ {n:'Klimmzüge eng Untergriff',g:'bizeps',eq:'ST',rr:[3,6,10],hv2:1,tip:'Hände schulterbreit, Handflächen zu dir, Kinn über die Stange.'},
+ {n:'Kniebeugen ohne Gewicht',g:'beine',eq:'BW',rr:[15,20,30],tip:'Arme nach vorn, tief runter, Fersen bleiben unten.'},
+ {n:'Ausfallschritte',g:'beine',eq:'BW',rr:[8,12,16],ps:1,tip:'Großer Schritt, hinteres Knie fast am Boden.'},
+ {n:'Split Squat ohne Gewicht',g:'beine',eq:'BW',rr:[8,12,15],ps:1,hv2:1,tip:'Hinterer Fuß auf Stuhl oder Sofa, langsam runter.'},
+ {n:'Wall Sit',g:'beine',eq:'BW',u:'s',rr:[30,45,60],tip:'Rücken an der Wand, Knie im rechten Winkel.'},
+ {n:'Wadenheben',g:'beine',eq:'BW',rr:[15,20,30],tip:'Auf einer Stufe, ganz hoch auf die Zehen, langsam runter.'},
+ {n:'Glute Bridge',g:'po',eq:'BW',rr:[12,15,20],tip:'Rückenlage, Fersen nah am Po, Hüfte hoch und Po anspannen.'},
+ {n:'Mountain Climbers',g:'bauch',eq:'BW',u:'s',rr:[20,30,45],tip:'Liegestütz-Position, Knie abwechselnd zur Brust.'}
 ];
 var CH_PM={};CH_P.forEach(function(p){CH_PM[p.n]=p;});
 // Englische Namen für den Google-Link an der Übungstafel
-var CH_EN={'Bankdrücken':'barbell bench press','KH Bankdrücken':'dumbbell bench press','Schrägbank KH':'incline dumbbell press','Überzüge KH':'dumbbell pullover','Fliegende KH':'dumbbell fly','Liegestütze':'push up','Klimmzüge':'pull up','Klimmzüge Untergriff':'chin up','Negativ-Klimmzüge':'negative pull up','LH-Rudern':'barbell row','Einarmiges KH-Rudern':'one arm dumbbell row','Brustgestütztes Rudern':'chest supported dumbbell row','Schulterdruck KH':'seated dumbbell shoulder press','Schulterdruck LH':'standing barbell overhead press','Seitheben':'dumbbell lateral raise','Reverse Flyes':'bent over reverse dumbbell fly','Arnold Press':'arnold press','Pike-Liegestütze':'pike push up','SZ-Curl':'ez bar curl','Hammer Curl':'hammer curl','Bizepscurl KH':'dumbbell bicep curl','Konzentrationscurl':'concentration curl','Skull Crushers':'ez bar skull crusher','Overhead Trizeps':'dumbbell overhead tricep extension','KH Kickback':'dumbbell tricep kickback','Enge Liegestütze':'close grip push up','Bankdips':'bench dips','Kniebeugen':'barbell back squat','Goblet Squat':'goblet squat','Bulgarian Split Squat':'dumbbell bulgarian split squat','Ausfallschritte KH':'dumbbell lunges','Step-Ups':'dumbbell step up','Rumänisches Kreuzheben':'barbell romanian deadlift','Kreuzheben':'barbell deadlift','Rumänisches Kreuzheben KH':'dumbbell romanian deadlift','Hip Thrust':'barbell hip thrust','Glute Bridge einbeinig':'single leg glute bridge','Plank':'plank','Seitlicher Plank':'side plank','Beinheben hängend':'hanging leg raise','Crunches':'crunches','Russian Twist':'dumbbell russian twist','Beinheben liegend':'lying leg raise'};
+var CH_EN={'Knie-Liegestütze':'knee push up','Liegestütze Füße erhöht':'decline push up','Tischrudern':'table inverted row','Handtuch-Rudern an der Tür':'door towel row','Superman':'superman exercise','Wandhandstand halten':'wall handstand hold','Tischrudern Untergriff':'underhand inverted row','Handtuch-Curl':'towel bicep curl','Klimmzüge eng Untergriff':'close grip chin up','Kniebeugen ohne Gewicht':'bodyweight squat','Ausfallschritte':'bodyweight lunge','Split Squat ohne Gewicht':'bodyweight bulgarian split squat','Wall Sit':'wall sit','Wadenheben':'calf raise','Glute Bridge':'glute bridge','Mountain Climbers':'mountain climbers','Bankdrücken':'barbell bench press','KH Bankdrücken':'dumbbell bench press','Schrägbank KH':'incline dumbbell press','Überzüge KH':'dumbbell pullover','Fliegende KH':'dumbbell fly','Liegestütze':'push up','Klimmzüge':'pull up','Klimmzüge Untergriff':'chin up','Negativ-Klimmzüge':'negative pull up','LH-Rudern':'barbell row','Einarmiges KH-Rudern':'one arm dumbbell row','Brustgestütztes Rudern':'chest supported dumbbell row','Schulterdruck KH':'seated dumbbell shoulder press','Schulterdruck LH':'standing barbell overhead press','Seitheben':'dumbbell lateral raise','Reverse Flyes':'bent over reverse dumbbell fly','Arnold Press':'arnold press','Pike-Liegestütze':'pike push up','SZ-Curl':'ez bar curl','Hammer Curl':'hammer curl','Bizepscurl KH':'dumbbell bicep curl','Konzentrationscurl':'concentration curl','Skull Crushers':'ez bar skull crusher','Overhead Trizeps':'dumbbell overhead tricep extension','KH Kickback':'dumbbell tricep kickback','Enge Liegestütze':'close grip push up','Bankdips':'bench dips','Kniebeugen':'barbell back squat','Goblet Squat':'goblet squat','Bulgarian Split Squat':'dumbbell bulgarian split squat','Ausfallschritte KH':'dumbbell lunges','Step-Ups':'dumbbell step up','Rumänisches Kreuzheben':'barbell romanian deadlift','Kreuzheben':'barbell deadlift','Rumänisches Kreuzheben KH':'dumbbell romanian deadlift','Hip Thrust':'barbell hip thrust','Glute Bridge einbeinig':'single leg glute bridge','Plank':'plank','Seitlicher Plank':'side plank','Beinheben hängend':'hanging leg raise','Crunches':'crunches','Russian Twist':'dumbbell russian twist','Beinheben liegend':'lying leg raise'};
 function chGoogle(n){return 'https://www.google.com/search?q='+encodeURIComponent((CH_EN[n]||n)+' exercise how to');}
 var CH_MOB=[ // k: roll = Rolle/Ball, move = Dehnung, hang = Hängen. s = Sekunden (Timer), ps = pro Seite (Timer läuft 2×), pre = Vorlauf
  {k:'roll',n:'Foam Roll Quads',t:'60 Sek. pro Bein',s:60,ps:1},
@@ -2407,47 +2439,10 @@ function chDef(){var st=chStarter();var cards={};cards[st.id]=1;return{v:5,rl:ch
  vars:{},pp:0,wish:null,ms:null,wp:null,setsDone:{},albumDone:false,ttl:null,hs:{day:0,dayD:null,wk:0,wkD:null},wkp:null,bossSeen:null,lastBoss:null,intro2:false,
  stats:{snacks:0,boxes:0,goldWeeks:0,bestPts:0,packs:0,bosses:0,wps:0,ms:0}};}
 var ch=S.g('wt_ch',null);
+// Neuer Nutzer: Start heute, Deck-Erklärung und Real-Life-Regeln zeigen
+if(!ch){ch=chDef();ch.resetD=chToday();ch.intro4=true;}
 ch=Object.assign(chDef(),ch||{});ch.set=Object.assign({hard:2,rack:true,snd:true},ch.set||{});ch.stats=Object.assign({snacks:0,boxes:0,goldWeeks:0,bestPts:0,packs:0,bosses:0,wps:0,ms:0},ch.stats||{});
 ch.hs=Object.assign({day:0,dayD:null,wk:0,wkD:null},ch.hs||{});
-// v1 → v2: Kartenspiel. Album bleibt, neues Deck mit 1 Common-Karte, 5 Start-Münzen.
-function chMigrate(){
- if(ch.v>=2)return;
- var own=CH_C.filter(function(c){return ch.cards[c.id]&&c.r==='c'&&c.fx[0].t;});
- var st=own.length?{id:chRnd(own).id,n:0,sv:0}:chStarter();
- ch.deck=[st];ch.cards[st.id]=ch.cards[st.id]||1;ch.coins=5;ch.hg=0;ch.sc=null;ch.shop=null;ch.nx=[];ch.deckDay=null;
- ch.pity=Math.min(ch.pity||0,CH_PITY-1);ch.intro=true;ch.v=2;
-}
-chMigrate();
-// v2 → v3: Boss-Tag, Missionen, Wonder Pick, Pack-Punkte, Varianten, Set-Boni, Rekorde
-function chMigrate3(){
- if(ch.v>=3)return;
- var days={},wks={};ch.log.forEach(function(l){if(!l.pts)return;days[l.d]=(days[l.d]||0)+l.pts;var w=chMon(l.d);wks[w]=(wks[w]||0)+l.pts;});
- Object.keys(days).forEach(function(d){if(days[d]>ch.hs.day){ch.hs.day=days[d];ch.hs.dayD=d;}});
- Object.keys(wks).forEach(function(w){if(wks[w]>ch.hs.wk){ch.hs.wk=wks[w];ch.hs.wkD=w;}});
- var t=chToday(),mw=chMon(t);ch.wkp={w:mw,pts:wks[mw]||0};
- CH_SETS.forEach(function(S2){if(chSetOwn(S2.k)===chSetLen(S2.k)){ch.setsDone[S2.k]=true;ch.ttl=S2.t;}});
- ch.intro2=true;ch.v=3;
-}
-chMigrate3();
-// v3 → v4: Neustart bei 0 (Wunsch des Users). Bleiben: Einstellungen, Trainingsgewichte, Verlauf (log/days), gesehene Hinweise.
-function chMigrate4(){
- if(ch.v>=4)return;
- var keep={set:ch.set,loads:ch.loads,ok:ch.ok,lastEx:ch.lastEx,log:ch.log,days:ch.days,seen:ch.seen,start:ch.start,lastCheck:ch.lastCheck,fwk:ch.fwk};
- ch=chDef();Object.keys(keep).forEach(function(k){if(keep[k]!=null)ch[k]=keep[k];});
- ch.resetD=chToday();ch.rl.ci=chAddDays(ch.resetD,-1);ch.intro=false;ch.intro4=true;ch.v=4;
-}
-chMigrate4();
-// v4 → v5 (27.11.2026): Neustart heute, als ob die App zum ersten Mal geöffnet wird. Alter Challenge-Verlauf (Kalender, Punkte) weg,
-// Trainingsgewichte und Workout-Verlauf (Rekorde, Kraft-Kurven) bleiben. Check-in für gestern kommt.
-function chMigrate5(){
- if(ch.v>=5)return;
- var keep={set:ch.set,loads:ch.loads,ok:ch.ok,lastEx:ch.lastEx,seen:ch.seen};
- ch=chDef();Object.keys(keep).forEach(function(k){if(keep[k]!=null)ch[k]=keep[k];});
- ch.resetD=chToday();ch.rl.ci=chAddDays(ch.resetD,-2);ch.intro=false;ch.intro4=true;ch.v=5;
-}
-chMigrate5();
-// 27.11.2026: neue Hitze (×1,2 pro Stufe) und Ziel mit höchstens 5 Häppchen → heutiges Ziel neu rechnen, Punkte bleiben
-if(!ch.hx2){ch.hx2=1;if(ch.sc&&ch.sc.d===chToday()&&!ch.sc.hit){var hxP=ch.sc.pts;ch.sc=null;try{chScDay();ch.sc.pts=hxP;}catch(e){}}}
 ch.rl=Object.assign(chRlDef(),ch.rl||{});ch.mast=ch.mast||{};
 if(!ch.rl.ci)ch.rl.ci=chAddDays(chToday(),-1);
 if(!ch.days)chDaysFromLog();
@@ -2590,10 +2585,44 @@ function chShowDay(id){
 function chGo(s){document.querySelectorAll('.screen').forEach(function(x){x.classList.remove('active');});document.getElementById('s-'+s).classList.add('active');render(s);}
 
 // ══════════ Gewichte & Fortschritt ══════════
-// Coreys Hanteln (27.11.2026): LH-Stange ca. 7 kg, max. 27,5 kg pro Seite (mehr passt nicht drauf) → max. 62 kg.
-// SZ-Stange ca. 5 kg, max. 20 kg pro Seite → max. 45 kg. Kleinste Scheibe 2,5 kg → Schritte von 5 kg gesamt.
-var CH_BAR={LH:{bar:7,max:62},SZ:{bar:5,max:45}};
-function chRound(p,w){if(p.eq==='KH')return Math.max(1,Math.round(w));var B=CH_BAR[p.eq]||CH_BAR.SZ;return Math.min(B.max,Math.max(B.bar,B.bar+Math.round((w-B.bar-.01)/5)*5));} // genau zwischen zwei Stufen → leichter
+// ══════════ Ausrüstung ══════════
+// Pro Nutzer im Profil (prof.gear). Alte Profile ohne Eintrag: alles vorhanden, Langhantel 7/62 kg, SZ 5/45 kg (Stand 27.11.2026).
+// Scheiben: kleinste 2,5 kg → Stangen in 5-kg-Schritten. khMax/lhMax/szMax 0 = keine Grenze.
+var GEAR_ALL={st:1,kh:1,khMax:0,lh:1,lhBar:7,lhMax:62,rack:1,sz:1,szBar:5,szMax:45,bank:1};
+var GEAR_PRE={bw:{st:0,kh:0,lh:0,rack:0,sz:0,bank:0},home:{st:1,kh:1,lh:0,rack:0,sz:0,bank:1},
+ gym:{st:1,kh:1,khMax:0,lh:1,lhBar:20,lhMax:0,rack:1,sz:1,szBar:10,szMax:0,bank:1}};
+function chGear(){var g=prof&&prof.gear;if(g)return g;g=Object.assign({},GEAR_ALL);if(typeof ch!=='undefined'&&ch&&ch.set&&ch.set.rack===false)g.rack=0;return g;}
+function chHasEq(p){var G=chGear();if(p.bk&&!G.bank)return false;
+ switch(p.eq){case 'ST':return !!G.st;case 'KH':return !!G.kh;case 'LH':return !!G.lh&&(!p.rack||!!G.rack);case 'SZ':return !!G.sz;}return true;}
+function chBar(eq){var G=chGear();return eq==='LH'?{bar:+G.lhBar||10,max:+G.lhMax||999}:{bar:+G.szBar||7,max:+G.szMax||999};}
+// Ohne Langhantel zählen die schwersten Übungen der übrigen Ausrüstung als „schwer“ (für Karten mit „bei schweren Übungen“)
+function chHv(p){return !!(p.hv||(p.hv2&&!chGear().lh));}
+// Karten mit Geräte-Bedingung passen sich an, wenn das Gerät fehlt
+function chGearC(c){var G=chGear();if(c==='lh'&&!G.lh)return 'hv';if(c==='kh'&&!G.kh)return 'lt';if(c==='st'&&!G.st)return 'hv';return c;}
+var gearTmp=null,gearCtx='';
+function gearHtml(){var G=gearTmp,h='';
+ h+='<div class="gr-pre">'+[['bw','🤸','Nur Körper'],['home','🏠','Zuhause'],['gym','🏢','Studio']].map(function(x){return '<button class="btn bs" onclick="gearPre(\''+x[0]+'\')">'+x[1]+' '+x[2]+'</button>';}).join('')+'</div>';
+ function num(k,l,ph){return '<label>'+l+'<input type="text" inputmode="decimal" placeholder="'+ph+'" value="'+(G[k]?String(G[k]).replace('.',','):'')+'" onchange="gearNum(\''+k+'\',this.value)"></label>';}
+ function tg(k,i,t,d,extra){var on=!!G[k];h+='<div class="ob-opt'+(on?' sel':'')+'" onclick="gearTg(\''+k+'\')"><div class="ob-oi">'+(on?'✅':i)+'</div><div class="ob-ot"><h3>'+t+'</h3><p>'+d+'</p></div></div>';if(on&&extra)h+='<div class="gr-in">'+extra+'</div>';}
+ h+='<div class="ob-opt sel" style="cursor:default"><div class="ob-oi">✅</div><div class="ob-ot"><h3>Körpergewicht</h3><p>Immer dabei: Liegestütze, Kniebeugen, Plank, Tischrudern …</p></div></div>';
+ tg('st','🪝','Klimmzugstange','Klimmzüge, Beinheben hängend');
+ tg('kh','🏋️','Kurzhanteln','Curls, Schulterdrücken, Goblet Squat …',num('khMax','Schwerste Hantel (kg)','egal'));
+ tg('lh','🏋️','Langhantel mit Scheiben','Kreuzheben, Rudern, Hip Thrust …',num('lhBar','Stange (kg)','10')+num('lhMax','Höchstens gesamt (kg)','egal'));
+ if(G.lh)tg('rack','🗄️','Ablage (Rack)','Für Kniebeugen und Bankdrücken mit der Langhantel');
+ tg('sz','〰️','SZ-Stange','SZ-Curls, Skull Crushers',num('szBar','Stange (kg)','7')+num('szMax','Höchstens gesamt (kg)','egal'));
+ tg('bank','🛋️','Hantelbank','Bankdrücken, Schrägbank, Brustgestütztes Rudern');
+ return h;}
+function gearRedraw(){var el=document.getElementById(gearCtx==='ob'?'ob-gear':'st-gear');if(el)el.innerHTML=gearHtml();if(gearCtx==='st')gearSave();}
+function gearTg(k){gearTmp[k]=gearTmp[k]?0:1;gearRedraw();}
+function gearNum(k,v){var x=parseFloat(String(v).replace(',','.'));gearTmp[k]=x>0?x:0;if(gearCtx==='st')gearSave();}
+function gearPre(k){Object.assign(gearTmp,GEAR_PRE[k]);gearRedraw();}
+function gearSave(){if(!prof)prof={};prof.gear=Object.assign({},gearTmp);S.s('wt_prof',prof);chGearApply();}
+// Heute offene Übungen tauschen, die mit der Ausrüstung nicht gehen; gespeicherte Gewichte an die Grenzen anpassen
+function chGearApply(){
+ if(ch.q)ch.q.items.forEach(function(i){if(!i.done&&CH_PM[i.ex]&&!chHasEq(CH_PM[i.ex]))i.ex=chPickEx(i.g,false,[]);});
+ Object.keys(ch.loads).forEach(function(n){var p=CH_PM[n],L=ch.loads[n];if(p&&p.f&&L.w!=null)L.w=chRound(p,L.w);});
+ chSave();}
+function chRound(p,w){if(p.eq==='KH'){var m=+chGear().khMax||999;return Math.max(1,Math.min(m,Math.round(w)));}var B=chBar(p.eq);return Math.min(B.max,Math.max(B.bar,B.bar+Math.round((w-B.bar-.01)/5)*5));} // genau zwischen zwei Stufen → leichter
 function chStep(p,w){if(p.eq==='KH')return w>=15?2:1;return 5;}
 function chLoad(name){
  var p=CH_PM[name];if(!p)return{r:10};
@@ -2619,7 +2648,7 @@ function chTargetHtml(p,L){
  if(!p.f) return L.r+'×'+(p.ps?'<small> pro Seite</small>':'');
  return L.r+'× <span style="opacity:.6">·</span> '+String(L.w).replace('.',',')+'<small> kg'+(p.kh?' pro Hand':p.one?' (eine Hantel)':'')+(p.ps?' · pro Seite':'')+'</small>';
 }
-function chPool(g){return CH_P.filter(function(p){return p.g===g&&(ch.set.rack||!p.rack);});}
+function chPool(g){var l=CH_P.filter(function(p){return p.g===g&&chHasEq(p);});return l.length?l:CH_P.filter(function(p){return p.g===g&&p.eq==='BW';});}
 function chPickEx(g,noHeavy,avoid){
  var l=chPool(g).filter(function(p){return !(noHeavy&&p.hv);});if(!l.length)l=chPool(g);
  var f=l.filter(function(p){return avoid.indexOf(p.n)<0&&p.n!==ch.lastEx[g];});
@@ -2728,14 +2757,14 @@ function chSellV(d){return Math.floor(CH_PRICE[CH_CM[d.id].r]/2)+(d.sv||0)+({f:2
 function chCtx(it,feel){
  var p=CH_PM[it.ex],L=chLoad(it.ex),t=chToday(),td=chSnacksToday(),wc=chWeekCounts();
  var gs={};td.forEach(function(l){gs[l.g]=(gs[l.g]||0)+1;});gs[it.g]=(gs[it.g]||0)+1;
- return {g:it.g,p:p,hv:!!p.hv,eq:p.eq,sec:p.u==='s',reps:L.r,feel:feel,hot:chBossIs('warden')?0:chHotN(),hotN:chHotN(),cap:chDeckCap(),n:td.length+1,gs:gs,gn:Object.keys(gs).length,
+ return {g:it.g,p:p,hv:chHv(p),eq:p.eq,sec:p.u==='s',reps:L.r,feel:feel,hot:chBossIs('warden')?0:chHotN(),hotN:chHotN(),cap:chDeckCap(),n:td.length+1,gs:gs,gn:Object.keys(gs).length,
   restd:gs[it.g]===1&&chCounts(chAddDays(t,-1),chAddDays(t,-1))[it.g]===0,cb:ch.comeback,h:new Date().getHours(),dow:chDow(t),
   wkG:wc[it.g],goldN:CH_G.filter(function(g){return wc[g.k]>=CH_GOLD;}).length,streak:ch.streak,coins:ch.coins,frz:ch.freezes,
   L:chLvl(ch.xp).L,album:chAlbumN(),deckN:chActDeck().length,hit:!!(ch.sc&&ch.sc.d===t&&ch.sc.hit)};
 }
 function chCond(e,x,pos){
  var a=e.a,g=x.g;
- switch(e.c){
+ switch(chGearC(e.c)){
   case undefined:return true;
   case 'hv':return x.hv;case 'lt':return !x.hv;case 'lh':return x.eq==='LH';case 'kh':return x.eq==='KH';case 'bw':return x.eq==='BW'||x.eq==='ST';case 'st':return x.eq==='ST';
   case 'g':return g===a;case 'gs':return a.split(',').indexOf(g)>=0;case 'leg':return g==='beine'||g==='po';case 'arm':return g==='bizeps'||g==='trizeps';
@@ -3544,7 +3573,7 @@ var CH_DAYS=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','So
 function chGN(a){return a.split(',').map(function(k){return CH_GM[k].n;}).join(' oder ');}
 function chCondTxt(e){var a=e.a;switch(e.c){case 'g':case 'gs':return 'bei '+chGN(a);case 'from':return 'ab dem '+a+'. Häppchen des Tages';case 'nth':return 'beim '+a+'. Häppchen des Tages';
  case 'nthm':return 'bei jedem '+a+'. Häppchen des Tages';case 'dow':return 'am '+CH_DAYS[+a];case 'stk':return 'ab '+a+' Tagen Serie';case 'reps':return 'bei '+a+' oder mehr Wiederholungen';
- case 'gn':return 'wenn du heute schon '+a+' verschiedene Muskelgruppen trainiert hast';}return CH_CT[e.c]||'';}
+ case 'gn':return 'wenn du heute schon '+a+' verschiedene Muskelgruppen trainiert hast';}return CH_CT[chGearC(e.c)]||'';}
 var CH_PT={streak:'pro Tag Serie',today:'pro Häppchen heute',todayG:'pro Häppchen dieser Muskelgruppe heute',hot:'pro Hitze-Stufe',coins:'pro 5 <i class="cn"></i>, die du hast (max. 10×)',deck:'pro Karte im Deck',
  album:'pro 10 Karten im Album',lvl:'pro Level',gold:'pro Muskelgruppe auf Gold diese Woche',frz:'pro Joker ❄️'};
 var CH_GT={snack:'nach jedem Häppchen',easy:'wenn du „Leicht“ drückst',hv:'bei jeder schweren Übung',goal:'wenn du den Ziel-Score schaffst',hot3:'wenn du 3× am Stück schaffst',day:'jeden Tag'};
@@ -3740,7 +3769,6 @@ function chSettingsHtml(){
  [1,2,3].forEach(function(k){var H=CH_HARD[k];h+='<div class="ob-opt'+(ch.set.hard===k?' sel':'')+'" onclick="chSetHard('+k+')"><div class="ob-oi">'+H.i+'</div><div class="ob-ot"><h3>'+H.n+'</h3><p>'+H.d+'</p></div></div>';});
  h+='</div><div class="sh" style="margin-bottom:8px">Challenge · Optionen</div><div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">';
  h+='<div class="ob-opt'+(classic?' sel':'')+'" onclick="setClassic()"><div class="ob-oi">'+(classic?'✅':'⬜')+'</div><div class="ob-ot"><h3>Klassische App</h3><p>Zeigt unten wieder die Tabs „Workout“ und „Pläne“ für normale Trainingspläne. Aus: nur Challenge, Fortschritt und Einstellungen.</p></div></div>';
- h+='<div class="ob-opt'+(ch.set.rack?' sel':'')+'" onclick="chSetOpt(\'rack\')"><div class="ob-oi">'+(ch.set.rack?'✅':'⬜')+'</div><div class="ob-ot"><h3>Ablage für die Langhantel</h3><p>Ohne Ablage gibt es kein Bankdrücken und keine Kniebeugen mit der Langhantel.</p></div></div>';
  h+='<div class="ob-opt'+(ch.set.snd?' sel':'')+'" onclick="chSetOpt(\'snd\')"><div class="ob-oi">'+(ch.set.snd?'🔊':'🔇')+'</div><div class="ob-ot"><h3>Sounds</h3><p>Töne beim Abhaken, Kisten und Level-Up.</p></div></div>';
  h+='</div><button class="btn bs bf" onclick="chReset()">Challenge zurücksetzen</button>';
  return h;
@@ -3749,7 +3777,7 @@ function chSetHard(k){ch.set.hard=k;chSave();rEinstellungen();toast('Härte: '+C
 function chSetOpt(k){ch.set[k]=!ch.set[k];if(k==='rack'&&ch.q&&!ch.set.rack){ch.q.items.forEach(function(i){if(!i.done&&CH_PM[i.ex].rack)i.ex=chPickEx(i.g,false,[]);});}chSave();rEinstellungen();}
 function chReset(){if(!confirm('Challenge wirklich komplett zurücksetzen? XP, Karten und Serie sind dann weg.'))return;var s=ch.set;ch=chDef();ch.set=s;ch.resetD=chToday();ch.rl.ci=chAddDays(ch.resetD,-2);ch.intro4=true;chSave();toast('Challenge zurückgesetzt');}
 var CH_INFO={
- neu4:['☀️','NEUSTART: REAL LIFE',['Alles startet bei 0. Deine Trainingsgewichte und dein Verlauf bleiben.','<b>Jeden Morgen</b> ein Check-in: Hast du gestern gecheatet (süß/salzig)? Wie viele Schritte?','<b>7 saubere Tage</b> = 1 Ticket 🎟️. Mit Ticket ist Ben & Jerry\'s erlaubt, ohne Malus.','Cheat ohne Ticket: Eine <b>Debuff-Karte</b> blockiert 2 Tage lang einen Deck-Platz, und du verlierst einen Deck-Platz.','Du startest mit <b>3 Deck-Plätzen</b>. Platz 4 und 5 verdienst du dir im echten Leben.','<b>🏋️ Workout</b>: Ein richtiges Training ersetzt den Tagesplan. 3 pro Woche geben einen Bonus. Kein einziges im Monat gibt einen Malus.','<b>Ligen</b>: Besiege 2 Bosse, dann schaltest du die nächste, schwerere Liga frei. Endziel: Alle Karten in der Black League meistern ⭐.']],
+ neu4:['☀️','REAL LIFE',['<b>Jeden Morgen</b> ein Check-in: Hast du gestern gecheatet (süß/salzig)? Wie viele Schritte?','<b>7 saubere Tage</b> = 1 Ticket 🎟️. Mit Ticket ist Ben & Jerry\'s erlaubt, ohne Malus.','Cheat ohne Ticket: Eine <b>Debuff-Karte</b> blockiert 2 Tage lang einen Deck-Platz, und du verlierst einen Deck-Platz.','Du startest mit <b>3 Deck-Plätzen</b>. Platz 4 und 5 verdienst du dir im echten Leben.','<b>🏋️ Workout</b>: Ein richtiges Training ersetzt den Tagesplan. 3 pro Woche geben einen Bonus. Kein einziges im Monat gibt einen Malus.','<b>Ligen</b>: Besiege 2 Bosse, dann schaltest du die nächste, schwerere Liga frei. Endziel: Alle Karten in der Black League meistern ⭐.']],
  reallife:['🧼','REAL LIFE',['☀️ <b>Jeden Morgen</b> Check-in für gestern: Essen + Schritte. +1 🌠','🎟️ <b>7 saubere Tage</b> = 1 Ticket (🍦 Sweet / 🍿 Salty), max. 2. Cheat mit Ticket = kein Malus.','😬 <b>Cheat ohne Ticket:</b> Ticket-Fortschritt weg, 1 Deck-Platz weg, Debuff für 2 Tage.','🃏 <b>Plätze:</b> Start 3 · Platz 4 = 7 Tage sauber · Platz 5 = 14 Tage sauber + 7k Schritte.','🚶 <b>Unter 7k</b> Schritte ×0,8 Mult · <b>10k+</b> +3 Mult.','🏋️ <b>3 Workouts/Woche</b> = +5 <i class="cn"></i> + Pack.']],
  mastery:['⭐','MASTERY',['Schaffst du das Tagesziel, wird jede Karte in deinem aktiven Deck <b>gemeistert</b>, mit der Farbe deiner Liga. Bosse brauchst du für die nächste Liga.','🥉 Bronze · 🥈 Silver · 🥇 Gold · 🖤 Black','Das Endziel: <b>alle '+CH_C.length+' Karten in der Black League</b> gemeistert. Auch die Mythic-Karten.','Im Album siehst du an jedem Stern, wie weit eine Karte ist.']],
  neu2:['⚔️','NEU: BOSSE & MEHR',['<b>Boss-Tag</b> jeden Sonntag: Ein Boss macht es schwerer. Schaff den Ziel-Score, dann gibt es eine Boss-Kiste und vielleicht eine <b style="color:#ff2d55">Mythic</b>-Karte.','<b>3 Missionen</b> jeden Tag bringen Münzen <i class="cn"></i> oder Pack-Punkte 🌠.','<b>Wonder Pick</b>: Nach dem Ziel-Score werden 5 Karten gemischt. Du ziehst eine.','<b>Pack-Punkte 🌠</b> gibt es für jedes geöffnete Pack und für Missionen. Damit holst du dir im Album eine Wunschkarte.','Seltene <b>Varianten</b>: Foil, Holo, Prism und Shadow machen Karten stärker.','<b>Komplette Sets</b> geben einen Dauer-Bonus und einen Titel.']],
@@ -3757,7 +3785,7 @@ var CH_INFO={
  missionen:['✅','MISSIONEN',['Jeden Tag 3 Aufgaben, die etwas mehr verlangen als der Tagesplan. Jede bringt Münzen <i class="cn"></i> oder Pack-Punkte 🌠 (für Wunschkarten im Album).','Schaffst du alle 3, gibt es +5 🌠 extra.','Morgen gibt es neue.']],
  wonder:['✨','WONDER PICK',['Nach dem Ziel-Score siehst du 5 Karten kurz offen.','Dann werden sie verdeckt gemischt und du ziehst eine. Jede hat die gleiche Chance.']],
  sets:['🏅','SETS & TITEL',['Jedes Set im Album hat einen Dauer-Bonus. Sammelst du alle Karten eines Sets, wirkt er bei jedem Häppchen.','Dazu bekommst du einen Titel und eine Gold-Kiste.','Das ganze Album bringt ×2 Mult für immer.']],
- intro:['🃏','NEU: DEIN DECK',['Jedes Häppchen bringt jetzt Punkte: <b>Chips × Mult</b>.','Bis zu 5 Karten im Deck geben +Chips, +Mult oder ×Mult. Sie werden von links nach rechts ausgewertet.','Schaffst du den <b>Ziel-Score</b> des Tages, gibt es Münzen <i class="cn"></i> und der <b>Shop</b> öffnet. Dort kaufst du neue Karten.',CH_HG+' Häppchen füllen die Sanduhren ⏳ und geben ein Booster Pack.','Jeden Tag gibt es 3 Missionen, jeden Sonntag wartet ein Boss.','Du startest mit 1 Karte und 5 <i class="cn"></i>.']],
+ intro:['🃏','DEIN DECK',['Jedes Häppchen bringt jetzt Punkte: <b>Chips × Mult</b>.','Bis zu 5 Karten im Deck geben +Chips, +Mult oder ×Mult. Sie werden von links nach rechts ausgewertet.','Schaffst du den <b>Ziel-Score</b> des Tages, gibt es Münzen <i class="cn"></i> und der <b>Shop</b> öffnet. Dort kaufst du neue Karten.',CH_HG+' Häppchen füllen die Sanduhren ⏳ und geben ein Booster Pack.','Jeden Tag gibt es 3 Missionen, jeden Sonntag wartet ein Boss.','Du startest mit 1 Karte und 5 <i class="cn"></i>.']],
  deck:['🃏','DEIN DECK',['Du startest mit 3 Plätzen. Platz 4 und 5 verdienst du dir im echten Leben (sauber essen, Schritte). Debuffs blockieren Plätze, Karten ganz rechts werden dann inaktiv. Jede gibt +Chips, +Mult oder ×Mult, oft mit einer Bedingung.','Reihenfolge zählt: links nach rechts. ×Mult ganz rechts bringt am meisten.','<b>Kein Vorrat:</b> Du hast nur die Karten auf deinen Plätzen. Neue gibt es im Shop, aus Packs, Kisten, Wonder Pick und als Wunschkarte. Was du nicht nimmst, ist weg.','<b>Karte raus:</b> Im Deck antippen und verkaufen. Sie ist dann weg und kann wieder in Shop und Kisten auftauchen. Im Album bleibt sie als entdeckt.','Deck voll? Beim Nehmen einer neuen Karte wählst du, welche Deck-Karte dafür verkauft wird.','Ziehen zum Umsortieren.','Seltene Varianten: <b>Foil</b> +50 Chips (1 zu 25), <b>Holo</b> +10 Mult (1 zu 50), <b>Prism</b> ×1,5 Mult (1 zu 200), <b>Shadow</b> belegt keinen Platz (1 zu 500).']],
  score:['🎯','ZIEL-SCORE',['Jedes Häppchen bringt Punkte = Chips × Mult. Die Punkte des Tages zählen zusammen.','Schaffst du den Ziel-Score: +4 <i class="cn"></i>, dazu 1 <i class="cn"></i> Zinsen pro 5 gesparte Münzen (max. 5), und der Shop öffnet.','Das Ziel wird jeden Morgen aus deinem Deck berechnet: So viele Punkte bringt dein Deck mit dem heutigen Tagesplan bei etwas Hitze. Kauf tagsüber eine starke Karte, wird es leichter. Von Montag bis Samstag wird es etwas schwerer.','Debuffs senken das Ziel nicht: Die blockierte Karte zählt im Ziel mit. Deshalb tut ein Cheat ohne Ticket richtig weh.','Den ganzen Tagesplan musst du also fast immer machen. Mit einem besseren Deck oder Bonus-Häppchen schaffst du es sicherer.','Jedes Häppchen gibt außerdem +1 <i class="cn"></i>.']],
  overdrive:['⚡','OVERDRIVE',['Ziel geschafft? Dann geht es weiter: Die nächste Stufe ist dreimal so hoch (3×, 9×, 27× das Ziel …).','Jede Stufe gibt +3 <i class="cn"></i> und +2 🌠, jede zweite auch ein Booster Pack.','So lohnt sich auch ein richtig langes Training.']],
