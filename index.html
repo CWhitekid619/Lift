@@ -2342,7 +2342,7 @@ var CH_ITEMS={
 var CH_DECK=5,CH_HG=8,CH_GOALB=[100,130,160,200,250,300,360];
 // Ziel-Score passt sich an: typische Punkte pro Häppchen (Median der letzten 14 Tage) × Häppchen im Tagesplan × Tagesfaktor.
 // So bleibt das Ziel schwer, egal wie stark das Deck wird. CH_GOALB ist die Untergrenze (steigt leicht mit dem Level).
-var CH_GOALH=2,CH_GOALK=1,CH_GOALF=[1.05,1.1,1.15,1.2,1.25,1.3,1.2],CH_GOALD=7,CH_GOALMIN=8,CH_COINCAP=10;
+var CH_GOALH=1,CH_GOALN=5,CH_GOALK=1,CH_GOALF=[1.05,1.1,1.15,1.2,1.25,1.3,1.2],CH_GOALD=7,CH_GOALMIN=8,CH_COINCAP=10;
 // ══ Real Life: Check-in am Morgen, Tickets, Debuffs, Deck-Plätze, Workout, Gewicht ══
 var CH_SLOT0=3,CH_SLOTS=[{n:4,clean:7,stp:0},{n:5,clean:14,stp:14}]; // Platz 4: 7 saubere Tage · Platz 5: 14 saubere Tage + 14 Tage ≥ 7.000 Schritte
 var CH_TKN=7,CH_TKMAX=2; // 7 saubere Tage = 1 Ticket, höchstens 2 auf Vorrat
@@ -2405,6 +2405,8 @@ function chMigrate5(){
  ch.resetD=chToday();ch.rl.ci=chAddDays(ch.resetD,-2);ch.intro=false;ch.intro4=true;ch.v=5;
 }
 chMigrate5();
+// 27.11.2026: neue Hitze (×1,2 pro Stufe) und Ziel mit höchstens 5 Häppchen → heutiges Ziel neu rechnen, Punkte bleiben
+if(!ch.hx2){ch.hx2=1;if(ch.sc&&ch.sc.d===chToday()&&!ch.sc.hit){var hxP=ch.sc.pts;ch.sc=null;try{chScDay();ch.sc.pts=hxP;}catch(e){}}}
 ch.rl=Object.assign(chRlDef(),ch.rl||{});ch.mast=ch.mast||{};
 if(!ch.rl.ci)ch.rl.ci=chAddDays(chToday(),-1);
 if(!ch.days)chDaysFromLog();
@@ -2498,13 +2500,15 @@ function chHotEnd(){return CH_HOT_END+60*chSp('heat');}
 function chHeatLeft(){if(!ch.lastT||chDK(ch.lastT)!==chToday())return 0;return Math.max(0,chHotEnd()-(Date.now()-ch.lastT)/1000);}
 function chHeat(){return Math.min(1,chHeatLeft()/chHotEnd());}
 function chHotN(){return chHeat()>0?Math.min((ch.hot||0)+1,CH_HOT_MAX):0;}
-function chHotAdd(){return chBossIs('warden')?0:chHotN()*(chModIs('combo')?2:1);}
+var CH_HOTX=0.2; // Hitze: ×(1 + 0,2 pro Stufe), also ×1,2 · ×1,4 … ×2,6
+function chHotAdd(){return chBossIs('warden')?0:chHotN()*CH_HOTX*(chModIs('combo')?2:1);}
+function chHotF(){return Math.round((1+chHotAdd())*10)/10;}
 function chHeatSt(){
  var h=chHeat(),n=chHotN(),m=chHotAdd(),l=Math.ceil(chHeatLeft());
  var st=h>.66?['GLÜHEND','#ff3d00']:h>.33?['HEISS','#ff7a00']:h>0?['WARM','#ffc400']:['KALT','#60a5fa'];
  var bg=h>.66?'linear-gradient(90deg,#ffc400,#ff7a00,#ff2d55)':h>.33?'linear-gradient(90deg,#ffc400,#ff7a00)':'linear-gradient(90deg,#7dd3fc,#ffc400)';
  return{h:h,hot:h>0,lab:'<span class="ch-fl">'+(h>0?'🔥':'🧊')+'</span> '+st[0]+(n>1?' · '+(n-1)+'× AM STÜCK':''),col:st[1],
-  m:chBossIs('warden')?'🧊 AUS':'+'+m+' Mult',w:h*100,bg:bg,
+  m:chBossIs('warden')?'🧊 AUS':'×'+String(chHotF()).replace('.',',')+' Mult',w:h*100,bg:bg,
   t:chBossIs('warden')?'Boss Iron Warden: Die Hitze bringt heute keinen Bonus':h>0?'':'Mach ein Häppchen, um aufzuheizen'};
 }
 function chHeatHtml(){
@@ -2661,7 +2665,7 @@ function chSnackMed(t){var from=chAddDays(t,-CH_GOALD),a=[];if(ch.resetD&&from<c
 // mit mäßiger Hitze, ohne Boss, Tagesbonus, Comeback, Boost, Einweg-Gegenstände und ohne Real-Life-Malus.
 var chNoBoss=false;
 function chGoalCalc(){
- var t=chToday(),items=ch.q&&ch.q.day===t?ch.q.items.filter(function(i){return !i.bonus;}):null;if(!items||!items.length)return 0;
+ var t=chToday(),items=ch.q&&ch.q.day===t?ch.q.items.filter(function(i){return !i.bonus;}).slice(0,CH_GOALN):null;if(!items||!items.length)return 0;
  var sv={deck:ch.deck,hot:ch.hot,lastT:ch.lastT,nx:ch.nx,deb:ch.rl.deb,eff:ch.rl.eff,slots:ch.rl.slots,mod:ch.mod,cb:ch.comeback,boost:ch.boost},sum=0,now=Date.now();
  try{chNoBoss=true;ch.rl.deb=[];ch.rl.eff=null;ch.nx=[];ch.mod=null;ch.comeback=false;ch.boost=0;ch.deck=ch.deck.slice(0,chDeckCap());
   items.forEach(function(it,i){var h=Math.min(i,CH_GOALH);ch.hot=h-1;ch.lastT=h?now-60000:0;sum+=chScore(it,'passt',true).pts;});}
@@ -2728,7 +2732,7 @@ function chEvalCard(pos,x,deck){
 function chScore(it,feel,dry){
  var x=chCtx(it,feel),p=x.p,chips=p.hv?20:12,mult=1,st=[],coins=0,bk=chBossK();
  st.push({k:'base',lab:p.hv?'💪 Schwere Übung':'💪 Übung',chips:chips,mult:mult});
- var ha=x.hot*(chModIs('combo')?2:1);if(bk==='golem')ha/=2;if(ha){mult+=ha;st.push({k:'ex',lab:'🔥 Hitze',t:'m',v:ha,chips:chips,mult:mult});}
+ var ha=x.hot*CH_HOTX*(chModIs('combo')?2:1);if(bk==='golem')ha/=2;if(ha){var hf=Math.round((1+ha)*100)/100;mult*=hf;st.push({k:'ex',lab:'🔥 Hitze',t:'x',v:hf,chips:chips,mult:mult});}
  function ex(lab,t,v){if(t==='c')chips+=v;else if(t==='m')mult+=v;else if(t==='x')mult*=v;else coins+=v;st.push({k:'ex',lab:lab,t:t,v:v,chips:chips,mult:mult});}
  var SE=chStepEff();if(SE==='hi')ex('🏃 Walker','m',3);
  chSetBoni().forEach(function(b){chEvalFx({fx:b.fx},null,-1,x).forEach(function(r){ex(b.lab,r.t,r.v);});});
@@ -3668,7 +3672,7 @@ var CH_INFO={
  packs:['⏳','SANDUHREN',['Jedes Häppchen füllt eine Sanduhr.',CH_HG+' Sanduhren = ein Booster Pack mit 3 Karten.','Eine Karte aus jedem Pack darfst du direkt ins Deck legen.','Jedes Pack und jede Kiste gibt 1 Pack-Punkt 🌠. Damit holst du dir im Album eine Wunschkarte.']],
  kisten:['🎁','KISTEN & PACKS',['3× auf die Kiste tippen, Karten umdrehen, dann eine Karte antippen, um sie in dein Deck zu legen.','Du bekommst sie: jeden Tag die Tagesbox, '+CH_HG+' Sanduhren (Booster Pack), jedes 5. Level (Gold), 7 Tage Serie (Gold), ganze Woche Gold (Legendär). Boss besiegt (Boss-Kiste), Set komplett (Gold). Packs gibt es auch im Shop.','Drin: Karten, manchmal Münzen 🪙, Joker ❄️, XP oder ein Boost. Doppelte Karten geben Münzen.']],
  flamme:['🔥','DEINE SERIE',['Mach 3 Häppchen am Tag → die Flamme wächst um 1.','Verpasst du einen Tag, rettet dich ein Joker ❄️ (Zahl darunter). Ohne Joker gibt es Minuspunkte.','Joker gibt es jede Woche gratis (je nach Härte), aus Kisten und im Shop.']],
- hitze:['🌡️','HITZE',['Nach jedem Häppchen ist die Leiste voll und läuft in 15 Min. langsam leer.','Machst du das nächste Häppchen, solange sie nicht leer ist, steigt dein Bonus: +1 Mult, +2 Mult … bis +8 Mult.','Warm trainieren ist auch besser für die Muskeln.']],
+ hitze:['🌡️','HITZE',['Nach jedem Häppchen ist die Leiste voll und läuft in 15 Min. langsam leer.','Machst du das nächste Häppchen, solange sie nicht leer ist, steigt dein Bonus: ×1,2 Mult, ×1,4 … bis ×2,6 Mult.','Warm trainieren ist auch besser für die Muskeln.']],
  bonus:['🎲','TAGESBONUS',['Kommt jeden Tag zufällig aus der Tagesbox und gilt nur heute.','Power-Tag = ×1,5 Mult · Glückstag = öfter KRITISCH · Sanduhr-Regen = doppelte Sanduhren · Fieber = ×3 Mult für eine Muskelgruppe · Hitze-Tag = doppelter Hitze-Bonus.']]};
 function chHint(k){ch.seen=ch.seen||{};if(ch.seen[k])return;ch.seen[k]=1;chQueue(function(){chInfo(k);});}
 function chFirst(k,next){ch.seen=ch.seen||{};if(ch.seen[k])return false;ch.seen[k]=1;chSave();chInfo(k,next);return true;}
