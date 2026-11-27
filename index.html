@@ -1838,11 +1838,36 @@ body.lean .tab[data-s="fortschritt"]{order:1}body.lean .tab-ch{order:2}body.lean
 .chx-pick .row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
 .chx-pick button{background:#1a1a30;border:1.5px solid var(--rc);color:#fff;border-radius:18px;padding:7px 12px;font-weight:800;font-size:12px;cursor:pointer}
 .chx-pick.ok{color:var(--gr);font-weight:800;font-size:13px}
-.dk-swap{z-index:1;margin:12px auto 0;max-width:340px;width:100%;text-align:center;background:#16162a;border:1px solid #ffc40066;border-radius:14px;padding:10px}
+.dk-swap{z-index:1;margin:12px auto 0;max-width:400px;width:100%;text-align:center;background:#16162a;border:1px solid #ffc40066;border-radius:14px;padding:10px}
 .dk-swap>small{display:block;font-size:11px;color:#ffc400;font-weight:800;margin-bottom:8px}
-.dk-swap>div{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
-.dk-swap>div button{background:#1a1a30;border:1.5px solid var(--rc,#555);color:#fff;border-radius:12px;padding:6px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;min-width:54px}
-.dk-swap>div button span{font-size:22px}.dk-swap>div button small{font-size:10px;color:#ffc400;font-weight:800}
+.dk-swap .sw{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:#1a1a30;border:1.5px solid var(--rc,#555);color:#fff;border-radius:12px;padding:7px 9px;margin-bottom:6px;cursor:pointer}
+.dk-swap .sw>.e{font-size:24px;flex-shrink:0}.dk-swap .sw>.t{flex:1;min-width:0}.dk-swap .sw>.t>b{display:block;font-size:12px}
+.dk-swap .sw>.t>i{display:block;font-style:normal;font-size:10.5px;color:var(--t2);line-height:1.3;margin-top:2px}
+.dk-swap .sw>.v{flex-shrink:0;font-size:11px;color:#ffc400;font-weight:800;white-space:nowrap}
+/* Shop: Deck-Leiste oben (wie Balatro) */
+.shd{z-index:1;width:100%;max-width:480px;background:#10101e;border:1px solid #2a2a48;border-radius:14px;padding:8px;margin-bottom:10px;flex-shrink:0}
+.shd.swap{border-color:#ffc400;box-shadow:0 0 14px #ffc40055}
+.shd-h{display:flex;justify-content:space-between;font-size:9px;letter-spacing:1.5px;font-weight:800;color:var(--t2);margin-bottom:6px}
+.shd.swap .shd-h span:first-child{color:#ffc400}
+.shd-r{display:flex;gap:5px;align-items:flex-end}
+.shd-k{flex:1 1 0;min-width:0;max-width:62px;aspect-ratio:3/4;border-radius:9px;border:2px solid var(--rc);background:linear-gradient(170deg,#202040,#0d0d1c);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:2px;text-align:center;position:relative;transition:transform .15s}
+.shd-k .e{font-size:20px;line-height:1}.shd-k .n{font-size:7.5px;font-weight:800;line-height:1.1;margin-top:3px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.shd-k.r-l{background:linear-gradient(170deg,#3a2a00,#120c00 70%)}.shd-k.r-e{background:linear-gradient(170deg,#2a0f40,#0d0d1c 70%)}
+.shd-k.on{outline:2px solid #fff;outline-offset:2px;transform:translateY(-4px)}
+.shd-k.empty{border:2px dashed #2e2e4a;background:#0f0f1d;color:#3a3a5c;cursor:default;font-weight:800}
+.shd-k.it{--rc:#ffc400;border-style:dashed;background:#1e1806}
+.shd-k.off{filter:grayscale(1) brightness(.5)}
+.shd-sep{width:1px;align-self:stretch;background:#2a2a48;margin:0 2px}
+.shd-i{margin-top:9px;background:#161628;border:1px solid var(--rc,#3a3a5c);border-radius:10px;padding:8px 10px;display:flex;gap:9px;align-items:center;text-align:left}
+.shd-i>.e{font-size:26px;flex-shrink:0}.shd-i>.tx{flex:1;min-width:0;font-size:12px;line-height:1.35}
+.shd-i b{display:block;font-size:13px}.shd-i small{display:block;font-size:9px;font-weight:800;letter-spacing:1px;margin-bottom:2px}.shd-i em{display:block;font-style:normal;color:var(--t2);font-size:11px;margin-top:3px}
+.shd-b{flex-shrink:0;background:#2a1f00;border:2px solid #ffc400;color:#ffd84a;border-radius:999px;padding:6px 10px;font-weight:900;font-size:12px;cursor:pointer;white-space:nowrap}
+.shd-b.ask,.shd-b.go{background:#ffc400;color:#1a1200}
+.shd-hint{font-size:10px;color:var(--t2);margin-top:6px;text-align:center}
+/* Hauptbildschirm: gekaufte Einweg-Gegenstände */
+.ch-cons{margin-bottom:12px;padding:8px 10px;border-radius:12px;border:1.5px dashed #ffc400;background:#1e1806}
+.ch-cons>small{display:block;font-size:9px;letter-spacing:1.5px;font-weight:800;color:#ffc400;margin-bottom:5px}
+.ch-cons>div{display:flex;align-items:center;gap:8px;font-size:13px;padding:2px 0}.ch-cons>div>span{font-size:20px}.ch-cons>div>i{font-style:normal;color:#ffd84a;font-weight:800;margin-left:auto}
 .dk-swx{margin-top:8px;background:none;border:0;color:var(--t2);font-size:12px;text-decoration:underline;cursor:pointer}
 .chx-pick.big b{display:block;color:#fff;font-size:14px;margin-bottom:3px}.chx-pick.big span{font-size:11px}
 .chc.can .chc-front{animation:chCan 1.2s ease-in-out infinite}.chc.picked .chc-front{box-shadow:0 0 0 3px #3bff8f,0 0 30px #3bff8f}
@@ -1889,6 +1914,7 @@ body.lean .tab[data-s="fortschritt"]{order:1}body.lean .tab-ch{order:2}body.lean
 .chs-goal.ok .chs-gb div{background:#ffc400}
 .chs-hit{margin-top:10px;font-family:'Orbitron',monospace;font-size:13px;letter-spacing:1px;color:#ffc400;text-shadow:0 0 14px #ff9500}
 .chs-skip{font-size:10px;color:var(--t3);margin-top:10px}
+.chs-skip.done{font-size:12px;color:var(--t2);font-weight:800;animation:chPulseO 1.4s infinite}
 /* Phase 2: Mythic, Varianten, Boss, Missionen, Wonder Pick, Wunschkarte */
 .r-m{--rc:#ff2d55}
 .chc.r-m .chc-front,.ch-dk.r-m,.chx-mc.r-m:not(.lock){background:linear-gradient(170deg,#450a1a,#12040a 70%)}
@@ -3194,7 +3220,7 @@ function chScoreShow(it,R,I,deck){
  var bk=chBossK();if(bk)h+='<div class="chs-boss">'+CH_BOSS[bk].e+' BOSS: '+CH_BOSS[bk].n+'</div>';
  var nS=Math.max(5,chDeckCap(),deck.length);h+='<div class="chs-deck" style="grid-template-columns:repeat('+nS+',minmax(0,1fr))">';
  for(var i=0;i<nS;i++){var d=deck[i];h+=d?'<div class="chs-k r-'+CH_CM[d.id].r+chVarCls(d.v)+'" id="chs-k'+i+'"><span>'+CH_CM[d.id].e+'</span>'+(d.v?'<i class="vfx"></i>':'')+'</div>':'<div class="chs-k empty"></div>';}
- h+='</div><div class="chs-tot" id="chs-tot">&nbsp;</div><div class="chs-sub" id="chs-sub"></div><div class="chs-skip">Tippen zum Überspringen</div></div>';
+ h+='</div><div class="chs-tot" id="chs-tot">&nbsp;</div><div class="chs-sub" id="chs-sub"></div><div class="chs-skip" id="chs-skip">Tippen zum Überspringen</div></div>';
  el.innerHTML=h;document.body.appendChild(el);
  var cE=el.querySelector('#chs-c'),mE=el.querySelector('#chs-m'),lE=el.querySelector('#chs-lab'),steps=R.st,timers=[],fin=false;
  var dt=steps.length>9?230:steps.length>6?300:380;
@@ -3225,9 +3251,12 @@ function chScoreShow(it,R,I,deck){
    el.querySelector('#chs-sub').innerHTML=s;
    chSnd(big?'leg':'box');vib(big?[60,30,60,30,140]:[40,30,60]);
    if(big)chConfetti(['#ffc400','#ff2d55','#3b82f6','#fff'],160);
-  },D),setTimeout(close,D+(big?2600:1800))];
+  },D),setTimeout(function(){var sk=el.querySelector('#chs-skip');if(sk){sk.textContent='Tippen zum Schließen';sk.classList.add('done');}},D+300)];
+  // Bleibt offen, bis man tippt (Corey 27.11.: Score ansehen und Screenshot machen). Kurze Sperre gegen Doppeltipp.
+  canClose=Date.now()+500;
  }
- function close(){timers.forEach(clearTimeout);if(!el.isConnected)return;el.remove();chScoring=null;if(chQ.length){chQ.shift()();return;}chPlay();}
+ var canClose=0;
+ function close(){if(Date.now()<canClose)return;timers.forEach(clearTimeout);if(!el.isConnected)return;el.remove();chScoring=null;if(chQ.length){chQ.shift()();return;}chPlay();}
  chScoring={el:el};
  el.onclick=function(){if(!fin)finish();else close();};
  steps.forEach(function(s,n){timers.push(setTimeout(function(){show(s,n);if(n===steps.length-1)timers.push(setTimeout(finish,dt+150));},120+n*dt));});
@@ -3290,19 +3319,19 @@ function rChallenge(){
  DB.forEach(function(b){var D=CH_DEB[b.k],dl=Math.round((new Date(b.until+'T12:00:00')-new Date(t+'T12:00:00'))/864e5)+1;h+='<div class="ch-dk deb" onclick="chInfo(\'reallife\')"><i class="dk-b">'+dl+'T</i><div class="e">'+D.e+'</div><div class="n">'+D.n+'</div></div>';});
  for(var li=0;li<lockN;li++)h+='<div class="ch-dk empty lk" onclick="chInfo(\'reallife\')">🔒</div>';
  h+='</div>';
+ // Gekaufte Einweg-Gegenstände direkt unter dem Deck (Corey 27.11.: „Ich sehe das ja nirgendwo“).
+ if(ch.nx&&ch.nx.length)h+='<div class="ch-cons"><small>🎒 EINWEG · WIRKT BEIM NÄCHSTEN HÄPPCHEN</small>'+ch.nx.map(function(k){var I=CH_ITEMS[k];return '<div><span>'+I.e+'</span><b>'+I.n+'</b><i>'+({pre:'×2 Mult',shake:'+50 Chips'}[k]||'')+'</i></div>';}).join('')+'</div>';
  h+=chHeatHtml();
  if(ch.mod&&ch.mod.day===t)h+='<div class="ch-mod" onclick="chInfo(\'bonus\')">'+ch.mod.x+'</div>';
  if(ch.comeback)h+='<div class="ch-mod" style="border-color:#00ff9f">🪽 Comeback ×1,5 Mult</div>';
  var SE=chStepEff();if(SE&&SE!=='ok')h+='<div class="ch-mod" style="border-color:'+(SE==='hi'?'#3bff8f':'#ff3d5a')+'" onclick="chInfo(\'reallife\')">'+CH_STEPS[SE].e+' '+CH_STEPS[SE].n+' <span>'+CH_STEPS[SE].d+'</span></div>';
  DB.forEach(function(b){var D=CH_DEB[b.k];h+='<div class="ch-mod" style="border-color:#ff3d5a" onclick="chInfo(\'reallife\')">'+D.e+' '+D.n+' <span>'+D.d+' · blockiert 1 Platz bis '+b.until.slice(8,10)+'.'+b.until.slice(5,7)+'.</span></div>';});
- if(ch.nx&&ch.nx.length)h+='<div class="ch-mod" style="border-color:#ffc400">'+ch.nx.map(function(k){return CH_ITEMS[k].e+' '+CH_ITEMS[k].n;}).join(' · ')+' <span>wirkt beim nächsten Häppchen</span></div>';
  if(cur){
-  var p=CH_PM[cur.ex],L=chLoad(cur.ex),G=CH_GM[cur.g],P=chScore(cur,'passt',true),idx=q.items.indexOf(cur);
+  var p=CH_PM[cur.ex],L=chLoad(cur.ex),G=CH_GM[cur.g],idx=q.items.indexOf(cur);
   h+='<div class="ch-now'+(p.hv?' hv':'')+'"><div class="ch-now-top"><span class="ch-jetzt">JETZT</span><span class="ch-cnt">'+(cur.bonus?'⭐ BONUS':'HÄPPCHEN '+(idx+1)+'/'+q.n)+'</span></div>';
   h+='<span class="ch-chip">'+G.i+' '+G.n+' · '+c[cur.g]+'/'+CH_GOLD+'</span>';
   h+='<div class="ch-ex" style="margin-top:8px">'+p.n+'</div><div class="ch-big">'+chTargetHtml(p,L)+'</div>';
   if(p.hv&&chHeat()===0)h+='<div class="ch-warm">🔥 Aufwärmen: 8× '+String(chRound(p,L.w*.5)).replace('.',',')+' kg</div>';
-  h+='<div class="ch-xpp"><span class="cc">'+chBig(P.chips)+'</span> × <span class="cm">'+chFmtM(P.mult)+'</span> ≈ <b>'+chBig(P.pts)+'</b> Punkte</div>';
   h+='<div class="ch-btns"><button class="ch-b ch-hard" onclick="chDone(\'schwer\',event)">😮‍💨<span>Schwer</span></button><button class="ch-b ch-go" onclick="chDone(\'passt\',event)">✓ GESCHAFFT</button><button class="ch-b ch-easy" onclick="chDone(\'leicht\',event)">😎<span>Leicht</span></button></div>';
   h+='<div class="ch-links"><span onclick="chSwap()">🔀 Andere Übung</span><span onclick="chLater()">⏭ Später</span></div></div>';
  } else {
@@ -3454,7 +3483,8 @@ function chInDeck(id){return ch.deck.some(function(d){return d.id===id;});}
 function chUse(id){ch.sold=ch.sold||{};ch.sold[id]=(ch.sold[id]||0)+1;}
 // Deck voll: Deck-Karte j verkaufen und die neue Karte an ihre Stelle legen
 function chSwapIn(j,inst){var d=ch.deck[j];if(!d)return 0;var v=chSellV(d);ch.coins+=v;chUse(d.id);ch.deck[j]=inst;toast('💰 '+CH_CM[d.id].n+' verkauft: +'+v+' Münzen');return v;}
-function chSwapRow(fn,cancel){return '<div class="dk-swap"><small>Deck voll: Welche Karte fliegt raus? Du bekommst ihren Verkaufswert.</small><div>'+ch.deck.map(function(d,j){var c=CH_CM[d.id];return '<button class="r-'+c.r+'" onclick="'+fn+j+')"><span>'+c.e+'</span><small>+'+chSellV(d)+' <i class="cn"></i></small></button>';}).join('')+'</div><button class="dk-swx" onclick="'+cancel+'">Abbrechen</button></div>';}
+// Tauschliste mit Effekt-Text, damit man sieht, was jede Deck-Karte kann (Corey 27.11.: „ich wusste nicht mehr, was die konnten“).
+function chSwapRow(fn,cancel){return '<div class="dk-swap"><small>Deck voll: Welche Karte fliegt raus? Du bekommst ihren Verkaufswert.</small>'+ch.deck.map(function(d,j){var c=CH_CM[d.id];return '<button class="sw r-'+c.r+'" onclick="'+fn+j+')"><span class="e">'+c.e+'</span><span class="t"><b>'+c.n+'</b><i>'+chCardFx(c,d)+(d.v?' '+CH_VAR[d.v].n+': '+CH_VAR[d.v].d:'')+'</i></span><span class="v">+'+chSellV(d)+' <i class="cn"></i></span></button>';}).join('')+'<button class="dk-swx" onclick="'+cancel+'">Abbrechen</button></div>';}
 function chGoalRaise(){var s=ch.sc;if(!s||s.d!==chToday()||s.hit)return;var o=s.gb;ch.sc=null;var n=chScDay();n.pts=s.pts;n.od=s.od;n.gb=Math.max(o,n.gb);}
 function chFits(v,id){if(id&&chInDeck(id))return false;return ch.deck.length<chDeckCap()||(v==='s'&&ch.deck.filter(function(d){return d.v==='s';}).length<3);}
 // Aus Gold-, Legendär- und Boss-Kisten darf man 2 Karten nehmen, sonst 1. Der Rest ist weg.
@@ -3609,9 +3639,10 @@ function chShop(inner){
  if(!chScDay().hit){chInfo('shop');return;}
  if(chShopOut()){chInfo('shopzu');return;}
  if(!inner&&chFirst('shop','chShop()'))return;
- ch.shopSeen=chToday();var S2=chShopGen();chSave();
+ ch.shopSeen=chToday();var S2=chShopGen();chSave();if(!inner)chShSel=null;
  var x=document.getElementById('chx');x.className='chx';x.style.justifyContent='flex-start';
- var h='<div class="chx-top"><h2>🛒 '+(S2.boss?'BOSS-SHOP':'SHOP')+'</h2><div class="chx-coins"><i class="cn"></i> '+ch.coins+'</div><button onclick="chShopLeave(this)">✕</button></div><div class="chx-scroll">';
+ var sc0=x.querySelector('.chx-scroll'),keep=inner&&sc0?sc0.scrollTop:0;
+ var h='<div class="chx-top"><h2>🛒 '+(S2.boss?'BOSS-SHOP':'SHOP')+'</h2><div class="chx-coins"><i class="cn"></i> '+ch.coins+'</div><button onclick="chShopLeave(this)">✕</button></div>'+chShopDeckHtml(S2)+'<div class="chx-scroll">';
  h+='<div class="ch-sec"><h4>KARTEN FÜRS DECK</h4><span>Deck '+ch.deck.length+'/'+chDeckCap()+'</span></div>';
  S2.cards.forEach(function(o,i){var c=CH_CM[o.id],pr=CH_PRICE[c.r];
   pr=chShopPr(o);
@@ -3627,6 +3658,38 @@ function chShop(inner){
  h+='<button class="btn bp bf" style="margin-top:10px" onclick="chShopLeave(this)">🚪 Shop verlassen</button>';
  h+='<div class="chx-info" style="margin-top:10px;text-align:center">Verlässt du den Shop, ist die Ware weg. Der nächste Shop kommt nach dem nächsten Tagesziel.</div>';
  x.innerHTML=h+'</div>';
+ if(keep){var sc1=x.querySelector('.chx-scroll');if(sc1)sc1.scrollTop=keep;}
+}
+// Deck-Leiste oben im Shop (wie Balatro): Deck und gekaufte Einweg-Gegenstände immer sichtbar, antippen zeigt, was sie können.
+var chShSel=null; // Deck-Index oder 'i0','i1' … für ch.nx
+function chShopDeckHtml(S2){
+ var cap=chDeckCap(),nS=Math.max(cap,ch.deck.length),nx=ch.nx||[],sw=S2.swap!=null&&S2.cards[S2.swap]&&!S2.cards[S2.swap].sold;
+ if(typeof chShSel==='number'&&!ch.deck[chShSel])chShSel=null;
+ if(typeof chShSel==='string'&&!nx[+chShSel.slice(1)])chShSel=null;
+ var h='<div class="shd'+(sw?' swap':'')+'"><div class="shd-h"><span>'+(sw?'DECK VOLL · WELCHE FLIEGT RAUS?':'DEIN DECK '+Math.min(cap,ch.deck.length)+'/'+cap)+'</span>'+(nx.length?'<span style="color:#ffc400">EINWEG</span>':'')+'</div><div class="shd-r">';
+ for(var i=0;i<nS;i++){var d=ch.deck[i];
+  if(d){var c=CH_CM[d.id];h+='<div class="shd-k r-'+c.r+chVarCls(d.v)+(chShSel===i?' on':'')+(i>=cap?' off':'')+'" onclick="chShopSel('+i+')"><div class="e">'+c.e+'</div><div class="n">'+c.n+'</div></div>';}
+  else h+='<div class="shd-k empty">+</div>';}
+ if(nx.length){h+='<div class="shd-sep"></div>';nx.forEach(function(k,j){var I=CH_ITEMS[k];h+='<div class="shd-k it'+(chShSel==='i'+j?' on':'')+'" onclick="chShopSel(\'i'+j+'\')"><div class="e">'+I.e+'</div><div class="n">'+I.n+'</div></div>';});}
+ h+='</div>';
+ if(typeof chShSel==='number'){var d2=ch.deck[chShSel],c2=CH_CM[d2.id],inf=[];
+  if(d2.per)inf.push('⌛ Vergänglich: noch '+d2.per+(d2.per===1?' Tag':' Tage'));
+  if(d2.rent)inf.push('Miete: 1 Münze pro Tag');
+  if(chShSel>=cap)inf.push('💤 Inaktiv: kein Platz frei');
+  if(chBossIs('jailer')&&chShSel===0)inf.push('⛓️ Heute gesperrt (The Jailer)');
+  h+='<div class="shd-i r-'+c2.r+'"><span class="e">'+c2.e+'</span><div class="tx"><small style="color:'+CH_RC[c2.r]+'">'+CH_RN[c2.r]+(d2.v?' · '+CH_VAR[d2.v].n:'')+'</small><b>'+c2.n+'</b>'+chCardFx(c2,d2)+(d2.v?' '+CH_VAR[d2.v].n+': '+CH_VAR[d2.v].d:'')+(inf.length?'<em>'+inf.join(' · ')+'</em>':'')+'</div>';
+  h+=sw?'<button class="shd-b go" onclick="chShopSwap('+chShSel+')">Tauschen +'+chSellV(d2)+' <i class="cn"></i></button>':'<button class="shd-b" onclick="chShopSell('+chShSel+',this)">+'+chSellV(d2)+' <i class="cn"></i></button>';
+  h+='</div>';}
+ else if(typeof chShSel==='string'){var I2=CH_ITEMS[nx[+chShSel.slice(1)]];
+  h+='<div class="shd-i" style="--rc:#ffc400"><span class="e">'+I2.e+'</span><div class="tx"><small style="color:#ffc400">EINWEG · GEKAUFT</small><b>'+I2.n+'</b>'+I2.d+'</div></div>';}
+ else h+='<div class="shd-hint">'+(sw?'Tipp eine Karte an: Du siehst, was sie kann, und kannst sie tauschen.':'Tipp eine Karte an, um zu sehen, was sie kann.')+'</div>';
+ return h+'</div>';
+}
+function chShopSel(k){chShSel=chShSel===k?null:k;chSnd('tick');chHaptic();chShop(1);}
+function chShopSell(i,b){
+ if(!b.dataset.ok){b.dataset.ok=1;b.classList.add('ask');b.innerHTML='Verkaufen? +'+chSellV(ch.deck[i])+' <i class="cn"></i>';chSnd('tick');return;}
+ var d=ch.deck[i];if(!d)return;var v=chSellV(d),c=CH_CM[d.id];
+ ch.deck.splice(i,1);chUse(d.id);ch.coins+=v;chShSel=null;chSave();chSnd('box');vib([30,30,60]);toast('💰 '+c.n+' verkauft: +'+v+' Münzen');chShop(1);
 }
 function chBuy(k,i){
  var S2=ch.shop,o,pr;if(!S2)return;
@@ -3649,7 +3712,7 @@ function chShopLeave(b){if(!b.dataset.ok){document.querySelectorAll('[onclick^="
 function chShopNo(){if(ch.shop)ch.shop.swap=null;chShop(1);}
 function chShopSwap(j){var S2=ch.shop;if(!S2||S2.swap==null)return;var o=S2.cards[S2.swap],d=ch.deck[j];if(!o||o.sold||!d)return;var pr=chShopPr(o);
  if(ch.coins+chSellV(d)<pr){toast('Zu wenig Münzen, auch mit dem Verkauf');chSnd('bad');return;}
- chSwapIn(j,chInst(o.id,o.v));ch.coins-=pr;o.sold=true;S2.swap=null;chMsTick('shop');chGain(o.id,o.v||'');chSave();chSnd('box');vib([30,30,60]);chShop(1);}
+ chSwapIn(j,chInst(o.id,o.v));ch.coins-=pr;o.sold=true;S2.swap=null;chShSel=null;chMsTick('shop');chGain(o.id,o.v||'');chSave();chSnd('box');vib([30,30,60]);chShop(1);}
 function chReroll(){var S2=ch.shop,c=2+S2.rr;if(ch.coins<c){toast('Zu wenig Münzen');chSnd('bad');return;}ch.coins-=c;S2.rr++;S2.swap=null;S2.cards=chShopCards();chSave();chSnd('flip');vib(20);chShop(1);}
 function chShowLevel(ev){
  var x=document.getElementById('chx');x.className='chx';
