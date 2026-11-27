@@ -273,6 +273,7 @@ input::placeholder{color:var(--t3)}
     <div class="ob-sub">Dein kostenloser Workout Tracker. Kein Abo. Keine Werbung.</div>
     <button class="btn bp bf" onclick="obGo(1)">Los geht's</button>
     <button class="btn bs bf" style="margin-top:10px" onclick="obSkip()">Überspringen</button>
+    <button class="btn bs bf" style="margin-top:10px" onclick="document.getElementById('imp-file').click()">📥 Backup laden</button>
   </div>
   <div id="ob1" class="ob-step">
     <div class="ob-dots" id="dots1"></div>
@@ -1439,7 +1440,7 @@ function miniChart(pts){
 
 // ── EXPORT/IMPORT ──
 function exportData(){
-  var data={version:1,exportDate:new Date().toISOString(),profile:prof,plans:plans,history:hist,challenge:ch};
+  var data={version:1,exportDate:new Date().toISOString(),profile:prof,plans:plans,history:hist,challenge:ch,custom:customEx,sched:sched,classic:classic};
   var json=JSON.stringify(data,null,2);
   try{
     var blob=new Blob([json],{type:'application/json'});
@@ -1468,8 +1469,12 @@ function importFile(e){
       plans=data.plans||[];hist=data.history||[];
       if(data.profile){prof=data.profile;S.s('wt_prof',prof);}
       if(data.challenge){ch=Object.assign(chDef(),data.challenge);chSave();}
-      sP();sH();toast(hist.length+' Workouts importiert');
-      render('fortschritt');render('verlauf');render('pläne');
+      if(Array.isArray(data.custom)){customEx=data.custom;S.s('wt_custom',customEx);}
+      if(Array.isArray(data.sched)){sched=data.sched;sSc();}
+      if(typeof data.classic==='boolean'){classic=data.classic;S.s('wt_classic',classic);applyClassic();}
+      sP();sH();toast(data.challenge?'Backup geladen: Level '+chLvl(ch.xp).L+', '+(ch.stats&&ch.stats.snacks||0)+' Häppchen':hist.length+' Workouts importiert');
+      if(prof)document.getElementById('ob').classList.add('hidden');
+      render('fortschritt');render('verlauf');render('pläne');render('challenge');
     }catch(err){toast('Datei nicht lesbar');}
   };
   reader.readAsText(file);e.target.value='';
