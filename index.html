@@ -273,7 +273,7 @@ input::placeholder{color:var(--t3)}
     <div class="ob-dots" id="dots1"></div>
     <div class="ob-q">Deine Daten</div>
     <div class="ob-hint">Für Gewichtsempfehlungen</div>
-    <div class="fg"><label class="lbl">Gewicht (kg)</label><input type="number" id="ob-bw" placeholder="75" inputmode="numeric"></div>
+    <div class="fg"><label class="lbl">Gewicht (kg)</label><input type="text" id="ob-bw" placeholder="75" inputmode="decimal"></div>
     <div class="fg"><label class="lbl">Größe (cm)</label><input type="number" id="ob-ht" placeholder="175" inputmode="numeric"></div>
     <div class="fg"><label class="lbl">Alter</label><input type="number" id="ob-age" placeholder="28" inputmode="numeric"></div>
     <button class="btn bp bf" onclick="obGo(2)">Weiter</button>
@@ -1483,7 +1483,7 @@ function obSel(key,el){
 }
 function obGo(step){
   if(step===2){
-    var bw=parseFloat(document.getElementById('ob-bw').value);
+    var bw=parseFloat(String(document.getElementById('ob-bw').value).replace(',','.'));
     if(!bw||bw<30){toast('Bitte Gewicht eingeben');return;}
     obProf.bw=bw;
     obProf.height=parseFloat(document.getElementById('ob-ht').value)||175;
@@ -1526,7 +1526,7 @@ function rEinstellungen(){
   var h='<div style="padding:70px 16px 100px">';
   h+='<div class="sh" style="margin-bottom:4px">Profil</div>';
   h+='<div class="card" style="margin-bottom:14px">';
-  h+='<div class="fg"><label class="lbl">Körpergewicht (kg)</label><input type="number" id="st-bw" inputmode="numeric" value="'+(p.bw||75)+'"></div>';
+  h+='<div class="fg"><label class="lbl">Körpergewicht (kg)</label><input type="text" id="st-bw" inputmode="decimal" value="'+String(p.bw||75).replace('.',',')+'"></div>';
   h+='<div class="fg"><label class="lbl">Größe (cm)</label><input type="number" id="st-ht" inputmode="numeric" value="'+(p.height||175)+'"></div>';
   h+='<div class="fg"><label class="lbl">Alter</label><input type="number" id="st-age" inputmode="numeric" value="'+(p.age||28)+'"></div>';
   h+='</div>';
@@ -1553,7 +1553,7 @@ function stSel(key,el){
   stProf[key]=el.dataset.val;
 }
 function saveEinstellungen(){
-  var bw=parseFloat(document.getElementById('st-bw').value);
+  var bw=parseFloat(String(document.getElementById('st-bw').value).replace(',','.'));
   if(!bw||bw<30){toast('Bitte gültiges Gewicht eingeben');return;}
   prof.bw=bw;
   prof.height=parseFloat(document.getElementById('st-ht').value)||prof.height||175;
@@ -2963,7 +2963,7 @@ function chPgRlHtml(){
   h+='<svg class="pg-wt" viewBox="-6 0 312 100" preserveAspectRatio="none"><polyline points="'+pts.join(' ')+'" fill="none" stroke="#00f5ff" stroke-width="2" vector-effect="non-scaling-stroke"/>'+pts.map(function(p){return '<circle cx="'+p.split(',')[0]+'" cy="'+p.split(',')[1]+'" r="2.5" fill="#00f5ff"/>';}).join('')+'</svg>';
   var dlt=Math.round((vs[vs.length-1]-vs[0])*10)/10;h+='<div class="pg-note">'+(dlt<=0?'▼ ':'▲ ')+String(Math.abs(dlt)).replace('.',',')+' kg seit '+ks[0].slice(8,10)+'.'+ks[0].slice(5,7)+'. · Min '+String(Math.min.apply(0,vs)).replace('.',',')+' kg</div>';}
  else h+='<div class="pg-note">Ab 2 Einträgen siehst du hier deine Kurve. Der Check-in fragt einmal pro Woche.</div>';
- h+='<div class="ci-wt sm"><input id="pg-wt" type="number" inputmode="decimal" step="0.1" placeholder="'+(L?L.v:'kg')+'"><button class="btn bp" onclick="chWtAdd()">Heute eintragen</button></div></div>';
+ h+='<div class="ci-wt sm"><input id="pg-wt" type="text" inputmode="decimal" placeholder="'+(L?L.v:'kg')+'"><button class="btn bp" onclick="chWtAdd()">Heute eintragen</button></div></div>';
  return h;
 }
 function chWtAdd(){var v=parseFloat(String(document.getElementById('pg-wt').value).replace(',','.'));if(!(v>30&&v<300)){toast('Gewicht in kg eingeben');return;}ch.rl.wt[chToday()]=Math.round(v*10)/10;chSave();toast('⚖️ Gespeichert');rFortschritt();}
@@ -3076,12 +3076,12 @@ function chCiStep(k){
   h+='</div>';
  } else if(k==='wt'){
   var L=chWtLast();
-  h+='<div class="ci-q">Kurz auf die Waage? ⚖️</div><div class="ci-wt"><button onclick="chWtStep(-1)">−</button><input id="ci-wt" type="number" inputmode="decimal" step="0.1" value="'+(L?L.v:chBW())+'"><span>kg</span><button onclick="chWtStep(1)">+</button></div>';
+  h+='<div class="ci-q">Kurz auf die Waage? ⚖️</div><div class="ci-wt"><button onclick="chWtStep(-1)">−</button><input id="ci-wt" type="text" inputmode="decimal" value="'+String(L?L.v:chBW()).replace('.',',')+'"><span>kg</span><button onclick="chWtStep(1)">+</button></div>';
   h+='<div class="chx-btns"><button class="btn bp bf" onclick="chCiWt(1)">Speichern</button><button class="btn bs bf" onclick="chCiWt(0)">Heute nicht</button></div>';
  }
  x.innerHTML=h;chSnd('flip');chHaptic();
 }
-function chWtStep(s){var i=document.getElementById('ci-wt');i.value=(Math.round((parseFloat(i.value||0)+s*.1)*10)/10).toFixed(1);chHaptic();}
+function chWtStep(s){var i=document.getElementById('ci-wt');i.value=(Math.round(((parseFloat(String(i.value||0).replace(',','.'))||0)+s*.1)*10)/10).toFixed(1).replace('.',',');chHaptic();}
 function chCiPick(k,v){chCiS[k]=v;if(k==='food'){chCiStep('steps');return;}
  var L=chWtLast();if(!L||L.d<chAddDays(chToday(),-6))chCiStep('wt');else chCiFin();}
 function chCiWt(save){if(save){var v=parseFloat(String(document.getElementById('ci-wt').value).replace(',','.'));if(v>30&&v<300){ch.rl.wt[chToday()]=Math.round(v*10)/10;}}chCiFin();}
