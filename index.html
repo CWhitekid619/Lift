@@ -1715,6 +1715,7 @@ init();
 .ch-dot.c{border-color:var(--ac);box-shadow:0 0 12px var(--ac);animation:chPulse 1.4s infinite}
 .ch-dot.b{border-style:dashed}
 .ch-dayinfo{font-size:11px;color:var(--t2);margin-bottom:14px}
+.ch-undo2{display:inline-block;margin:-8px 0 14px;padding:4px 10px;font-size:11px;color:var(--t2);border:1px solid #2a2a44;border-radius:14px;cursor:pointer}
 .ch-dayinfo b{color:#ffb066}
 .ch-mob{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;background:#121222;border:1px dashed #33335a;margin-bottom:14px}
 .ch-mob .t{flex:1;font-size:12px}.ch-mob .t b{display:block;font-size:13px}.ch-mob .t small{display:block;font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2px;color:var(--ac2);font-weight:900}.ch-mob .t span{display:block;font-size:11px;color:var(--t2);margin:1px 0 6px;line-height:1.35}.ch-mob .t span i{font-style:normal}.ch-mob .t span .mob-pl{width:22px;height:22px;padding:0;margin-right:7px;border-radius:50%;font-size:9px;line-height:20px;vertical-align:middle;background:#1d1d33;border:1px solid var(--ac);color:var(--ac);font-weight:900}.ch-mob .t span .mob-pl.on{background:var(--ac);color:#000}.ch-mob .t span:has(.mob-pl.on) i{color:var(--ac);font-weight:700}
@@ -3248,7 +3249,7 @@ function chWoTog(k){if(chWoSel[k])delete chWoSel[k];else chWoSel[k]=4;chHaptic()
 function chWoSet(k,d){chWoSel[k]=Math.max(0,Math.min(12,(chWoSel[k]||0)+d));if(!chWoSel[k])delete chWoSel[k];chHaptic();chWoOpen(1);}
 function chWoDone(){
  var sel=chWoSel||{},n=0;Object.keys(sel).forEach(function(k){n+=sel[k];});if(!n){toast('Wähle mindestens eine Muskelgruppe');return;}
- chUndoSnap=null;var t=chToday(),R=ch.rl,first=R.wo.indexOf(t)<0,c0=ch.coins;
+ chUndoSnap=null;S.s('wt_chundo',null);var t=chToday(),R=ch.rl,first=R.wo.indexOf(t)<0,c0=ch.coins;
  Object.keys(sel).forEach(function(g){for(var i=0;i<sel[g];i++)ch.log.push({t:Date.now(),d:t,ex:'Workout',g:g,r:0,w:0,feel:'passt',pts:0,wo:1});});
  R.wo.push(t);ch.stats.wos=(ch.stats.wos||0)+1;
  var r=chWoApply(n,first);chWoSel=null;
@@ -3336,8 +3337,14 @@ function chDone(feel,ev){
  chDayRec();chHint('hitze');
  chSave();rChallenge();
  chScoreShow(it,R,{coins:coins,hit:hit,rec:rec,sc:sc.pts,goal:hit?chGoalNow():chGoalCur(),od:sc.od||0,boss:hit&&!!chBossK()},deckSnap);
+ S.s('wt_chundo',{d:t,ex:it.ex,n:ch.log.length,snap:chUndoSnap});
  chShowUndo();
 }
+// Rückgängig bis zum nächsten Häppchen (Corey 28.11.: aus Versehen „Geschafft“ gedrückt)
+function chUndoOk(){var u=S.g('wt_chundo',null);return u&&u.snap&&u.d===chToday()&&ch.log.length===u.n?u:null;}
+function chUndoLast(ask){var u=chUndoOk();if(!u){toast('Nichts zum Rückgängigmachen');return;}
+ if(ask&&!confirm('„'+u.ex+'“ rückgängig machen? Punkte, Münzen und alles, was seitdem passiert ist (z. B. Shop-Kauf), werden zurückgesetzt.'))return;
+ ch=JSON.parse(u.snap);chUndoSnap=null;S.s('wt_chundo',null);var o=document.getElementById('ch-undo');if(o)o.remove();chSave();rChallenge();toast('↩ Rückgängig gemacht');}
 // Sichtbare Auswertung: Karten leuchten nacheinander auf, Zahlen zählen hoch
 function chTone(f,d){if(!ch.set.snd)return;try{chAC=chAC||new(window.AudioContext||window.webkitAudioContext)();if(chAC.state==='suspended')chAC.resume();
  var o=chAC.createOscillator(),g=chAC.createGain(),t0=chAC.currentTime;o.type='square';o.frequency.value=f;g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(.07,t0+.01);g.gain.exponentialRampToValueAtTime(.0001,t0+(d||.14));
@@ -3417,7 +3424,7 @@ function chScoreShow(it,R,I,deck){
 function chShowUndo(){
  var o=document.getElementById('ch-undo');if(o)o.remove();clearTimeout(chUndoT);
  var d=document.createElement('div');d.id='ch-undo';d.className='ch-undo';d.textContent='↩ Rückgängig';
- d.onclick=function(){if(chUndoSnap){ch=JSON.parse(chUndoSnap);chUndoSnap=null;chSave();rChallenge();toast('Rückgängig gemacht');}d.remove();};
+ d.onclick=function(){d.remove();chUndoLast(false);};
  document.body.appendChild(d);chUndoT=setTimeout(function(){d.remove();chUndoSnap=null;},6000);
 }
 function chSwap(){var it=chCurItem();if(!it)return;var used=ch.q.items.map(function(i){return i.ex;});it.ex=chPickEx(it.g,false,used);chSave();rChallenge();chSnd('flip');}
@@ -3500,6 +3507,7 @@ function rChallenge(){
  h+='<div class="ch-day">';
  q.items.forEach(function(i){h+='<div class="ch-dot'+(i.done?' d':i===cur?' c':'')+(i.bonus?' b':'')+'">'+(i.done?'✓':CH_GM[i.g].i)+'</div>';});
  h+='</div><div class="ch-dayinfo">'+(ch.streakDay===t?'🔥 Flamme sicher':'<b>🔥 Noch '+Math.max(0,CH_MIN-dc)+' bis die Flamme sicher ist</b>')+'</div>';
+ var uo=chUndoOk();if(uo)h+='<div class="ch-undo2" onclick="chUndoLast(1)">↩ „'+uo.ex+'“ rückgängig</div>';
  var left=6-chDow(t);
  var wk='';
  wk+='<div class="ch-sec"><h4>DEINE WOCHE</h4><span>'+(left?'Abrechnung in '+left+(left===1?' Tag':' Tagen'):'Heute Nacht ist Abrechnung!')+'</span></div><div class="ch-grid">';
