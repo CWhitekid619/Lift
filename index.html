@@ -1966,12 +1966,31 @@ body.lean .tab[data-s="fortschritt"]{order:1}body.lean .tab-ch{order:2}body.lean
 .chc.r-m .chc-front::after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,80,120,.5) 45%,transparent 60%);background-size:250% 100%;animation:chShine 1.6s linear infinite}
 .chc.r-m:not(.flip) .chc-back{animation:chWobBig .7s ease-in-out infinite}
 .vfx{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:2}
-.v-f .vfx{background:linear-gradient(115deg,transparent 25%,rgba(255,255,255,.55) 42%,rgba(200,220,255,.25) 50%,transparent 62%);background-size:250% 100%;animation:chShine 2.4s linear infinite;mix-blend-mode:screen}
-.v-h .vfx{background:linear-gradient(135deg,rgba(255,0,128,.35),rgba(255,200,0,.3),rgba(0,255,160,.3),rgba(0,160,255,.35),rgba(200,0,255,.35));background-size:300% 300%;animation:chHolo 3s ease-in-out infinite alternate;mix-blend-mode:screen}
-.v-p .vfx{background:conic-gradient(from 30deg,#ff2d55,#ffc400,#3bff8f,#00c2ff,#a855f7,#ff2d55);opacity:.45;mix-blend-mode:screen;animation:chHue 2.5s linear infinite}
-.v-p{box-shadow:0 0 18px #fff,0 0 30px #a855f7!important;border-radius:12px}
-.v-s{filter:saturate(.6)}.v-s .vfx{background:radial-gradient(circle at 50% 40%,transparent 30%,rgba(60,0,90,.75));box-shadow:inset 0 0 18px #a855f7}
+/* Varianten (Corey 28.11.: auf einen Blick erkennbar, auch ohne Schrift). Rand + Fläche + Glanz, auch im Standbild deutlich */
+.vfx::before,.vfx::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+.vfx::before{padding:3px;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude}
+/* Foil: Silberrand, gebürstetes Metall, heller Lichtstreif, Funkeln */
+.v-f .vfx{background:repeating-linear-gradient(115deg,rgba(255,255,255,.07) 0 2px,transparent 2px 6px),linear-gradient(115deg,transparent 25%,rgba(255,255,255,.85) 42%,rgba(200,220,255,.45) 50%,transparent 62%);background-size:auto,250% 100%;animation:chShineF 1.8s linear infinite;mix-blend-mode:screen}
+.v-f .vfx::before{background:linear-gradient(135deg,#9ca3af,#fff,#9ca3af,#f1f5f9,#6b7280);background-size:200% 200%;animation:chHolo 1.8s linear infinite alternate}
+.v-f .vfx::after,.v-p .vfx::after{background-image:radial-gradient(circle,#fff 0 1.2px,transparent 2px),radial-gradient(circle,#fff 0 1px,transparent 1.6px);background-size:23px 29px,17px 21px;background-position:3px 5px,11px 13px;animation:chTwinkle 1.3s ease-in-out infinite alternate}
+.v-f{box-shadow:0 0 14px rgba(235,240,255,.75)!important}
+/* Holo: Regenbogenrand, wandernder Regenbogenfilm, Streifen */
+.v-h .vfx{background:repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0 1px,transparent 1px 4px),linear-gradient(135deg,rgba(255,0,128,.55),rgba(255,200,0,.5),rgba(0,255,160,.5),rgba(0,160,255,.55),rgba(200,0,255,.55),rgba(255,0,128,.55));background-size:auto,300% 300%;animation:chHoloB 2.2s ease-in-out infinite alternate;mix-blend-mode:screen}
+.v-h .vfx::before{background:linear-gradient(90deg,#ff2d6f,#ffc400,#3bff8f,#00c2ff,#a855f7,#ff2d6f);background-size:300% 100%;animation:chHolo 1.6s linear infinite alternate}
+.v-h{box-shadow:0 0 16px rgba(0,194,255,.6),0 0 26px rgba(255,45,111,.35)!important}
+/* Prism: dicker drehender Regenbogenrand, starker Farbfilm, Funkeln, pulsierender Schein */
+.v-p .vfx{background:conic-gradient(from 30deg,#ff2d55,#ffc400,#3bff8f,#00c2ff,#a855f7,#ff2d55);opacity:.62;mix-blend-mode:screen;animation:chHue 1.6s linear infinite}
+.v-p .vfx::before{padding:4px;background:conic-gradient(#ff2d55,#ffc400,#3bff8f,#00c2ff,#a855f7,#ff2d55)}
+.v-p{animation:chPrismGlow 1.6s ease-in-out infinite alternate;border-radius:12px}
+/* Shadow: dunkler Rauch, pulsierender violetter Rand */
+.v-s{filter:saturate(.6)}.v-s .vfx{background:radial-gradient(circle at 50% 40%,transparent 25%,rgba(40,0,70,.85));animation:chShadow 2s ease-in-out infinite alternate}
+.v-s .vfx::before{background:repeating-linear-gradient(45deg,#a855f7 0 6px,#1e0033 6px 10px)}
 .ch-dk.v-s,.chx-mc.v-s,.chs-k.v-s{border-style:dashed}
+@keyframes chShineF{to{background-position:0 0,-200% 0}}
+@keyframes chHoloB{0%{background-position:0 0,0% 50%}100%{background-position:0 0,100% 50%}}
+@keyframes chTwinkle{0%{opacity:.15}100%{opacity:.95}}
+@keyframes chPrismGlow{0%{box-shadow:0 0 14px #fff,0 0 26px #ff2d55}50%{box-shadow:0 0 18px #fff,0 0 32px #3bff8f}100%{box-shadow:0 0 14px #fff,0 0 30px #a855f7}}
+@keyframes chShadow{0%{box-shadow:inset 0 0 10px #a855f7}100%{box-shadow:inset 0 0 26px #c084fc}}
 .vtag{position:absolute;top:5px;left:5px;font-size:8px;letter-spacing:1.5px;font-weight:900;padding:2px 7px;border-radius:8px;background:#000a;z-index:3;color:#fff;white-space:nowrap}
 .chc.big .vtag{font-size:11px;top:10px;left:10px}
 .vtx{font-size:10px;font-weight:900;letter-spacing:.5px;padding:2px 7px;border-radius:8px;background:#26263f;color:#fff;display:inline-block}
@@ -3708,21 +3727,25 @@ function chCardDetail(id,back,got){
 // ══════════ Deck: Detail, umsortieren, verkaufen ══════════
 function chDeckBind(){
  var row=document.getElementById('ch-deck');if(!row)return;
+ // Öffnen über das normale Tipp-Ereignis (iPhone zuverlässig, Corey 28.11.: Karte öffnete manchmal nicht); Zeiger-Ereignisse nur fürs Ziehen
+ var dragged=0;
  row.querySelectorAll('.ch-dk[data-i]').forEach(function(k){
+  k.addEventListener('click',function(){if(Date.now()-dragged<400||chBusy())return;chDeckDetail(+k.dataset.i);});
   k.addEventListener('pointerdown',function(e){
    if(chBusy())return;
    var i=+k.dataset.i,sx=e.clientX,sy=e.clientY,drag=false,dead=false;
    function slotAt(xp){var ks=row.querySelectorAll('.ch-dk');for(var n=0;n<ks.length;n++){if(ks[n]===k)continue;var r=ks[n].getBoundingClientRect();if(xp>=r.left-4&&xp<=r.right+4)return n;}return xp<row.getBoundingClientRect().left?0:xp>row.getBoundingClientRect().right?ks.length-1:i;}
    function mv(ev){if(dead)return;var dx=ev.clientX-sx,dy=ev.clientY-sy;
-    if(!drag){if(Math.abs(dx)>8&&Math.abs(dx)>Math.abs(dy)){drag=true;k.classList.add('drag');chHaptic();}else if(Math.abs(dy)>10){dead=true;return;}else return;}
+    if(!drag){if(Math.abs(dx)>14&&Math.abs(dx)>Math.abs(dy)){drag=true;k.classList.add('drag');chHaptic();}else if(Math.abs(dy)>10){dead=true;return;}else return;}
     k.style.transform='translateX('+dx+'px) scale(1.1)';
     var j=slotAt(ev.clientX);row.querySelectorAll('.ch-dk').forEach(function(o,n){o.classList.toggle('tgt',n===j&&n!==i);});}
    function up(ev){off();if(dead)return;
-    if(!drag){chDeckDetail(i);return;}
+    if(!drag)return;
+    dragged=Date.now();
     var j=Math.min(slotAt(ev.clientX),ch.deck.length-1);
-    if(j!==i){var d=ch.deck.splice(i,1)[0];ch.deck.splice(j,0,d);chSave();chSnd('flip');vib(15);}
-    rChallenge();}
-   function cancel(){off();k.style.transform='';k.classList.remove('drag');}
+    if(j!==i){var d=ch.deck.splice(i,1)[0];ch.deck.splice(j,0,d);chSave();chSnd('flip');vib(15);rChallenge();}
+    else{k.style.transform='';k.classList.remove('drag');row.querySelectorAll('.tgt').forEach(function(o){o.classList.remove('tgt');});}}
+   function cancel(){off();k.style.transform='';k.classList.remove('drag');row.querySelectorAll('.tgt').forEach(function(o){o.classList.remove('tgt');});}
    function off(){window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',cancel);}
    window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up);window.addEventListener('pointercancel',cancel);
   });
