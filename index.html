@@ -2528,6 +2528,8 @@ if(!ch){ch=chDef();ch.resetD=chToday();ch.intro4=true;}
 ch=Object.assign(chDef(),ch||{});ch.set=Object.assign({hard:2,rack:true,snd:true},ch.set||{});ch.stats=Object.assign({snacks:0,boxes:0,goldWeeks:0,bestPts:0,packs:0,bosses:0,wps:0,ms:0},ch.stats||{});
 ch.hs=Object.assign({day:0,dayD:null,wk:0,wkD:null},ch.hs||{});
 ch.rl=Object.assign(chRlDef(),ch.rl||{});ch.mast=ch.mast||{};
+// Einmalig (Corey 28.11.): 25.11. war vor dem Zurücksetzen, im Kalender leeren
+if(!ch.fix25){ch.fix25=1;var F25='2026-11-25';ch.log=(ch.log||[]).filter(function(l){return l.d!==F25;});if(ch.days)delete ch.days[F25];if(!ch.resetD||ch.resetD<='2026-11-25')ch.resetD='2026-11-26';}
 if(!ch.rl.ci)ch.rl.ci=chAddDays(chToday(),-1);
 if(!ch.days)chDaysFromLog();
 if(!ch.seen){ch.seen={};if(ch.stats.boxes)ch.seen.kisten=1;if(ch.stats.wps)ch.seen.wonder=1;if(ch.stats.snacks)ch.seen.hitze=1;if(ch.stats.ms)ch.seen.missionen=1;}
@@ -2568,6 +2570,7 @@ function chCounts(fromKey,toKey){ // inkl. beide Tage
 }
 function chWeekCounts(){var t=chToday();return chCounts(chMon(t),t);}
 function chDayCount(key){
+ if(ch.resetD&&key<ch.resetD)return 0; // Vor dem Zurücksetzen zählt nichts (Corey 28.11.)
  var n=0;ch.log.forEach(function(l){if(l.g&&l.d===key)n++;});
  hist.forEach(function(s){if(chDK(s.date)!==key)return;(s.exercises||[]).forEach(function(e){(e.sets||[]).forEach(function(st){if(st.done)n++;});});});
  return n;
