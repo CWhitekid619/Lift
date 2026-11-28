@@ -1957,6 +1957,8 @@ body.lean .tab[data-s="fortschritt"]{order:1}body.lean .tab-ch{order:2}body.lean
 .chs-r{display:grid;grid-template-columns:1fr auto auto;gap:8px;padding:5px 4px;border-bottom:1px solid #20203a;align-items:center;transition:background .3s}
 .chs-r .v{font-weight:800;white-space:nowrap}.chs-r .v.t-c{color:#4d8dff}.chs-r .v.t-m,.chs-r .v.t-x{color:#ff4d6d}.chs-r .v.t-d{color:#ffc400}
 .chs-r .run{color:var(--t3);font-size:11px;white-space:nowrap}
+.chs-r .why{grid-column:1/-1;display:none;font-size:11px;font-weight:600;color:var(--t2);line-height:1.35;padding:2px 0 2px 8px;border-left:2px solid #3a3a66}
+.chs-r.open .why{display:block}.chs-r:has(.why){cursor:pointer}.chs-r:has(.why)>span:first-child::after{content:' ⓘ';opacity:.45;font-size:10px}
 .chs-r.hl{background:rgba(255,196,0,.16)}.chs-r.tot{font-weight:800;color:#ffc400;border-bottom:0}
 .chs-box.fin .chs-k[id]{cursor:pointer}
 .chs-skip.done{font-size:12px;color:var(--t2);font-weight:800;animation:chPulseO 1.4s infinite}
@@ -2886,11 +2888,11 @@ function chEvalCard(pos,x,deck){
 }
 function chScore(it,feel,dry){
  var x=chCtx(it,feel),p=x.p,chips=p.hv?20:12,mult=1,st=[],coins=0,bk=chBossK();
- st.push({k:'base',lab:p.hv?'💪 Schwere Übung':'💪 Übung',chips:chips,mult:mult});
- var ha=x.hot*CH_HOTX*(chModIs('combo')?2:1);if(bk==='golem')ha/=2;if(ha){var hf=Math.round((1+ha)*100)/100;mult*=hf;st.push({k:'ex',lab:'🔥 Hitze',t:'x',v:hf,chips:chips,mult:mult});}
- function ex(lab,t,v){if(t==='c')chips+=v;else if(t==='m')mult+=v;else if(t==='x')mult*=v;else coins+=v;st.push({k:'ex',lab:lab,t:t,v:v,chips:chips,mult:mult});}
- var SE=chStepEff();if(SE==='hi')ex('🏃 Walker','m',3);
- chSetBoni().forEach(function(b){chEvalFx({fx:b.fx},null,-1,x).forEach(function(r){ex(b.lab,r.t,r.v);});});
+ st.push({k:'base',lab:p.hv?'💪 Schwere Übung':'💪 Übung',chips:chips,mult:mult,why:'Jede Übung startet mit 12 Chips × 1 Mult. Eine schwere Übung startet mit 20 Chips.'});
+ var ha=x.hot*CH_HOTX*(chModIs('combo')?2:1);if(bk==='golem')ha/=2;if(ha){var hf=Math.round((1+ha)*100)/100;mult*=hf;st.push({k:'ex',lab:'🔥 Hitze',t:'x',v:hf,chips:chips,mult:mult,why:'Du warst noch warm vom letzten Häppchen ('+x.hot+'× am Stück). Jede Stufe gibt mehr Mult'+(chModIs('combo')?', heute doppelt (Hitze-Tag)':'')+'. Die Hitze läuft 15 Min. nach jedem Häppchen leer.'});}
+ function ex(lab,t,v,why){if(t==='c')chips+=v;else if(t==='m')mult+=v;else if(t==='x')mult*=v;else coins+=v;st.push({k:'ex',lab:lab,t:t,v:v,chips:chips,mult:mult,why:why});}
+ var SE=chStepEff();if(SE==='hi')ex('🏃 Walker','m',3,'Gestern 10.000 Schritte oder mehr: heute +3 Mult auf jedes Häppchen.');
+ chSetBoni().forEach(function(b){chEvalFx({fx:b.fx},null,-1,x).forEach(function(r){ex(b.lab,r.t,r.v,'Dauer-Bonus, weil du dieses Set im Album komplett hast. Wirkt bei jedem Häppchen.');});});
  var AD=chActDeck();AD.forEach(function(d,i){
   if(bk==='jailer'&&i===0){st.push({k:'card',i:i,lock:1,chips:chips,mult:mult});return;}
   chEvalCard(i,x,AD).forEach(function(r){
@@ -2902,16 +2904,16 @@ function chScore(it,feel,dry){
   if(d.v==='h'){var hv2=bk==='golem'?5:10;mult+=hv2;st.push({k:'card',i:i,vr:'h',t:'m',v:hv2,chips:chips,mult:mult});}
   if(d.v==='p'){var pv=1.5;mult*=pv;st.push({k:'card',i:i,vr:'p',t:'x',v:pv,chips:chips,mult:mult});}
  });
- (ch.nx||[]).forEach(function(k){if(k==='pre')ex('⚡ Pre-Workout','x',2);if(k==='shake')ex('🥤 Protein Shake','c',50);});
- if(chModIs('xp15'))ex('⚡ Power-Tag','x',1.5);
- if(chModIs('grp')&&ch.mod.g===it.g)ex('🔥 Fieber','x',3);
- if(ch.boost>Date.now())ex('⚡ Boost','x',2);
- if(ch.comeback)ex('🪽 Comeback','x',1.5);
- if(bk==='couch'&&(it.g==='bizeps'||it.g==='trizeps'))ex('🛋️ The Couch Lord','x',.5);
- var rlF=1;if(SE==='lo'){ex('🛋️ Couch Legs','x',.8);rlF*=.8;}
- chDebAct().forEach(function(b){var D=CH_DEB[b.k];rlF*=D.v;if(D.k==='x')ex(D.e+' '+D.n,'x',D.v);else{var nc=Math.round(chips*D.v);st.push({k:'ex',lab:D.e+' '+D.n+': Chips ×0,75',t:'c',v:nc-chips,chips:nc,mult:mult,boss:1});chips=nc;}});
- if(bk==='sloth'){chips=Math.round(chips/2);st.push({k:'ex',lab:'🦥 The Sloth King: Chips halb',t:'c',v:-chips,chips:chips,mult:mult,boss:1});}
- var crit=null;if(!dry){var cr=Math.random(),cc=chModIs('crit')?.3:.12;if(cr<.03)crit=5;else if(cr<cc)crit=2;if(crit)ex(crit===5?'💥 JACKPOT':'⚡ KRITISCH','x',crit);}
+ (ch.nx||[]).forEach(function(k){if(k==='pre')ex('⚡ Pre-Workout','x',2,'Einweg-Gegenstand aus dem Shop: wirkt nur auf dieses eine Häppchen.');if(k==='shake')ex('🥤 Protein Shake','c',50,'Einweg-Gegenstand aus dem Shop: wirkt nur auf dieses eine Häppchen.');});
+ if(chModIs('xp15'))ex('⚡ Power-Tag','x',1.5,'Tagesbonus aus der Tagesbox: heute ×1,5 Mult auf jedes Häppchen.');
+ if(chModIs('grp')&&ch.mod.g===it.g)ex('🔥 Fieber','x',3,'Tagesbonus aus der Tagesbox: heute ×3 Mult auf jedes Häppchen für '+(CH_GM[it.g]?CH_GM[it.g].n:'diese Muskelgruppe')+', den ganzen Tag.');
+ if(ch.boost>Date.now())ex('⚡ Boost','x',2,'Boost aus einer Kiste: ×2 Mult, noch '+Math.ceil((ch.boost-Date.now())/60000)+' Min.');
+ if(ch.comeback)ex('🪽 Comeback','x',1.5,'Nach einem verpassten Tag bekommst du heute ×1,5 Mult, damit du wieder reinkommst.');
+ if(bk==='couch'&&(it.g==='bizeps'||it.g==='trizeps'))ex('🛋️ The Couch Lord','x',.5,'Boss-Tag: '+CH_BOSS.couch.d);
+ var rlF=1;if(SE==='lo'){ex('🛋️ Couch Legs','x',.8,'Gestern unter 7.000 Schritte: heute ×0,8 Mult.');rlF*=.8;}
+ chDebAct().forEach(function(b){var D=CH_DEB[b.k];rlF*=D.v;var dw='Debuff nach einem Cheat ohne Ticket: '+D.d+', solange er läuft.';if(D.k==='x')ex(D.e+' '+D.n,'x',D.v,dw);else{var nc=Math.round(chips*D.v);st.push({k:'ex',lab:D.e+' '+D.n+': Chips ×0,75',t:'c',v:nc-chips,chips:nc,mult:mult,boss:1,why:dw});chips=nc;}});
+ if(bk==='sloth'){chips=Math.round(chips/2);st.push({k:'ex',lab:'🦥 The Sloth King: Chips halb',t:'c',v:-chips,chips:chips,mult:mult,boss:1,why:'Boss-Tag: '+CH_BOSS.sloth.d});}
+ var crit=null;if(!dry){var cr=Math.random(),cc=chModIs('crit')?.3:.12;if(cr<.03)crit=5;else if(cr<cc)crit=2;if(crit)ex(crit===5?'💥 JACKPOT':'⚡ KRITISCH','x',crit,'Reines Glück: Jedes Häppchen hat '+(chModIs('crit')?'30 % (Glückstag)':'12 %')+' Chance auf KRITISCH ×2, davon 3 % JACKPOT ×5.');}
  var pts=Math.round(chips*mult);
  return {st:st,chips:chips,mult:mult,pts:pts,pr:Math.round(pts/rlF),coins:coins,crit:crit,xp:(p.hv?20:12)+2*Math.floor(Math.log10(Math.max(1,pts))),x:x};
 }
@@ -3366,6 +3368,7 @@ function chScoreShow(it,R,I,deck){
    if(I.hit)s+='<div class="chs-hit">'+(I.boss?'👑 BOSS BESIEGT · SHOP OFFEN':'🎯 ZIEL GESCHAFFT · SHOP OFFEN')+'</div>';else if(I.rec)s+='<div class="chs-hit">🏆 NEUER REKORD</div>';
    s+='<div><button class="chs-rbtn" id="chs-rbtn">📋 Rechnung ansehen</button></div><div class="chs-rl" id="chs-rl" hidden>'+rechnung()+'</div>';
    el.querySelector('#chs-sub').innerHTML=s;
+   el.querySelectorAll('#chs-rl .chs-r').forEach(function(r){r.onclick=function(e){e.stopPropagation();if(r.querySelector('.why'))r.classList.toggle('open');};});
    el.querySelector('#chs-rbtn').onclick=function(e){e.stopPropagation();var l=el.querySelector('#chs-rl');l.hidden=!l.hidden;this.textContent=l.hidden?'📋 Rechnung ansehen':'📋 Rechnung zuklappen';};
    chSnd(big?'leg':'box');vib(big?[60,30,60,30,140]:[40,30,60]);
    if(big)chConfetti(['#ffc400','#ff2d55','#3b82f6','#fff'],160);
@@ -3376,20 +3379,22 @@ function chScoreShow(it,R,I,deck){
  // Rechnung: jeder Schritt mit Wert und Zwischenstand Chips × Mult (Corey 28.11.: Punktzahl nachvollziehen)
  function rechnung(){
   var h='';steps.forEach(function(s){
-   var lab,v,cl='';
-   if(s.k==='card'){var c=CH_CM[deck[s.i].id];lab=c.e+' '+c.n+(s.vr?' · '+CH_VAR[s.vr].n:'');}else lab=s.lab;
+   var lab,v,cl='',why=s.why||'';
+   if(s.k==='card'){var c=CH_CM[deck[s.i].id];lab=c.e+' '+c.n+(s.vr?' · '+CH_VAR[s.vr].n:'');
+    why=s.lock?'Boss-Tag: '+CH_BOSS.jailer.d:s.vr?'Seltene Variante '+CH_VAR[s.vr].n+': '+CH_VAR[s.vr].d:'Deck-Karte, Platz '+(s.i+1)+': '+chCardFx(c,deck[s.i]);}
+   else lab=s.lab;
    if(s.k==='base'){v=chBig(s.chips)+' × '+chFmtM(s.mult);cl='t-c';}
    else if(s.lock){v='gesperrt';cl='t-d';}
    else if(s.boss){v=(s.v<0?'−'+chN(-s.v):'+'+chN(s.v))+' Chips';cl='t-d';}
    else{v=chValTxt(s.t,s.v);cl='t-'+(s.t==='$'?'d':s.t);}
-   h+='<div class="chs-r"'+(s.k==='card'?' data-i="'+s.i+'"':'')+'><span>'+lab+'</span><span class="v '+cl+'">'+v+'</span><span class="run">'+chBig(s.chips)+' × '+chFmtM(s.mult)+'</span></div>';});
+   h+='<div class="chs-r"'+(s.k==='card'?' data-i="'+s.i+'"':'')+'><span>'+lab+'</span><span class="v '+cl+'">'+v+'</span><span class="run">'+chBig(s.chips)+' × '+chFmtM(s.mult)+'</span>'+(why?'<div class="why">'+why+'</div>':'')+'</div>';});
   return h+'<div class="chs-r tot"><span>Ergebnis</span><span></span><span>= '+chBig(R.pts)+'</span></div>';
  }
  // Nach der Auswertung: Karte antippen zeigt, was sie beigetragen hat
  el.querySelectorAll('.chs-k[id]').forEach(function(k){k.addEventListener('click',function(e){
   if(!fin||!el.querySelector('#chs-rl'))return;e.stopPropagation();
   var i=k.id.slice(5),l=el.querySelector('#chs-rl');l.hidden=false;el.querySelector('#chs-rbtn').textContent='📋 Rechnung zuklappen';
-  var first=null;l.querySelectorAll('.chs-r').forEach(function(r){var on=r.getAttribute('data-i')===i;r.classList.toggle('hl',on);if(on&&!first)first=r;});
+  var first=null;l.querySelectorAll('.chs-r').forEach(function(r){var on=r.getAttribute('data-i')===i;r.classList.toggle('hl',on);if(on)r.classList.add('open');if(on&&!first)first=r;});
   if(first)first.scrollIntoView({block:'nearest',behavior:'smooth'});else toast('Diese Karte hat diesmal nichts beigetragen');});});
  var canClose=0;
  function close(){if(Date.now()<canClose)return;timers.forEach(clearTimeout);if(!el.isConnected)return;el.remove();chScoring=null;if(chQ.length){chQ.shift()();return;}chPlay();}
