@@ -1952,6 +1952,13 @@ body.lean .tab[data-s="fortschritt"]{order:1}body.lean .tab-ch{order:2}body.lean
 .chs-goal.ok .chs-gb div{background:#ffc400}
 .chs-hit{margin-top:10px;font-family:'Orbitron',monospace;font-size:13px;letter-spacing:1px;color:#ffc400;text-shadow:0 0 14px #ff9500}
 .chs-skip{font-size:10px;color:var(--t3);margin-top:10px}
+.chs-rbtn{margin-top:10px;background:#1f1f3d;border:1px solid #3a3a66;color:#fff;border-radius:10px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:800}
+.chs-rl{margin-top:8px;max-height:38vh;overflow:auto;text-align:left;font-size:12px;border-top:1px solid #2a2a4a}
+.chs-r{display:grid;grid-template-columns:1fr auto auto;gap:8px;padding:5px 4px;border-bottom:1px solid #20203a;align-items:center;transition:background .3s}
+.chs-r .v{font-weight:800;white-space:nowrap}.chs-r .v.t-c{color:#4d8dff}.chs-r .v.t-m,.chs-r .v.t-x{color:#ff4d6d}.chs-r .v.t-d{color:#ffc400}
+.chs-r .run{color:var(--t3);font-size:11px;white-space:nowrap}
+.chs-r.hl{background:rgba(255,196,0,.16)}.chs-r.tot{font-weight:800;color:#ffc400;border-bottom:0}
+.chs-box.fin .chs-k[id]{cursor:pointer}
 .chs-skip.done{font-size:12px;color:var(--t2);font-weight:800;animation:chPulseO 1.4s infinite}
 /* Phase 2: Mythic, Varianten, Boss, Missionen, Wonder Pick, Wunschkarte */
 .r-m{--rc:#ff2d55}
@@ -3329,7 +3336,7 @@ function chScoreShow(it,R,I,deck){
   chTone(Math.min(1400,330*Math.pow(2,n*2/12)),s.t==='x'?.22:.14);vib(s.t==='x'?[20,20,30]:12);
  }
  function finish(){
-  if(fin)return;fin=true;timers.forEach(clearTimeout);show(steps[steps.length-1],steps.length);
+  if(fin)return;fin=true;el.querySelector('.chs-box').classList.add('fin');timers.forEach(clearTimeout);show(steps[steps.length-1],steps.length);
   var tE=el.querySelector('#chs-tot'),t0=performance.now(),D=Math.min(900,350+R.pts/4);
   (function f(now){var k=Math.min(1,(now-t0)/D),e=1-Math.pow(1-k,3);tE.textContent=chBig(R.pts*e);if(k<1&&el.isConnected)requestAnimationFrame(f);else{tE.textContent=chBig(R.pts);pop(tE);}})(t0);
   tE.classList.add('on');
@@ -3338,13 +3345,33 @@ function chScoreShow(it,R,I,deck){
    var s='<div>+'+R.xp+' XP · +'+I.coins+' <i class="cn"></i></div>';
    s+='<div class="chs-goal'+(I.sc>=I.goal?' ok':'')+'"><div class="chs-gl"><span>'+(!I.hit&&chScDay().hit?'⚡ Overdrive '+(I.od+1):'🎯 Ziel-Score')+'</span><span>'+chBig(I.sc)+' / '+chBig(I.goal)+'</span></div><div class="chs-gb"><div style="width:'+Math.min(100,I.sc/I.goal*100)+'%"></div></div></div>';
    if(I.hit)s+='<div class="chs-hit">'+(I.boss?'👑 BOSS BESIEGT · SHOP OFFEN':'🎯 ZIEL GESCHAFFT · SHOP OFFEN')+'</div>';else if(I.rec)s+='<div class="chs-hit">🏆 NEUER REKORD</div>';
+   s+='<div><button class="chs-rbtn" id="chs-rbtn">📋 Rechnung ansehen</button></div><div class="chs-rl" id="chs-rl" hidden>'+rechnung()+'</div>';
    el.querySelector('#chs-sub').innerHTML=s;
+   el.querySelector('#chs-rbtn').onclick=function(e){e.stopPropagation();var l=el.querySelector('#chs-rl');l.hidden=!l.hidden;this.textContent=l.hidden?'📋 Rechnung ansehen':'📋 Rechnung zuklappen';};
    chSnd(big?'leg':'box');vib(big?[60,30,60,30,140]:[40,30,60]);
    if(big)chConfetti(['#ffc400','#ff2d55','#3b82f6','#fff'],160);
   },D),setTimeout(function(){var sk=el.querySelector('#chs-skip');if(sk){sk.textContent='Tippen zum Schließen';sk.classList.add('done');}},D+300)];
   // Bleibt offen, bis man tippt (Corey 27.11.: Score ansehen und Screenshot machen). Kurze Sperre gegen Doppeltipp.
   canClose=Date.now()+500;
  }
+ // Rechnung: jeder Schritt mit Wert und Zwischenstand Chips × Mult (Corey 28.11.: Punktzahl nachvollziehen)
+ function rechnung(){
+  var h='';steps.forEach(function(s){
+   var lab,v,cl='';
+   if(s.k==='card'){var c=CH_CM[deck[s.i].id];lab=c.e+' '+c.n+(s.vr?' · '+CH_VAR[s.vr].n:'');}else lab=s.lab;
+   if(s.k==='base'){v=chBig(s.chips)+' × '+chFmtM(s.mult);cl='t-c';}
+   else if(s.lock){v='gesperrt';cl='t-d';}
+   else if(s.boss){v=(s.v<0?'−'+chN(-s.v):'+'+chN(s.v))+' Chips';cl='t-d';}
+   else{v=chValTxt(s.t,s.v);cl='t-'+(s.t==='$'?'d':s.t);}
+   h+='<div class="chs-r"'+(s.k==='card'?' data-i="'+s.i+'"':'')+'><span>'+lab+'</span><span class="v '+cl+'">'+v+'</span><span class="run">'+chBig(s.chips)+' × '+chFmtM(s.mult)+'</span></div>';});
+  return h+'<div class="chs-r tot"><span>Ergebnis</span><span></span><span>= '+chBig(R.pts)+'</span></div>';
+ }
+ // Nach der Auswertung: Karte antippen zeigt, was sie beigetragen hat
+ el.querySelectorAll('.chs-k[id]').forEach(function(k){k.addEventListener('click',function(e){
+  if(!fin||!el.querySelector('#chs-rl'))return;e.stopPropagation();
+  var i=k.id.slice(5),l=el.querySelector('#chs-rl');l.hidden=false;el.querySelector('#chs-rbtn').textContent='📋 Rechnung zuklappen';
+  var first=null;l.querySelectorAll('.chs-r').forEach(function(r){var on=r.getAttribute('data-i')===i;r.classList.toggle('hl',on);if(on&&!first)first=r;});
+  if(first)first.scrollIntoView({block:'nearest',behavior:'smooth'});else toast('Diese Karte hat diesmal nichts beigetragen');});});
  var canClose=0;
  function close(){if(Date.now()<canClose)return;timers.forEach(clearTimeout);if(!el.isConnected)return;el.remove();chScoring=null;if(chQ.length){chQ.shift()();return;}chPlay();}
  chScoring={el:el};
