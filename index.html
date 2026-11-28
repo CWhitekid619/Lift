@@ -1952,7 +1952,6 @@ body.lean .tab[data-s="fortschritt"]{order:1}body.lean .tab-ch{order:2}body.lean
 .chs-goal.ok .chs-gb div{background:#ffc400}
 .chs-hit{margin-top:10px;font-family:'Orbitron',monospace;font-size:13px;letter-spacing:1px;color:#ffc400;text-shadow:0 0 14px #ff9500}
 .chs-skip{font-size:10px;color:var(--t3);margin-top:10px}
-.chs-rbtn{margin-top:10px;background:#1f1f3d;border:1px solid #3a3a66;color:#fff;border-radius:10px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:800}
 .chs-rl{margin-top:8px;max-height:38vh;overflow:auto;text-align:left;font-size:12px;border-top:1px solid #2a2a4a}
 .chs-r{display:grid;grid-template-columns:1fr auto auto;gap:8px;padding:5px 4px;border-bottom:1px solid #20203a;align-items:center;transition:background .3s}
 .chs-r .v{font-weight:800;white-space:nowrap}.chs-r .v.t-c{color:#4d8dff}.chs-r .v.t-m,.chs-r .v.t-x{color:#ff4d6d}.chs-r .v.t-d{color:#ffc400}
@@ -1960,7 +1959,7 @@ body.lean .tab[data-s="fortschritt"]{order:1}body.lean .tab-ch{order:2}body.lean
 .chs-r .why{grid-column:1/-1;display:none;font-size:11px;font-weight:600;color:var(--t2);line-height:1.35;padding:2px 0 2px 8px;border-left:2px solid #3a3a66}
 .chs-r.open .why{display:block}.chs-r:has(.why){cursor:pointer}.chs-r:has(.why)>span:first-child::after{content:' ⓘ';opacity:.45;font-size:10px}
 .chs-r.hl{background:rgba(255,196,0,.16)}.chs-r.tot{font-weight:800;color:#ffc400;border-bottom:0}
-.chs-box.fin .chs-k[id]{cursor:pointer}
+.chs-box.fin .chs-k[id],.chs-box.fin .chs-cm{cursor:pointer}
 .chs-skip.done{font-size:12px;color:var(--t2);font-weight:800;animation:chPulseO 1.4s infinite}
 /* Phase 2: Mythic, Varianten, Boss, Missionen, Wonder Pick, Wunschkarte */
 .r-m{--rc:#ff2d55}
@@ -2141,6 +2140,15 @@ details.prc summary{cursor:pointer;list-style:none}details.prc summary::-webkit-
 .ch-bl>div{flex:1;min-width:0;display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:11px;background:#111120;border:1px solid #23233a;font-size:11px;cursor:pointer;white-space:nowrap}
 .ch-bl b{overflow:hidden;text-overflow:ellipsis;font-weight:800;flex:1;min-width:0}.ch-bl small{color:var(--t2);font-weight:700;font-size:10px;flex-shrink:0}.ch-bl span{flex-shrink:0}
 .ch-bl .l b{color:var(--c)}
+/* Liga als Tier-Schild (Corey 28.11., Vorlage Tier 1–5): Rahmen, Innenlinie, Eckzier; höhere Liga = mehr Zier */
+b.tierp{position:relative;display:inline-flex;align-items:center;justify-content:center;padding:4px 14px;font-family:'Orbitron',monospace;font-weight:900;font-size:9px;letter-spacing:1px;text-transform:uppercase;background:var(--tb);color:var(--tt)!important;border:2px solid var(--tf);border-radius:3px;box-shadow:inset 0 0 0 2px var(--ti),0 2px 0 rgba(0,0,0,.55);text-shadow:0 1px 0 rgba(0,0,0,.5);flex:0 1 auto!important;overflow:visible!important}
+b.tierp::before,b.tierp::after{content:'';position:absolute;top:3px;width:5px;height:5px;border-top:2px solid var(--tt);opacity:.75}
+b.tierp::before{left:3px;border-left:2px solid var(--tt)}b.tierp::after{right:3px;border-right:2px solid var(--tt)}
+b.tierp.tl0{--tb:#5a3424;--tf:#b9785a;--ti:#7a4a34;--tt:#f2b48c}
+b.tierp.tl1{--tb:#44574d;--tf:#a9c2b6;--ti:#5f776b;--tt:#dff3e9}
+b.tierp.tl2{--tb:#6b2a0f;--tf:#e8892e;--ti:#8a3c16;--tt:#ffc35a}
+b.tierp.tl3{--tb:#2e0f63;--tf:#b05cff;--ti:#5a24a8;--tt:#ebcfff;outline:2px dotted #b05cff;outline-offset:2px;box-shadow:inset 0 0 0 2px var(--ti),0 0 12px rgba(176,92,255,.7)}
+.lg-o b.tierp{display:inline-flex;font-size:11px;margin-bottom:5px}
 .ch-bl .b.on{border-color:#ff2d55;background:#1c0b12}.ch-bl .b.on small{color:#ff4d6d}
 .ch-bl .b.won small{color:#ffc400}
 .ch-sec h4.fh{cursor:pointer;user-select:none;display:flex;align-items:center;gap:6px;padding:4px 0}
@@ -3261,7 +3269,7 @@ function chWoApply(n,first){
 function chLigaOpen(inner){
  if(!inner&&chBusy())return;var x=document.getElementById('chx');x.className='chx';x.style.justifyContent='';
  var h='<div class="chx-name" style="color:var(--ac)">🏅 LIGA</div><div class="chx-info2"><div>Je höher die Liga, desto schwerer. Die nächste Liga schaltest du frei, wenn du <b>'+CH_LIGAW+' Bosse</b> in deiner höchsten Liga besiegst (bisher '+(ch.ligaW||0)+'/'+CH_LIGAW+'). Pro Liga gibt es +2 <i class="cn"></i> mehr fürs Tagesziel.</div></div><div class="lg-l">';
- CH_LIGA.forEach(function(L,i){var lock=i>ch.ligaMax;h+='<div class="lg-o'+(i===ch.liga?' sel':'')+(lock?' lock':'')+'" style="--c:'+L.c+'" onclick="chLigaSet('+i+')"><span class="e">'+(lock?'🔒':L.e)+'</span><div><b>'+L.n+'</b><small>'+L.d+(lock?' · '+CH_LIGAW+' Bosse in der '+CH_LIGA[i-1].n+' besiegen':'')+'</small></div></div>';});
+ CH_LIGA.forEach(function(L,i){var lock=i>ch.ligaMax;h+='<div class="lg-o'+(i===ch.liga?' sel':'')+(lock?' lock':'')+'" style="--c:'+L.c+'" onclick="chLigaSet('+i+')"><span class="e">'+(lock?'🔒':L.e)+'</span><div><b class="tierp tl'+i+'">'+L.n+'</b><small>'+L.d+(lock?' · '+CH_LIGAW+' Bosse in der '+CH_LIGA[i-1].n+' besiegen':'')+'</small></div></div>';});
  h+='</div><div class="chx-btns"><button class="btn bs bf" onclick="chCloseX();setTimeout(function(){chInfo(\'mastery\')},60)">⭐ Was ist Mastery?</button><button class="btn bp bf" onclick="chCloseX()">Fertig</button></div>';
  x.innerHTML=h;chSnd('flip');
 }
@@ -3369,10 +3377,11 @@ function chScoreShow(it,R,I,deck){
    var s='<div>+'+R.xp+' XP · +'+I.coins+' <i class="cn"></i></div>';
    s+='<div class="chs-goal'+(I.sc>=I.goal?' ok':'')+'"><div class="chs-gl"><span>'+(!I.hit&&chScDay().hit?'⚡ Overdrive '+(I.od+1):'🎯 Ziel-Score')+'</span><span>'+chBig(I.sc)+' / '+chBig(I.goal)+'</span></div><div class="chs-gb"><div style="width:'+Math.min(100,I.sc/I.goal*100)+'%"></div></div></div>';
    if(I.hit)s+='<div class="chs-hit">'+(I.boss?'👑 BOSS BESIEGT · SHOP OFFEN':'🎯 ZIEL GESCHAFFT · SHOP OFFEN')+'</div>';else if(I.rec)s+='<div class="chs-hit">🏆 NEUER REKORD</div>';
-   s+='<div><button class="chs-rbtn" id="chs-rbtn">📋 Rechnung ansehen</button></div><div class="chs-rl" id="chs-rl" hidden>'+rechnung()+'</div>';
+   // Rechnung ohne Knopf (Corey 28.11.): Karte oder Chips×Mult antippen klappt sie auf
+   s+='<div class="chs-rl" id="chs-rl" hidden>'+rechnung()+'</div>';
    el.querySelector('#chs-sub').innerHTML=s;
    el.querySelectorAll('#chs-rl .chs-r').forEach(function(r){r.onclick=function(e){e.stopPropagation();if(r.querySelector('.why'))r.classList.toggle('open');};});
-   el.querySelector('#chs-rbtn').onclick=function(e){e.stopPropagation();var l=el.querySelector('#chs-rl');l.hidden=!l.hidden;this.textContent=l.hidden?'📋 Rechnung ansehen':'📋 Rechnung zuklappen';};
+   el.querySelector('.chs-cm').onclick=function(e){if(!fin)return;e.stopPropagation();var l=el.querySelector('#chs-rl');l.hidden=!l.hidden;};
    chSnd(big?'leg':'box');vib(big?[60,30,60,30,140]:[40,30,60]);
    if(big)chConfetti(['#ffc400','#ff2d55','#3b82f6','#fff'],160);
   },D),setTimeout(function(){var sk=el.querySelector('#chs-skip');if(sk){sk.textContent='Tippen zum Schließen';sk.classList.add('done');}},D+300)];
@@ -3396,7 +3405,7 @@ function chScoreShow(it,R,I,deck){
  // Nach der Auswertung: Karte antippen zeigt, was sie beigetragen hat
  el.querySelectorAll('.chs-k[id]').forEach(function(k){k.addEventListener('click',function(e){
   if(!fin||!el.querySelector('#chs-rl'))return;e.stopPropagation();
-  var i=k.id.slice(5),l=el.querySelector('#chs-rl');l.hidden=false;el.querySelector('#chs-rbtn').textContent='📋 Rechnung zuklappen';
+  var i=k.id.slice(5),l=el.querySelector('#chs-rl');l.hidden=false;
   var first=null;l.querySelectorAll('.chs-r').forEach(function(r){var on=r.getAttribute('data-i')===i;r.classList.toggle('hl',on);if(on)r.classList.add('open');if(on&&!first)first=r;});
   if(first)first.scrollIntoView({block:'nearest',behavior:'smooth'});else toast('Diese Karte hat diesmal nichts beigetragen');});});
  var canClose=0;
@@ -3700,10 +3709,13 @@ function chFxTxt(fx,d){
   var v=chFxV(e,d),s;
   if(e.per){var pt=e.per==='gday'?'pro Häppchen heute für '+chGN(e.pa):CH_PT[e.per];
    s=(e.t==='x'?'×Mult +'+chN(v):chValTxt(e.t,v))+' '+pt;
-   if(['streak','coins','deck','album','lvl','frz','gold'].indexOf(e.per)>=0){var n=chPerN(e,gx);s+=' (Aktuell <b>'+(e.t==='x'?'×'+chN(1+v*n)+' Mult':chValTxt(e.t,v*n))+'</b>)';}}
-  // Wachsende Karten wie bei Balatro: was sie pro Auslöser bekommen, dahinter der aktuelle Wert.
+   // Im Deck (d gesetzt): Wert vorn, ohne „Aktuell“ (Corey 28.11.)
+   if(d&&['streak','coins','deck','album','lvl','frz','gold'].indexOf(e.per)>=0){var n=chPerN(e,gx);s='<b>'+(e.t==='x'?'×'+chN(1+v*n)+' Mult':chValTxt(e.t,v*n))+'</b> ('+s+')';}}
+  // Wachsende Karten: im Deck steht der jetzige Wert vorn, sonst was sie tun und womit sie starten
   else if(e.gev){var g=Math.abs(e.gby),amt=e.t==='x'?'×'+chN(g)+' Mult':e.t==='c'?chN(g)+' Chips':e.t==='m'?chN(g)+' Mult':chN(g)+' <i class="cn"></i>';
-   s=(e.gby<0?'Verliert ':'Bekommt '+(e.t==='x'?'':'+'))+amt+' '+CH_GT[e.gev]+(e.gby<0?', bei 0 ist sie weg':'')+(e.c?' ('+chCondTxt(e)+')':'')+'. (Aktuell <b>'+chValTxt(e.t,v)+'</b>)';return s;}
+   var grow=(e.gby<0?'Verliert ':(d?'Wächst um ':'Bekommt ')+(e.t==='x'?'':'+'))+amt+' '+CH_GT[e.gev]+(e.gby<0?', bei 0 ist sie weg':'');
+   if(d)s='<b>'+chValTxt(e.t,v)+'</b>'+(e.c?' ('+chCondTxt(e)+')':'')+'. '+grow+'.';
+   else s=grow+(e.c?' ('+chCondTxt(e)+')':'')+'. Startet mit '+chValTxt(e.t,v)+'.';return s;}
   else s=chValTxt(e.t,v);
   if(e.c)s+=' '+chCondTxt(e);
   return s+'.';}).join(' ');
@@ -3894,7 +3906,7 @@ function chFoldWrap(k,html){return '<div class="ch-fd'+(chFoldOn(k)?' shut':'')+
 function chBossLigaLine(sc){
  var nb=chNextBoss(),B=nb&&CH_BOSS[nb.k],LG=chLg(),h='<div class="ch-bl">';
  if(B)h+='<div class="b'+(nb.in>0?'':sc.hit?' won':' on')+'" onclick="chInfo(\'boss\')"><span>'+B.e+'</span><b>'+B.n+'</b><small>'+(nb.in>0?'in '+nb.in+(nb.in===1?' Tag':' Tagen'):sc.hit?'✓ besiegt':'⚔️ heute')+'</small></div>';
- return h+'<div class="l" style="--c:'+LG.c+'" onclick="chLigaOpen()"><span>'+LG.e+'</span><b>'+LG.n+'</b><small>⭐'+chMastN(1)+' ›</small></div></div>';
+ return h+'<div class="l" style="--c:'+LG.c+'" onclick="chLigaOpen()"><span>'+LG.e+'</span><b class="tierp tl'+ch.liga+'">'+LG.n.replace(' League','')+'</b><small>⭐'+chMastN(1)+' ›</small></div></div>';
 }
 function chShowReport(rep){
  if(ch.ice){chIceBreak(rep);return;}
