@@ -1874,6 +1874,7 @@ body.lean .tab[data-s="fortschritt"]{order:1}body.lean .tab-ch{order:2}body.lean
 .chx-pick small{display:block;font-size:9px;letter-spacing:2px;color:var(--ac);margin-bottom:8px;font-weight:800}
 .chx-pick .row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
 .chx-pick button{background:#1a1a30;border:1.5px solid var(--rc);color:#fff;border-radius:18px;padding:7px 12px;font-weight:800;font-size:12px;cursor:pointer}
+.chx-pick.wp button{display:block;margin:0 auto 6px;max-width:100%}.chx-pick.wp span{display:block}
 .chx-pick.ok{color:var(--gr);font-weight:800;font-size:13px}
 .dk-swap{z-index:1;margin:12px auto 0;max-width:400px;width:100%;text-align:center;background:#16162a;border:1px solid #ffc40066;border-radius:14px;padding:10px}
 .dk-swap>small{display:block;font-size:11px;color:#ffc400;font-weight:800;margin-bottom:8px}
@@ -3591,7 +3592,7 @@ function chPickHtml(){
  if(left<=0)return ok;
  var idx=chPickIdx();
  if(!idx.length)return ok||'<div class="chx-pick">'+(chBX.res.cards.length===1&&chInDeck(chBX.res.cards[0].id)?'Die Karte liegt schon in deinem Deck.':'Keine Karte passt in dein Deck.')+'</div>';
- if(chBX.wp){var rc=chBX.res.cards[0],c=CH_CM[rc.id];return ok+'<div class="chx-pick"><button class="r-'+c.r+'" onclick="chPickDeck(0)">🃏 '+c.n+' ins Deck legen</button><span>Sonst ist sie weg.</span></div>';}
+ if(chBX.wp){var rc=chBX.res.cards[0],c=CH_CM[rc.id],full=!chFits(rc.v,rc.id);return ok+'<div class="chx-pick wp"><button class="r-'+c.r+'" onclick="chPickDeck(0)">'+(full?'🔄 '+c.n+' nehmen und tauschen':'✅ '+c.n+' nehmen')+'</button><span>'+(full?'Alle Plätze sind belegt. Dafür fliegt eine deiner Karten raus. ':'')+'Nimmst du sie nicht, ist sie weg.</span></div>';}
  return ok+'<div class="chx-pick big"><b>👆 Tippe '+(left>1?'bis zu '+left+' Karten':P.length?'noch eine Karte':'eine Karte')+' an, um sie in dein Deck zu legen.</b><span>Der Rest ist weg.'+(chDeckFull()?' Dein Deck ist voll: Du tauschst gegen eine Deck-Karte.':'')+'</span></div>';
 }
 function chPickMark(){if(!chBX||chBX.wp)return;var P=chBX.picks||[],idx=chPickIdx(),left=chPickLeft();chBX.res.cards.forEach(function(rc,i){var e=document.getElementById('chc'+i);if(!e)return;e.classList.toggle('can',left>0&&idx.indexOf(i)>=0);e.classList.toggle('picked',P.indexOf(i)>=0);});}
@@ -3645,11 +3646,12 @@ function chFxTxt(fx,d){
   var v=chFxV(e,d),s;
   if(e.per){var pt=e.per==='gday'?'pro Häppchen heute für '+chGN(e.pa):CH_PT[e.per];
    s=(e.t==='x'?'×Mult +'+chN(v):chValTxt(e.t,v))+' '+pt;
-   if(['streak','coins','deck','album','lvl','frz','gold'].indexOf(e.per)>=0){var n=chPerN(e,gx);s+=' (jetzt '+(e.t==='x'?'×'+chN(1+v*n):chValTxt(e.t,v*n))+')';}}
+   if(['streak','coins','deck','album','lvl','frz','gold'].indexOf(e.per)>=0){var n=chPerN(e,gx);s+=' (Aktuell <b>'+(e.t==='x'?'×'+chN(1+v*n)+' Mult':chValTxt(e.t,v*n))+'</b>)';}}
+  // Wachsende Karten wie bei Balatro: was sie pro Auslöser bekommen, dahinter der aktuelle Wert.
+  else if(e.gev){var g=Math.abs(e.gby),amt=e.t==='x'?'×'+chN(g)+' Mult':e.t==='c'?chN(g)+' Chips':e.t==='m'?chN(g)+' Mult':chN(g)+' <i class="cn"></i>';
+   s=(e.gby<0?'Verliert ':'Bekommt '+(e.t==='x'?'':'+'))+amt+' '+CH_GT[e.gev]+(e.gby<0?', bei 0 ist sie weg':'')+(e.c?' ('+chCondTxt(e)+')':'')+'. (Aktuell <b>'+chValTxt(e.t,v)+'</b>)';return s;}
   else s=chValTxt(e.t,v);
-  if(e.gev&&d&&d.n)s+=' (Start '+chValTxt(e.t,e.v)+', schon '+d.n+'× '+(e.gby<0?'geschrumpft':'gewachsen')+')';
   if(e.c)s+=' '+chCondTxt(e);
-  if(e.gev)s+=e.gby<0?'. Verliert '+chN(-e.gby)+' '+CH_GT[e.gev]+', bei 0 ist sie weg':'. Wächst um '+chN(e.gby)+' '+CH_GT[e.gev];
   return s+'.';}).join(' ');
 }
 function chBigCard(c,d,lock,v){
